@@ -16,7 +16,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="SdJ-Df-Edh">
+                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="SdJ-Df-Edh">
                     <rect key="frame" x="70" y="0.0" width="305" height="2"/>
                     <color key="progressTintColor" red="0.2819526792" green="0.6659956574" blue="0.96032720800000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <color key="trackTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -87,9 +87,9 @@
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.20000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="Cs8-EH-F4C">
+                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.40000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="Cs8-EH-F4C">
                     <rect key="frame" x="70" y="0.0" width="305" height="2"/>
-                    <color key="progressTintColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="progressTintColor" red="0.9891067147" green="0.56147354839999997" blue="0.27547004819999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </progressView>
             </subviews>
@@ -133,14 +133,15 @@
             <connections>
                 <outlet property="bufferProgressView" destination="SdJ-Df-Edh" id="qdb-ZY-xd7"/>
                 <outlet property="dislikeButton" destination="rxx-Az-TJY" id="rWf-8j-9po"/>
+                <outlet property="favourite" destination="lhO-EL-bTL" id="vWa-Qd-QDf"/>
                 <outlet property="nextButton" destination="1XS-4z-f7s" id="yBD-xw-npS"/>
-                <outlet property="playButton" destination="lhO-EL-bTL" id="kt6-uo-BZa"/>
+                <outlet property="playButton" destination="7ip-Rn-v7E" id="pOo-YN-3CP"/>
                 <outlet property="playProgressView" destination="Cs8-EH-F4C" id="md2-nC-kY7"/>
                 <outlet property="radioSongCoverImageView" destination="hst-Lt-nbm" id="G2J-ZW-Vkq"/>
                 <outlet property="radioSongPlayTimeLabel" destination="AYZ-iD-9RG" id="pn0-hp-wor"/>
                 <outlet property="radioSongTitleLabel" destination="Oxk-aP-ZoC" id="J23-fX-TlE"/>
             </connections>
-            <point key="canvasLocation" x="-29.5" y="-162"/>
+            <point key="canvasLocation" x="304" y="-122"/>
         </view>
     </objects>
     <resources>

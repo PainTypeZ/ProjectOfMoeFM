@@ -10,7 +10,6 @@
 
 #import "AppDelegate.h"
 #import "PTOAuthTool.h"
-#import "PTMusicPlayerView.h"
 
 NSString * const kConsumerKey = @"2a964c3a6cf90dcb31fccd75703bafbc058e8e3ba";
 NSString * const kConsumerSecret = @"8af19f17b8f7494853b8e2a3ea5f4669";
@@ -30,9 +29,9 @@ NSString * const kConsumerSecret = @"8af19f17b8f7494853b8e2a3ea5f4669";
         [userDefaults setObject:kConsumerSecret forKey:@"consumer_secret"];
         [userDefaults synchronize];
     }
-    PTMusicPlayerView *musicPlayerView = [PTMusicPlayerView sharedMuiscPlayerview];
-    musicPlayerView.backgroundColor = [UIColor clearColor];
-    [self.window addSubview:musicPlayerView];
+//    PTMusicPlayerView *musicPlayerView = [PTMusicPlayerView sharedMuiscPlayerview];
+//    musicPlayerView.backgroundColor = [UIColor clearColor];
+//    [self.window addSubview:musicPlayerView];
     return YES;
 }
 

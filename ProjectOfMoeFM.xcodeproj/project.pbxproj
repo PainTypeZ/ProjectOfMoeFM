@@ -30,8 +30,6 @@
 		07670F1D1EA06D080027E3EA /* play@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07670F181EA06D080027E3EA /* play@2x.png */; };
 		07670F201EA06DE60027E3EA /* dislike_no@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07670F1E1EA06DE60027E3EA /* dislike_no@2x.png */; };
 		07670F211EA06DE60027E3EA /* dislike_yes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07670F1F1EA06DE60027E3EA /* dislike_yes@2x.png */; };
-		07670F2F1EA079BC0027E3EA /* PTMusicPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07670F2E1EA079BC0027E3EA /* PTMusicPlayerView.m */; };
-		07670F311EA07A310027E3EA /* PTMusicPlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07670F301EA07A310027E3EA /* PTMusicPlayerView.xib */; };
 		07BAD4501E99FCF8009B6691 /* PTWebUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BAD44F1E99FCF8009B6691 /* PTWebUtils.m */; };
 		07BAD45F1E9BC3B8009B6691 /* OAuth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07BAD45E1E9BC3B8009B6691 /* OAuth.storyboard */; };
 		07BAD4621E9BC423009B6691 /* OAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BAD4611E9BC423009B6691 /* OAuthViewController.m */; };
@@ -89,9 +87,6 @@
 		07670F181EA06D080027E3EA /* play@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play@2x.png"; sourceTree = "<group>"; };
 		07670F1E1EA06DE60027E3EA /* dislike_no@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dislike_no@2x.png"; sourceTree = "<group>"; };
 		07670F1F1EA06DE60027E3EA /* dislike_yes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dislike_yes@2x.png"; sourceTree = "<group>"; };
-		07670F2D1EA079BC0027E3EA /* PTMusicPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTMusicPlayerView.h; sourceTree = "<group>"; };
-		07670F2E1EA079BC0027E3EA /* PTMusicPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTMusicPlayerView.m; sourceTree = "<group>"; };
-		07670F301EA07A310027E3EA /* PTMusicPlayerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PTMusicPlayerView.xib; sourceTree = "<group>"; };
 		07BAD44E1E99FCF8009B6691 /* PTWebUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTWebUtils.h; sourceTree = "<group>"; };
 		07BAD44F1E99FCF8009B6691 /* PTWebUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTWebUtils.m; sourceTree = "<group>"; };
 		07BAD45E1E9BC3B8009B6691 /* OAuth.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = OAuth.storyboard; sourceTree = "<group>"; };
@@ -277,9 +272,6 @@
 				07670F0F1EA05A030027E3EA /* PTMusicPlayerBottomView.h */,
 				07670F101EA05A030027E3EA /* PTMusicPlayerBottomView.m */,
 				07670F121EA05A250027E3EA /* PTMusicPlayerBottomView.xib */,
-				07670F2D1EA079BC0027E3EA /* PTMusicPlayerView.h */,
-				07670F2E1EA079BC0027E3EA /* PTMusicPlayerView.m */,
-				07670F301EA07A310027E3EA /* PTMusicPlayerView.xib */,
 				07FEF3501E99099600F6AC3B /* Home */,
 				07FEF3421E99099600F6AC3B /* Album */,
 				07FEF34A1E99099600F6AC3B /* Collection */,
@@ -514,7 +506,6 @@
 				07670ECC1E9E916C0027E3EA /* home_background_image.png in Resources */,
 				07FEF3211E99018A00F6AC3B /* LaunchScreen.storyboard in Resources */,
 				07670F1D1EA06D080027E3EA /* play@2x.png in Resources */,
-				07670F311EA07A310027E3EA /* PTMusicPlayerView.xib in Resources */,
 				07670F1A1EA06D080027E3EA /* fav_yes@2x.png in Resources */,
 				07FEF31E1E99018A00F6AC3B /* Assets.xcassets in Resources */,
 				07BAD45F1E9BC3B8009B6691 /* OAuth.storyboard in Resources */,
@@ -587,7 +578,6 @@
 			files = (
 				07670F111EA05A030027E3EA /* PTMusicPlayerBottomView.m in Sources */,
 				07670EF11E9F7D3D0027E3EA /* RadioPlayListViewController.m in Sources */,
-				07670F2F1EA079BC0027E3EA /* PTMusicPlayerView.m in Sources */,
 				07FEF3631E99099600F6AC3B /* UserViewController.m in Sources */,
 				07670EC31E9E637F0027E3EA /* RadioParameters.m in Sources */,
 				07E7B61B1E9D0C27004C9CF1 /* PTOAuthModel.m in Sources */,
