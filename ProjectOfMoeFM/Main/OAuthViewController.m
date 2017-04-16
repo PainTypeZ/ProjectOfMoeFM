@@ -35,6 +35,13 @@ NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_t
     }];
 }
 
+- (IBAction)clickCancelAction:(UIBarButtonItem *)sender {
+    // 跳转回mainStoryBoard初始界面
+    UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    UIApplication *application = [UIApplication sharedApplication];
+    application.keyWindow.rootViewController = [mainStoryBoard instantiateInitialViewController];
+}
+
 #pragma mark - UIWebViewDelegate
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     NSString *path = [request.URL description];

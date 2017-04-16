@@ -16,11 +16,22 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="SdJ-Df-Edh">
+                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SdJ-Df-Edh">
                     <rect key="frame" x="70" y="0.0" width="305" height="2"/>
                     <color key="progressTintColor" red="0.2819526792" green="0.6659956574" blue="0.96032720800000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <color key="trackTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </progressView>
+                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Cs8-EH-F4C">
+                    <rect key="frame" x="70" y="0.5" width="305" height="2"/>
+                    <color key="progressTintColor" red="0.9891067147" green="0.56147354839999997" blue="0.27547004819999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </progressView>
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="300" translatesAutoresizingMaskIntoConstraints="NO" id="p6V-ZV-NR5">
+                    <rect key="frame" x="53" y="-15" width="324" height="31"/>
+                    <color key="minimumTrackTintColor" red="0.9891067147" green="0.56147354839999997" blue="0.27547004819999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="maximumTrackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </slider>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cover_default_image.png" translatesAutoresizingMaskIntoConstraints="NO" id="hst-Lt-nbm">
                     <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
                     <constraints>
@@ -55,6 +66,9 @@
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <state key="selected" image="fav_yes.png"/>
+                    <connections>
+                        <action selector="favouriteAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="NGT-Oh-KJU"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ip-Rn-v7E">
                     <rect key="frame" x="115" y="28" width="30" height="30"/>
@@ -66,6 +80,9 @@
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <state key="selected" image="pause.png"/>
+                    <connections>
+                        <action selector="playAciton:" destination="iN0-l3-epB" eventType="touchUpInside" id="lCm-v9-e3g"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rxx-Az-TJY">
                     <rect key="frame" x="155" y="28" width="30" height="30"/>
@@ -76,6 +93,9 @@
                     <state key="normal" image="dislike_no.png">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="dislikeAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="3EN-Ms-VjG"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1XS-4z-f7s">
                     <rect key="frame" x="195" y="28" width="30" height="30"/>
@@ -86,12 +106,10 @@
                     <state key="normal" image="next.png">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="nextAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="etE-Wa-00R"/>
+                    </connections>
                 </button>
-                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.40000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="Cs8-EH-F4C">
-                    <rect key="frame" x="70" y="0.0" width="305" height="2"/>
-                    <color key="progressTintColor" red="0.9891067147" green="0.56147354839999997" blue="0.27547004819999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                </progressView>
             </subviews>
             <color key="backgroundColor" red="0.2819526792" green="0.6659956574" blue="0.96032720800000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -105,6 +123,7 @@
                 <constraint firstItem="SdJ-Df-Edh" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Jaf-8j-EXm"/>
                 <constraint firstItem="rxx-Az-TJY" firstAttribute="leading" secondItem="7ip-Rn-v7E" secondAttribute="trailing" constant="10" id="NKi-JR-Z25"/>
                 <constraint firstItem="1XS-4z-f7s" firstAttribute="width" secondItem="lhO-EL-bTL" secondAttribute="width" id="NZ3-ez-LI2"/>
+                <constraint firstItem="p6V-ZV-NR5" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="-15" id="OkC-el-lHC"/>
                 <constraint firstItem="AYZ-iD-9RG" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1XS-4z-f7s" secondAttribute="trailing" constant="5" id="PXu-uF-Hgm"/>
                 <constraint firstItem="rxx-Az-TJY" firstAttribute="centerY" secondItem="lhO-EL-bTL" secondAttribute="centerY" id="QjM-qA-f5W"/>
                 <constraint firstItem="lhO-EL-bTL" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Oxk-aP-ZoC" secondAttribute="bottom" id="RmG-Vd-AG0"/>
@@ -115,6 +134,7 @@
                 <constraint firstAttribute="trailing" secondItem="Cs8-EH-F4C" secondAttribute="trailing" id="Ztr-yC-cod"/>
                 <constraint firstItem="hst-Lt-nbm" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="cF3-gS-syn"/>
                 <constraint firstAttribute="bottom" secondItem="lhO-EL-bTL" secondAttribute="bottom" constant="12" id="cU3-UO-0gz"/>
+                <constraint firstItem="p6V-ZV-NR5" firstAttribute="leading" secondItem="hst-Lt-nbm" secondAttribute="trailing" constant="-15" id="cU3-wD-x9n"/>
                 <constraint firstItem="Oxk-aP-ZoC" firstAttribute="leading" secondItem="hst-Lt-nbm" secondAttribute="trailing" id="cmI-iD-bsF"/>
                 <constraint firstItem="1XS-4z-f7s" firstAttribute="height" secondItem="lhO-EL-bTL" secondAttribute="height" id="cnI-HF-v4I"/>
                 <constraint firstItem="rxx-Az-TJY" firstAttribute="width" secondItem="lhO-EL-bTL" secondAttribute="width" id="eFn-Xz-82p"/>
@@ -125,6 +145,7 @@
                 <constraint firstAttribute="trailing" secondItem="Oxk-aP-ZoC" secondAttribute="trailing" id="m7b-7f-Wmc"/>
                 <constraint firstItem="SdJ-Df-Edh" firstAttribute="leading" secondItem="hst-Lt-nbm" secondAttribute="trailing" id="sZf-kr-nbd"/>
                 <constraint firstItem="7ip-Rn-v7E" firstAttribute="centerY" secondItem="lhO-EL-bTL" secondAttribute="centerY" id="soN-Lf-u32"/>
+                <constraint firstAttribute="trailing" secondItem="p6V-ZV-NR5" secondAttribute="trailing" id="uyY-Xy-Dht"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
@@ -133,15 +154,16 @@
             <connections>
                 <outlet property="bufferProgressView" destination="SdJ-Df-Edh" id="qdb-ZY-xd7"/>
                 <outlet property="dislikeButton" destination="rxx-Az-TJY" id="rWf-8j-9po"/>
-                <outlet property="favourite" destination="lhO-EL-bTL" id="vWa-Qd-QDf"/>
+                <outlet property="favouriteButton" destination="lhO-EL-bTL" id="9zj-pA-9F2"/>
                 <outlet property="nextButton" destination="1XS-4z-f7s" id="yBD-xw-npS"/>
                 <outlet property="playButton" destination="7ip-Rn-v7E" id="pOo-YN-3CP"/>
-                <outlet property="playProgressView" destination="Cs8-EH-F4C" id="md2-nC-kY7"/>
+                <outlet property="playProgressView" destination="Cs8-EH-F4C" id="yzw-XF-Z7B"/>
+                <outlet property="playSliderView" destination="p6V-ZV-NR5" id="2Hu-wy-gEV"/>
                 <outlet property="radioSongCoverImageView" destination="hst-Lt-nbm" id="G2J-ZW-Vkq"/>
                 <outlet property="radioSongPlayTimeLabel" destination="AYZ-iD-9RG" id="pn0-hp-wor"/>
                 <outlet property="radioSongTitleLabel" destination="Oxk-aP-ZoC" id="J23-fX-TlE"/>
             </connections>
-            <point key="canvasLocation" x="304" y="-122"/>
+            <point key="canvasLocation" x="350" y="-120"/>
         </view>
     </objects>
     <resources>

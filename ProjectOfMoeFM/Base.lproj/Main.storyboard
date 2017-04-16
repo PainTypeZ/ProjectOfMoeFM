@@ -99,7 +99,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_background_image.png" translatesAutoresizingMaskIntoConstraints="NO" id="U7Y-l1-T0z">
+                            <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_background_image.png" translatesAutoresizingMaskIntoConstraints="NO" id="U7Y-l1-T0z">
                                 <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                             </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="dB3-FW-q0j">
@@ -243,11 +243,11 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <view alpha="0.59999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UfJ-Op-ufl">
+                            <view alpha="0.69999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UfJ-Op-ufl">
                                 <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                                 <color key="backgroundColor" red="0.2819526792" green="0.6659956574" blue="0.96032720800000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="113" sectionHeaderHeight="44" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="E5n-Wg-tfa">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelectionDuringEditing="YES" rowHeight="113" sectionHeaderHeight="44" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="E5n-Wg-tfa">
                                 <rect key="frame" x="0.0" y="64" width="375" height="484"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="WT1-m6-TGV">
@@ -256,7 +256,7 @@
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="电台名称" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qZJ-rF-p63">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <fontDescription key="fontDescription" type="system" weight="black" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -270,7 +270,7 @@
                                     </constraints>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="radioPlayListCell" rowHeight="113" id="uBf-yZ-kd9" customClass="RadioPlayListCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="radioPlayListCell" rowHeight="113" id="uBf-yZ-kd9" customClass="RadioPlayListCell">
                                         <rect key="frame" x="0.0" y="109" width="375" height="113"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uBf-yZ-kd9" id="qIJ-mU-z8R">
@@ -278,19 +278,19 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0nj-Rf-Lob">
-                                                    <rect key="frame" x="112.5" y="2" width="205.5" height="17"/>
+                                                    <rect key="frame" x="112.5" y="2" width="260.5" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" weight="black" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hOU-aB-OUV">
-                                                    <rect key="frame" x="112.5" y="21" width="205.5" height="17"/>
+                                                    <rect key="frame" x="112.5" y="21" width="260.5" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" weight="black" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8y5-91-EXI">
-                                                    <rect key="frame" x="276" y="93.5" width="39" height="17"/>
+                                                    <rect key="frame" x="331" y="93.5" width="39" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" weight="black" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -347,6 +347,7 @@
                     <navigationItem key="navigationItem" title="电台播放列表" id="BBg-sh-4Yl"/>
                     <connections>
                         <outlet property="radioPlayListTableView" destination="E5n-Wg-tfa" id="F2x-j8-hRX"/>
+                        <outlet property="titeLabel" destination="qZJ-rF-p63" id="x2l-zn-KiF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u5j-FI-Fzr" userLabel="First Responder" sceneMemberID="firstResponder"/>

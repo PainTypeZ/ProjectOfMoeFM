@@ -12,6 +12,7 @@
 #import "MainTabBarController.h"
 #import "PTMusicPlayerBottomView.h"
 
+
 @interface MainTabBarController ()
 @property (strong, nonatomic) PTMusicPlayerBottomView *playerBottomView;
 @end
@@ -25,8 +26,8 @@
     // 暂时隐藏
     self.tabBar.hidden = YES;
     
-    // 创建底部播放条
-    [self initPlayerBottomView];
+    // 创建底部播放条,换到window下了
+//    [self initPlayerBottomView];
     
 }
 

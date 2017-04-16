@@ -7,21 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>
-#import "RadioPlaySong.h"
+#import "PlayerData.h"
+
+@protocol PTAVPlayerBottomViewDelegate <NSObject>
+@required
+- (void)didClickPlayButton;
+- (void)didClickNextButton;
+- (void)didClickFavouriteButton;
+- (void)didClickDislikeButton;
+
+@end
 
 @interface PTMusicPlayerBottomView : UIView
 
-@property (weak, nonatomic) IBOutlet UIImageView *radioSongCoverImageView;
-@property (weak, nonatomic) IBOutlet UILabel *radioSongTitleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *radioSongPlayTimeLabel;
-@property (weak, nonatomic) IBOutlet UIButton *favourite;
-@property (weak, nonatomic) IBOutlet UIButton *playButton;
-@property (weak, nonatomic) IBOutlet UIButton *dislikeButton;
-@property (weak, nonatomic) IBOutlet UIButton *nextButton;
-@property (weak, nonatomic) IBOutlet UIProgressView *bufferProgressView;
-@property (weak, nonatomic) IBOutlet UIProgressView *playProgressView;
-
-@property (strong, nonatomic) NSMutableArray *radioPlayList;
+@property (strong, nonatomic) PlayerData *playerData;
+@property (strong, nonatomic) id<PTAVPlayerBottomViewDelegate> delegate;
 
 @end

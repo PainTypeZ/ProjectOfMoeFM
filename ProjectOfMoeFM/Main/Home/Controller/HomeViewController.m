@@ -9,7 +9,7 @@
 
 /* collectionViewConstants */
 #define kMainScreenWidth [UIScreen mainScreen].bounds.size.width
-#define kNumberOfItemsPerRow 2
+#define kNumberOfItemsPerRow 3
 #define kSectionSpacing 15.0
 #define kItemSpacing 15.0
 #define kCellViewHeight 30.0 // 记得与storyboard包含3个label的View高度保持一致
@@ -26,6 +26,8 @@
 #import "PTWebUtils.h"
 
 #import "MoefmAPIConst.h"
+
+#import "AppDelegate.h"
 
 @interface HomeViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching, UICollectionViewDelegateFlowLayout>
 
@@ -47,6 +49,8 @@ static NSString * const reuseIdentifier = @"radioCell";
     [super viewDidLoad];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:72.0/255 green:170.0/255 blue:245.0/255 alpha:1.0];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [app.window bringSubviewToFront:app.playerBottomView];
     // 设置背景图的毛玻璃效果
 //    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
 //    UIVisualEffectView *visualEffect = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
@@ -60,11 +64,14 @@ static NSString * const reuseIdentifier = @"radioCell";
     [self checkOAuthState];
     if (self.radio_wikis.count == 0) {
         // 请求电台列表信息
-        [PTWebUtils requestRadioListInfoWithCallback:^(id object) {
+        [PTWebUtils requestRadioListInfoWithCompletionHandler:^(id object) {
             self.radio_wikis = object;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.radioCollectionView reloadData];
             });
+
+        } errorHandler:^(id error) {
+            NSLog(@"%@", error);
         }];
     }
 }

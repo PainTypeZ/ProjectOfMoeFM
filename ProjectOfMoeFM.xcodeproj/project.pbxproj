@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		071C0A511EA37BEE0022C709 /* PTAVPlayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 071C0A501EA37BEE0022C709 /* PTAVPlayerManager.m */; };
+		071C0A541EA394650022C709 /* PlayerData.m in Sources */ = {isa = PBXBuildFile; fileRef = 071C0A531EA394650022C709 /* PlayerData.m */; };
 		07670EA21E9E3DB50027E3EA /* RadioCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 07670EA11E9E3DB50027E3EA /* RadioCollectionViewCell.m */; };
 		07670EAE1E9E49BD0027E3EA /* RadioResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 07670EAD1E9E49BD0027E3EA /* RadioResponse.m */; };
 		07670EB71E9E52930027E3EA /* RadioWiki.m in Sources */ = {isa = PBXBuildFile; fileRef = 07670EB61E9E52930027E3EA /* RadioWiki.m */; };
@@ -51,6 +53,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		071C0A4F1EA37BEE0022C709 /* PTAVPlayerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PTAVPlayerManager.h; path = Main/PTAVPlayerManager.h; sourceTree = "<group>"; };
+		071C0A501EA37BEE0022C709 /* PTAVPlayerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PTAVPlayerManager.m; path = Main/PTAVPlayerManager.m; sourceTree = "<group>"; };
+		071C0A521EA394650022C709 /* PlayerData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerData.h; path = Main/PlayerData.h; sourceTree = "<group>"; };
+		071C0A531EA394650022C709 /* PlayerData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlayerData.m; path = Main/PlayerData.m; sourceTree = "<group>"; };
 		07670EA01E9E3DB50027E3EA /* RadioCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioCollectionViewCell.h; sourceTree = "<group>"; };
 		07670EA11E9E3DB50027E3EA /* RadioCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadioCollectionViewCell.m; sourceTree = "<group>"; };
 		07670EAC1E9E49BD0027E3EA /* RadioResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioResponse.h; sourceTree = "<group>"; };
@@ -77,9 +83,9 @@
 		07670EF31E9F83390027E3EA /* RadioPlayListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadioPlayListCell.m; sourceTree = "<group>"; };
 		07670EFD1E9F8ED40027E3EA /* MoefmAPIConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoefmAPIConst.h; path = Main/MoefmAPIConst.h; sourceTree = "<group>"; };
 		07670EFE1E9F8ED40027E3EA /* MoefmAPIConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MoefmAPIConst.m; path = Main/MoefmAPIConst.m; sourceTree = "<group>"; };
-		07670F0F1EA05A030027E3EA /* PTMusicPlayerBottomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTMusicPlayerBottomView.h; sourceTree = "<group>"; };
-		07670F101EA05A030027E3EA /* PTMusicPlayerBottomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTMusicPlayerBottomView.m; sourceTree = "<group>"; };
-		07670F121EA05A250027E3EA /* PTMusicPlayerBottomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PTMusicPlayerBottomView.xib; sourceTree = "<group>"; };
+		07670F0F1EA05A030027E3EA /* PTMusicPlayerBottomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PTMusicPlayerBottomView.h; path = Main/PTMusicPlayerBottomView.h; sourceTree = "<group>"; };
+		07670F101EA05A030027E3EA /* PTMusicPlayerBottomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PTMusicPlayerBottomView.m; path = Main/PTMusicPlayerBottomView.m; sourceTree = "<group>"; };
+		07670F121EA05A250027E3EA /* PTMusicPlayerBottomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PTMusicPlayerBottomView.xib; path = Main/PTMusicPlayerBottomView.xib; sourceTree = "<group>"; };
 		07670F141EA06D080027E3EA /* fav_no@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fav_no@2x.png"; sourceTree = "<group>"; };
 		07670F151EA06D080027E3EA /* fav_yes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fav_yes@2x.png"; sourceTree = "<group>"; };
 		07670F161EA06D080027E3EA /* next@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "next@2x.png"; sourceTree = "<group>"; };
@@ -87,11 +93,11 @@
 		07670F181EA06D080027E3EA /* play@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play@2x.png"; sourceTree = "<group>"; };
 		07670F1E1EA06DE60027E3EA /* dislike_no@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dislike_no@2x.png"; sourceTree = "<group>"; };
 		07670F1F1EA06DE60027E3EA /* dislike_yes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dislike_yes@2x.png"; sourceTree = "<group>"; };
-		07BAD44E1E99FCF8009B6691 /* PTWebUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTWebUtils.h; sourceTree = "<group>"; };
-		07BAD44F1E99FCF8009B6691 /* PTWebUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTWebUtils.m; sourceTree = "<group>"; };
+		07BAD44E1E99FCF8009B6691 /* PTWebUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PTWebUtils.h; path = Main/PTWebUtils.h; sourceTree = "<group>"; };
+		07BAD44F1E99FCF8009B6691 /* PTWebUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PTWebUtils.m; path = Main/PTWebUtils.m; sourceTree = "<group>"; };
 		07BAD45E1E9BC3B8009B6691 /* OAuth.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = OAuth.storyboard; sourceTree = "<group>"; };
-		07BAD4601E9BC423009B6691 /* OAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthViewController.h; sourceTree = "<group>"; };
-		07BAD4611E9BC423009B6691 /* OAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuthViewController.m; sourceTree = "<group>"; };
+		07BAD4601E9BC423009B6691 /* OAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OAuthViewController.h; path = Main/OAuthViewController.h; sourceTree = "<group>"; };
+		07BAD4611E9BC423009B6691 /* OAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OAuthViewController.m; path = Main/OAuthViewController.m; sourceTree = "<group>"; };
 		07E7B6141E9D0C27004C9CF1 /* NSString+PTCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+PTCollection.h"; sourceTree = "<group>"; };
 		07E7B6151E9D0C27004C9CF1 /* NSString+PTCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+PTCollection.m"; sourceTree = "<group>"; };
 		07E7B6161E9D0C27004C9CF1 /* PTOAuthModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTOAuthModel.h; sourceTree = "<group>"; };
@@ -239,6 +245,17 @@
 				07FEF3671E990F8500F6AC3B /* AppDelegate.m */,
 				07670EFD1E9F8ED40027E3EA /* MoefmAPIConst.h */,
 				07670EFE1E9F8ED40027E3EA /* MoefmAPIConst.m */,
+				071C0A4F1EA37BEE0022C709 /* PTAVPlayerManager.h */,
+				071C0A501EA37BEE0022C709 /* PTAVPlayerManager.m */,
+				071C0A521EA394650022C709 /* PlayerData.h */,
+				071C0A531EA394650022C709 /* PlayerData.m */,
+				07670F0F1EA05A030027E3EA /* PTMusicPlayerBottomView.h */,
+				07670F101EA05A030027E3EA /* PTMusicPlayerBottomView.m */,
+				07670F121EA05A250027E3EA /* PTMusicPlayerBottomView.xib */,
+				07BAD44E1E99FCF8009B6691 /* PTWebUtils.h */,
+				07BAD44F1E99FCF8009B6691 /* PTWebUtils.m */,
+				07BAD4601E9BC423009B6691 /* OAuthViewController.h */,
+				07BAD4611E9BC423009B6691 /* OAuthViewController.m */,
 				07FEF3411E99099600F6AC3B /* Main */,
 				07E7B6131E9D0C27004C9CF1 /* PTOAuthTool */,
 				07670EC71E9E8B780027E3EA /* Resource */,
@@ -265,13 +282,6 @@
 			children = (
 				07FEF3561E99099600F6AC3B /* MainTabBarController.h */,
 				07FEF3571E99099600F6AC3B /* MainTabBarController.m */,
-				07BAD44E1E99FCF8009B6691 /* PTWebUtils.h */,
-				07BAD44F1E99FCF8009B6691 /* PTWebUtils.m */,
-				07BAD4601E9BC423009B6691 /* OAuthViewController.h */,
-				07BAD4611E9BC423009B6691 /* OAuthViewController.m */,
-				07670F0F1EA05A030027E3EA /* PTMusicPlayerBottomView.h */,
-				07670F101EA05A030027E3EA /* PTMusicPlayerBottomView.m */,
-				07670F121EA05A250027E3EA /* PTMusicPlayerBottomView.xib */,
 				07FEF3501E99099600F6AC3B /* Home */,
 				07FEF3421E99099600F6AC3B /* Album */,
 				07FEF34A1E99099600F6AC3B /* Collection */,
@@ -589,12 +599,14 @@
 				07BAD4621E9BC423009B6691 /* OAuthViewController.m in Sources */,
 				07670EF41E9F83390027E3EA /* RadioPlayListCell.m in Sources */,
 				07E7B61C1E9D0C27004C9CF1 /* PTOAuthTool.m in Sources */,
+				071C0A511EA37BEE0022C709 /* PTAVPlayerManager.m in Sources */,
 				07670EA21E9E3DB50027E3EA /* RadioCollectionViewCell.m in Sources */,
 				07670ED21E9E9B330027E3EA /* RadioRelationships.m in Sources */,
 				07FEF3621E99099600F6AC3B /* MainTabBarController.m in Sources */,
 				07670EB71E9E52930027E3EA /* RadioWiki.m in Sources */,
 				07FEF3131E99018A00F6AC3B /* main.m in Sources */,
 				07FEF3611E99099600F6AC3B /* HomeViewController.m in Sources */,
+				071C0A541EA394650022C709 /* PlayerData.m in Sources */,
 				07670EE21E9F3DD40027E3EA /* RadioInformation.m in Sources */,
 				07670EDF1E9F380E0027E3EA /* RadioPlaySong.m in Sources */,
 				07FEF3681E990F8500F6AC3B /* AppDelegate.m in Sources */,

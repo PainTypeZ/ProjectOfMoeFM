@@ -15,9 +15,18 @@
 
 @implementation PTWebUtils
 
+/* 要学习异常处理,现在的处理方式太差劲了 */
+
 #pragma mark - public methods
 // 请求电台列表信息
-+ (void)requestRadioListInfoWithCallback:(callback)callback {
++ (void)requestRadioListInfoWithCompletionHandler:(callback)callback errorHandler:(error)errorHandler {
+//    static NSUInteger tryTimes = 0;
+//    tryTimes++;
+//    if (tryTimes == 5) {
+//        NSString *errorString = @"request over times";
+//        errorHandler(errorString);
+//        return;
+//    }
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:MoeWikiTypeValue forKey:MoeWikiTypeKey];
     [params setObject:MoePageValue forKey:MoePageKey];
@@ -28,20 +37,37 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        
-        NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        NSError *jsonModelError;
-        
-        RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
-        NSMutableArray *callbackMuatableArray = [radioResponse.wikis mutableCopy];
-        callback(callbackMuatableArray);
+        if (error) {
+            NSString *errorString = [NSString stringWithFormat:@"%@", error];
+            NSLog(@"%@", errorString);
+            errorHandler(errorString);
+        }else{
+            if (data) {
+                NSError *jsonModelError;
+                
+                NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                
+                RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
+                NSMutableArray *callbackMuatableArray = [radioResponse.wikis mutableCopy];
+                callback(callbackMuatableArray);
+            }else{
+                NSString *errorString = @"request data is nil";
+//                NSLog(@"%@", errorString);
+                errorHandler(errorString);
+            }
+        }
     }];
     [task resume];
-    
 }
 
 // 请求某个电台专辑的歌曲列表信息，除了获取歌曲总数外，大概是没其他用的接口。。。
-+ (void)requestRadioSongsInfoWithWiki_id:(NSString *)wiki_id callback:(callback)callback {
++ (void)requestRadioSongsInfoWithWiki_id:(NSString *)wiki_id CompletionHandler:(callback)callback errorHandler:(error)errorHandler {
+//    static NSUInteger tryTimes = 0;
+//    if (tryTimes == 10) {
+//        NSString *errorString = @"request over times";
+//        errorHandler(errorString);
+//        return;
+//    }
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:MoeObjTypeValue forKey:MoeObjTypeKey];
     [params setObject:wiki_id forKey:MoeWikiIdKey];
@@ -51,39 +77,86 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        NSError *jsonModelError;
-        RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
-        RadioInformation *radioInformation = radioResponse.information;
-        callback(radioInformation);
+        if (error) {
+//            tryTimes++;
+            NSString *errorString = [NSString stringWithFormat:@"%@", error];
+            NSLog(@"%@", errorString);
+            errorHandler(errorString);
+        }else{
+            if (data) {
+                NSError *jsonModelError;
+                
+                NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                
+                RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
+                RadioInformation *radioInformation = radioResponse.information;
+                callback(radioInformation);
+            }else{
+//                tryTimes++;
+                NSString *errorString = @"request data is nil";
+//                NSLog(@"%@", errorString);
+                errorHandler(errorString);
+            }
+        }
     }];
     
     [task resume];
 }
 
 // 请求电台播放列表，需要radio = wiki_id参数, 若填写参数为nil，则返回随机列表
-+ (void)requestRadioPlayListWithRadio_id:(NSString *)radio_id callback:(callback)callback {
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:MoeAPIValue forKey:MoeAPIKey];
-    if (radio_id) {
-        [params setObject:radio_id forKey:MoeRadioPlayListKey];
-    }
-
-    NSURL *url = [PTWebUtils getCompletedAPIKeyRequestURLWithURLString:MoeRadioPlayURL andParams:params];
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    NSURLSession *session = [NSURLSession sharedSession];
-    NSURLSessionTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        NSError *jsonModelError;
-        RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
-        NSMutableArray *callbackMutableArray = [radioResponse.playlist mutableCopy];
-        callback(callbackMutableArray);
-    }];
-    [task resume];
-}
+//+ (void)requestRadioPlayListWithRadio_id:(NSString *)radio_id CompletionHandler:(callback)callback errorHandler:(error)errorHandler {
+////    static NSUInteger tryTimes = 0;
+////    if (tryTimes == 10) {
+////        NSString *errorString = @"request over times";
+////        errorHandler(errorString);
+////        return;
+////    }
+//    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+//    [params setObject:MoeAPIValue forKey:MoeAPIKey];
+//    if (radio_id) {
+//        [params setObject:radio_id forKey:MoeRadioPlayListKey];
+//    }
+//    [params setObject:MoePageValue forKey:MoePageKey];
+//    [params setObject:MoePerPageValue forKey:MoePerPageKey];
+//
+//    NSURL *url = [PTWebUtils getCompletedAPIKeyRequestURLWithURLString:MoeRadioPlayURL andParams:params];
+//    
+//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+//    NSURLSession *session = [NSURLSession sharedSession];
+//    NSURLSessionTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+//        if (error) {
+////            tryTimes++;
+//            NSString *errorString = [NSString stringWithFormat:@"%@", error];
+//            NSLog(@"%@", errorString);
+//            errorHandler(errorString);
+//        }else{
+//            if (data) {
+//                NSError *jsonModelError;
+//                
+//                NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+//
+//                RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
+//                NSMutableArray *callbackMutableArray = [radioResponse.playlist mutableCopy];
+//                callback(callbackMutableArray);
+//
+//            }else{
+////                tryTimes++;
+//                NSString *errorString = @"request data is nil";
+////                NSLog(@"%@", errorString);
+//                errorHandler(errorString);
+//            }
+//        }
+//    }];
+//    [task resume];
+//}
 // 请求电台播放列表，需要radio = wiki_id参数，第几页page，每页多少歌曲数量perpage，注意最后一页返回的结果可能不够perpage数量; 本工程使用perpage=@"30"测试;
-+ (void)requestRadioPlayListWithRadio_id:(NSString *)radio_id andPage:(NSString *)page andPerpage:(NSString *)perpage callback:(callback)callback {
++ (void)requestRadioPlayListWithRadio_id:(NSString *)radio_id andPage:(NSString *)page andPerpage:(NSString *)perpage CompletionHandler:(callback)callback errorHandler:(error)errorHandler {
+//    static NSUInteger tryTimes = 0;
+//    if (tryTimes == 10) {
+//        NSString *errorString = @"request over times";
+//        errorHandler(errorString);
+//        return;
+//    }
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:MoeAPIValue forKey:MoeAPIKey];
     if (radio_id) {
@@ -97,11 +170,28 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        NSError *jsonModelError;
-        RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
-        NSMutableArray *callbackMutableArray = [radioResponse.playlist mutableCopy];
-        callback(callbackMutableArray);
+        if (error) {
+//            tryTimes++;
+            NSString *errorString = [NSString stringWithFormat:@"%@", error];
+            NSLog(@"%@", errorString);
+            errorHandler(errorString);
+        }else{
+            if (data) {
+                NSError *jsonModelError;
+                
+                NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                
+                RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
+                NSMutableArray *callbackMutableArray = [radioResponse.playlist mutableCopy];
+                callback(callbackMutableArray);
+                
+            }else{
+//                tryTimes++;
+                NSString *errorString = @"request data is nil";
+//                NSLog(@"%@", errorString);
+                errorHandler(errorString);
+            }
+        }
     }];
     [task resume];
 }

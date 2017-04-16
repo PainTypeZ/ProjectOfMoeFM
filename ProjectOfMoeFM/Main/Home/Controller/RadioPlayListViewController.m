@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *radioPlayListTableView;
 
 @property (strong, nonatomic) NSMutableArray *radio_playlist;// 保存电台播放列表信息
+@property (weak, nonatomic) IBOutlet UILabel *titeLabel;
 
 
 @end
@@ -43,12 +44,16 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
     if (self.radioWiki.wiki_id) {
+        self.titeLabel.text = self.radioWiki.wiki_title;
         // 请求播放列表信息
-        [PTWebUtils requestRadioPlayListWithRadio_id:self.radioWiki.wiki_id callback:^(id object) {
+        [PTWebUtils requestRadioPlayListWithRadio_id:self.radioWiki.wiki_id andPage:@"1" andPerpage:@"30" CompletionHandler:^(id object) {
             self.radio_playlist = object;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.radioPlayListTableView reloadData];
             });
+
+        } errorHandler:^(id error) {
+            NSLog(@"%@", error);
         }];
     }
 }

@@ -22,7 +22,7 @@ extern NSString * const MoeRadioPlayListKey;
 /* MoeFM API value */
 extern NSString * const MoeWikiTypeValue;
 extern NSString * const MoePageValue;
-extern NSString * const MoePerPageValue;// 只能设置20
+extern NSString * const MoePerPageValue;// 只能设置20+
 extern NSString * const MoeObjTypeValue;
 extern NSString * const MoeAPIValue;// 本工程全部使用JSON
 
