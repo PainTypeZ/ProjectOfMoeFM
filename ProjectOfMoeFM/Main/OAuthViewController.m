@@ -8,6 +8,8 @@
 
 #import "OAuthViewController.h"
 #import "PTOAuthTool.h"
+#import <SVProgressHUD.h>
+#import "PTAVPlayerManager.h"
 NSString * const kRequestTokenURL = @"http://api.moefou.org/oauth/request_token";
 NSString * const kRequestAuthorizeURL = @"http://api.moefou.org/oauth/authorize";
 NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_token";
@@ -54,6 +56,9 @@ NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_t
         [PTOAuthTool requestAccessOAuthTokenAndSecretWithURL:kRequestAccessTokenURL andVerifier:verifier completionHandler:^{
             //得到的accessToken和Secret已保存存到偏好设置
             // 此处可以添加提示信息等效果
+            [SVProgressHUD showSuccessWithStatus:@"登录OAuth授权成功"];
+            // 更新当前播放列表的歌曲信息
+            [[PTAVPlayerManager sharedAVPlayerManager] updateFavInfo];
             // 跳转回mainStoryBoard初始界面
             UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
             UIApplication *application = [UIApplication sharedApplication];

@@ -106,30 +106,30 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="494"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="4IX-dm-hnq">
-                                    <size key="itemSize" width="180" height="210"/>
-                                    <size key="headerReferenceSize" width="375" height="30"/>
+                                    <size key="itemSize" width="171" height="200"/>
+                                    <size key="headerReferenceSize" width="375" height="35"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="radioCell" id="tLU-DT-bZg" customClass="RadioCollectionViewCell">
-                                        <rect key="frame" x="0.0" y="30" width="180" height="210"/>
+                                        <rect key="frame" x="0.0" y="35" width="171" height="200"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="180" height="210"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="171" height="200"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cover_default_image.png" translatesAutoresizingMaskIntoConstraints="NO" id="LUr-Yo-Uul">
-                                                    <rect key="frame" x="0.0" y="0.0" width="180" height="180"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="171" height="171"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="LUr-Yo-Uul" secondAttribute="height" multiplier="1:1" id="mEL-Bd-neM"/>
                                                     </constraints>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bpV-gQ-ud8">
-                                                    <rect key="frame" x="0.0" y="180" width="180" height="30"/>
+                                                    <rect key="frame" x="0.0" y="171" width="171" height="29"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="wiki_date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BUw-IE-TbA">
-                                                            <rect key="frame" x="129.5" y="15" width="50.5" height="15"/>
+                                                            <rect key="frame" x="120.5" y="15" width="50.5" height="15"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="15" id="iEt-HF-uLJ"/>
@@ -149,7 +149,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="wiki_title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I0Q-wX-w50">
-                                                            <rect key="frame" x="0.0" y="0.0" width="180" height="15"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="171" height="15"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="15" id="Y9t-Zd-tGU"/>
@@ -189,29 +189,30 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
-                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="RadioListHeaderView" id="Trc-fx-A2C">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="RadioListHeaderView" id="Trc-fx-A2C" customClass="RadioCollectionReusableView">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="35"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="exc-oP-4E4">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="35"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NVJ-46-qR0">
-                                                    <rect key="frame" x="0.0" y="0.0" width="187.5" height="30"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <rect key="frame" x="15" y="5" width="165" height="30"/>
+                                                    <color key="backgroundColor" red="0.2819526792" green="0.6659956574" blue="0.96032720800000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <fontDescription key="fontDescription" type="system" weight="black" pointSize="15"/>
                                                     <state key="normal" title="随机播放收藏曲目">
-                                                        <color key="titleColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
                                                         <action selector="playFavouriteAction:" destination="oBN-0W-LO8" eventType="touchUpInside" id="pdI-ww-OwE"/>
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uEh-D6-3Vz">
-                                                    <rect key="frame" x="187.5" y="0.0" width="187.5" height="30"/>
+                                                    <rect key="frame" x="195" y="5" width="165" height="30"/>
+                                                    <color key="backgroundColor" red="0.2819526792" green="0.6659956574" blue="0.96032720800000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <fontDescription key="fontDescription" type="system" weight="black" pointSize="15"/>
-                                                    <state key="normal" title="查看收藏曲目">
-                                                        <color key="titleColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <state key="normal" title="查看收藏曲目列表">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
                                                         <action selector="browseFavouriteAction:" destination="oBN-0W-LO8" eventType="touchUpInside" id="3qZ-wS-q8t"/>
@@ -220,13 +221,13 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstItem="uEh-D6-3Vz" firstAttribute="top" secondItem="exc-oP-4E4" secondAttribute="top" id="589-jn-Opz"/>
+                                                <constraint firstItem="uEh-D6-3Vz" firstAttribute="top" secondItem="exc-oP-4E4" secondAttribute="top" constant="5" id="589-jn-Opz"/>
                                                 <constraint firstAttribute="bottom" secondItem="NVJ-46-qR0" secondAttribute="bottom" id="6cL-Dh-BE3"/>
-                                                <constraint firstItem="uEh-D6-3Vz" firstAttribute="leading" secondItem="NVJ-46-qR0" secondAttribute="trailing" id="B30-4a-cZx"/>
+                                                <constraint firstItem="uEh-D6-3Vz" firstAttribute="leading" secondItem="NVJ-46-qR0" secondAttribute="trailing" constant="15" id="B30-4a-cZx"/>
                                                 <constraint firstItem="NVJ-46-qR0" firstAttribute="width" secondItem="uEh-D6-3Vz" secondAttribute="width" id="GVQ-cG-Rsv"/>
-                                                <constraint firstItem="NVJ-46-qR0" firstAttribute="leading" secondItem="exc-oP-4E4" secondAttribute="leading" id="J4I-mM-3H7"/>
-                                                <constraint firstAttribute="trailing" secondItem="uEh-D6-3Vz" secondAttribute="trailing" id="QA7-Ed-8Uw"/>
-                                                <constraint firstItem="NVJ-46-qR0" firstAttribute="top" secondItem="exc-oP-4E4" secondAttribute="top" id="hEx-nJ-a6P"/>
+                                                <constraint firstItem="NVJ-46-qR0" firstAttribute="leading" secondItem="exc-oP-4E4" secondAttribute="leading" constant="15" id="J4I-mM-3H7"/>
+                                                <constraint firstAttribute="trailing" secondItem="uEh-D6-3Vz" secondAttribute="trailing" constant="15" id="QA7-Ed-8Uw"/>
+                                                <constraint firstItem="NVJ-46-qR0" firstAttribute="top" secondItem="exc-oP-4E4" secondAttribute="top" constant="5" id="hEx-nJ-a6P"/>
                                                 <constraint firstAttribute="bottom" secondItem="uEh-D6-3Vz" secondAttribute="bottom" id="umY-WC-sZC"/>
                                             </constraints>
                                         </view>
@@ -237,6 +238,10 @@
                                         <constraint firstItem="exc-oP-4E4" firstAttribute="top" secondItem="Trc-fx-A2C" secondAttribute="top" id="TR3-JD-zlu"/>
                                         <constraint firstAttribute="bottom" secondItem="exc-oP-4E4" secondAttribute="bottom" id="vUR-VN-06R"/>
                                     </constraints>
+                                    <connections>
+                                        <outlet property="browseButton" destination="uEh-D6-3Vz" id="YU6-O4-Dv7"/>
+                                        <outlet property="playButton" destination="NVJ-46-qR0" id="Tr5-Yo-5cm"/>
+                                    </connections>
                                 </collectionReusableView>
                                 <connections>
                                     <outlet property="dataSource" destination="oBN-0W-LO8" id="ZMa-8P-djM"/>
@@ -258,6 +263,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="电台列表" id="YLK-XN-Xqu">
                         <barButtonItem key="rightBarButtonItem" title="登录" id="gvb-H2-Cc2">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="oauthLogin:" destination="oBN-0W-LO8" id="Dwi-5Y-mDK"/>
                             </connections>
@@ -303,7 +309,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="电台名称" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qZJ-rF-p63">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
                                             <fontDescription key="fontDescription" type="system" weight="black" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -326,19 +332,19 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0nj-Rf-Lob">
-                                                    <rect key="frame" x="112.5" y="2" width="260.5" height="17"/>
+                                                    <rect key="frame" x="112.5" y="2" width="205.5" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" weight="black" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hOU-aB-OUV">
-                                                    <rect key="frame" x="112.5" y="21" width="260.5" height="14.5"/>
+                                                    <rect key="frame" x="112.5" y="21" width="205.5" height="14.5"/>
                                                     <fontDescription key="fontDescription" type="system" weight="black" pointSize="12"/>
                                                     <color key="textColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8y5-91-EXI">
-                                                    <rect key="frame" x="331" y="94" width="39" height="17"/>
+                                                    <rect key="frame" x="276" y="94" width="39" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" weight="black" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -406,6 +412,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="电台播放列表" id="BBg-sh-4Yl">
                         <barButtonItem key="rightBarButtonItem" title="全部播放" id="dBG-GQ-tSB">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="playAllSongsAction:" destination="1Lh-8c-1Zw" id="UYX-uQ-37q"/>
                             </connections>

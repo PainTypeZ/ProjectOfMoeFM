@@ -18,9 +18,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *radioSongTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *radioSongPlayTimeLabel;
 
-@property (weak, nonatomic) IBOutlet UIButton *playButton;
 
-@property (weak, nonatomic) IBOutlet UIButton *nextButton;
 
 @property (weak, nonatomic) IBOutlet UIProgressView *bufferProgressView;
 @property (weak, nonatomic) IBOutlet UISlider *playSliderView;
@@ -86,7 +84,7 @@
         }
         
         if ([_playingSong.fav_sub.fav_type isEqualToString:@"1"]) {
-            self.favouriteButton.selected = _playingSong.fav_sub.fav_type;
+            self.favouriteButton.selected = _playingSong.fav_sub.fav_type.boolValue;
         }else{
             self.favouriteButton.selected = NO;
         }

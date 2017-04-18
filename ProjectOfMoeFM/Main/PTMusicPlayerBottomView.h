@@ -18,9 +18,11 @@
 @end
 
 @interface PTMusicPlayerBottomView : UIView
-// 检查登录状态需要访问这两个按钮的可选状态，所以公开属性
+
 @property (weak, nonatomic) IBOutlet UIButton *favouriteButton;
 @property (weak, nonatomic) IBOutlet UIButton *dislikeButton;
+@property (weak, nonatomic) IBOutlet UIButton *playButton;
+@property (weak, nonatomic) IBOutlet UIButton *nextButton;
 @property (strong, nonatomic) id<PTAVPlayerBottomViewDelegate> delegate;
 
 @end

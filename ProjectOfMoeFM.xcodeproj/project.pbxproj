@@ -13,6 +13,13 @@
 		071C0A6E1EA593290022C709 /* Favourite.m in Sources */ = {isa = PBXBuildFile; fileRef = 071C0A6D1EA593290022C709 /* Favourite.m */; };
 		071C0A711EA593490022C709 /* FavObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 071C0A701EA593490022C709 /* FavObject.m */; };
 		071C0A771EA595B60022C709 /* SubUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = 071C0A761EA595B60022C709 /* SubUpload.m */; };
+		071C0A9E1EA5AAAC0022C709 /* icon_120X120.png in Resources */ = {isa = PBXBuildFile; fileRef = 071C0A971EA5AAAC0022C709 /* icon_120X120.png */; };
+		071C0A9F1EA5AAAC0022C709 /* icon_180X180.png in Resources */ = {isa = PBXBuildFile; fileRef = 071C0A981EA5AAAC0022C709 /* icon_180X180.png */; };
+		071C0AA01EA5AAAC0022C709 /* icon_40X40.png in Resources */ = {isa = PBXBuildFile; fileRef = 071C0A991EA5AAAC0022C709 /* icon_40X40.png */; };
+		071C0AA11EA5AAAC0022C709 /* icon_58X58.png in Resources */ = {isa = PBXBuildFile; fileRef = 071C0A9A1EA5AAAC0022C709 /* icon_58X58.png */; };
+		071C0AA21EA5AAAC0022C709 /* icon_60X60.png in Resources */ = {isa = PBXBuildFile; fileRef = 071C0A9B1EA5AAAC0022C709 /* icon_60X60.png */; };
+		071C0AA31EA5AAAC0022C709 /* icon_80X80.png in Resources */ = {isa = PBXBuildFile; fileRef = 071C0A9C1EA5AAAC0022C709 /* icon_80X80.png */; };
+		071C0AA41EA5AAAC0022C709 /* icon_87X87.png in Resources */ = {isa = PBXBuildFile; fileRef = 071C0A9D1EA5AAAC0022C709 /* icon_87X87.png */; };
 		07670EA21E9E3DB50027E3EA /* RadioCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 07670EA11E9E3DB50027E3EA /* RadioCollectionViewCell.m */; };
 		07670EAE1E9E49BD0027E3EA /* RadioResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 07670EAD1E9E49BD0027E3EA /* RadioResponse.m */; };
 		07670EB71E9E52930027E3EA /* RadioWiki.m in Sources */ = {isa = PBXBuildFile; fileRef = 07670EB61E9E52930027E3EA /* RadioWiki.m */; };
@@ -39,6 +46,7 @@
 		07BAD4501E99FCF8009B6691 /* PTWebUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BAD44F1E99FCF8009B6691 /* PTWebUtils.m */; };
 		07BAD45F1E9BC3B8009B6691 /* OAuth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07BAD45E1E9BC3B8009B6691 /* OAuth.storyboard */; };
 		07BAD4621E9BC423009B6691 /* OAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BAD4611E9BC423009B6691 /* OAuthViewController.m */; };
+		07E27B351EA5B88600CF7FDA /* RadioCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E27B341EA5B88600CF7FDA /* RadioCollectionReusableView.m */; };
 		07E7B61A1E9D0C27004C9CF1 /* NSString+PTCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E7B6151E9D0C27004C9CF1 /* NSString+PTCollection.m */; };
 		07E7B61B1E9D0C27004C9CF1 /* PTOAuthModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E7B6171E9D0C27004C9CF1 /* PTOAuthModel.m */; };
 		07E7B61C1E9D0C27004C9CF1 /* PTOAuthTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E7B6191E9D0C27004C9CF1 /* PTOAuthTool.m */; };
@@ -69,6 +77,13 @@
 		071C0A701EA593490022C709 /* FavObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavObject.m; sourceTree = "<group>"; };
 		071C0A751EA595B60022C709 /* SubUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubUpload.h; sourceTree = "<group>"; };
 		071C0A761EA595B60022C709 /* SubUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubUpload.m; sourceTree = "<group>"; };
+		071C0A971EA5AAAC0022C709 /* icon_120X120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_120X120.png; sourceTree = "<group>"; };
+		071C0A981EA5AAAC0022C709 /* icon_180X180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_180X180.png; sourceTree = "<group>"; };
+		071C0A991EA5AAAC0022C709 /* icon_40X40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_40X40.png; sourceTree = "<group>"; };
+		071C0A9A1EA5AAAC0022C709 /* icon_58X58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_58X58.png; sourceTree = "<group>"; };
+		071C0A9B1EA5AAAC0022C709 /* icon_60X60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_60X60.png; sourceTree = "<group>"; };
+		071C0A9C1EA5AAAC0022C709 /* icon_80X80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_80X80.png; sourceTree = "<group>"; };
+		071C0A9D1EA5AAAC0022C709 /* icon_87X87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_87X87.png; sourceTree = "<group>"; };
 		07670EA01E9E3DB50027E3EA /* RadioCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioCollectionViewCell.h; sourceTree = "<group>"; };
 		07670EA11E9E3DB50027E3EA /* RadioCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadioCollectionViewCell.m; sourceTree = "<group>"; };
 		07670EAC1E9E49BD0027E3EA /* RadioResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioResponse.h; sourceTree = "<group>"; };
@@ -110,6 +125,8 @@
 		07BAD45E1E9BC3B8009B6691 /* OAuth.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = OAuth.storyboard; sourceTree = "<group>"; };
 		07BAD4601E9BC423009B6691 /* OAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OAuthViewController.h; path = Main/OAuthViewController.h; sourceTree = "<group>"; };
 		07BAD4611E9BC423009B6691 /* OAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OAuthViewController.m; path = Main/OAuthViewController.m; sourceTree = "<group>"; };
+		07E27B331EA5B88600CF7FDA /* RadioCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioCollectionReusableView.h; sourceTree = "<group>"; };
+		07E27B341EA5B88600CF7FDA /* RadioCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadioCollectionReusableView.m; sourceTree = "<group>"; };
 		07E7B6141E9D0C27004C9CF1 /* NSString+PTCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+PTCollection.h"; sourceTree = "<group>"; };
 		07E7B6151E9D0C27004C9CF1 /* NSString+PTCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+PTCollection.m"; sourceTree = "<group>"; };
 		07E7B6161E9D0C27004C9CF1 /* PTOAuthModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTOAuthModel.h; sourceTree = "<group>"; };
@@ -198,6 +215,20 @@
 			name = Favs;
 			sourceTree = "<group>";
 		};
+		071C0A961EA5AAAC0022C709 /* moefmicon */ = {
+			isa = PBXGroup;
+			children = (
+				071C0A971EA5AAAC0022C709 /* icon_120X120.png */,
+				071C0A981EA5AAAC0022C709 /* icon_180X180.png */,
+				071C0A991EA5AAAC0022C709 /* icon_40X40.png */,
+				071C0A9A1EA5AAAC0022C709 /* icon_58X58.png */,
+				071C0A9B1EA5AAAC0022C709 /* icon_60X60.png */,
+				071C0A9C1EA5AAAC0022C709 /* icon_80X80.png */,
+				071C0A9D1EA5AAAC0022C709 /* icon_87X87.png */,
+			);
+			path = moefmicon;
+			sourceTree = "<group>";
+		};
 		07670EC71E9E8B780027E3EA /* Resource */ = {
 			isa = PBXGroup;
 			children = (
@@ -209,6 +240,7 @@
 		07670EC81E9E8B780027E3EA /* Pictures */ = {
 			isa = PBXGroup;
 			children = (
+				071C0A961EA5AAAC0022C709 /* moefmicon */,
 				07670EC91E9E8B780027E3EA /* cover_default_image.png */,
 				07670ECB1E9E916C0027E3EA /* home_background_image.png */,
 				07670F141EA06D080027E3EA /* fav_no@2x.png */,
@@ -447,6 +479,8 @@
 			children = (
 				07670EA01E9E3DB50027E3EA /* RadioCollectionViewCell.h */,
 				07670EA11E9E3DB50027E3EA /* RadioCollectionViewCell.m */,
+				07E27B331EA5B88600CF7FDA /* RadioCollectionReusableView.h */,
+				07E27B341EA5B88600CF7FDA /* RadioCollectionReusableView.m */,
 				07670EF21E9F83390027E3EA /* RadioPlayListCell.h */,
 				07670EF31E9F83390027E3EA /* RadioPlayListCell.m */,
 			);
@@ -539,6 +573,11 @@
 						CreatedOnToolsVersion = 8.3.1;
 						DevelopmentTeam = 4P3Y6F2LC5;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -565,7 +604,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				071C0AA31EA5AAAC0022C709 /* icon_80X80.png in Resources */,
 				07670ECC1E9E916C0027E3EA /* home_background_image.png in Resources */,
+				071C0AA21EA5AAAC0022C709 /* icon_60X60.png in Resources */,
+				071C0AA01EA5AAAC0022C709 /* icon_40X40.png in Resources */,
 				07FEF3211E99018A00F6AC3B /* LaunchScreen.storyboard in Resources */,
 				07670F1D1EA06D080027E3EA /* play@2x.png in Resources */,
 				07670F1A1EA06D080027E3EA /* fav_yes@2x.png in Resources */,
@@ -573,13 +615,17 @@
 				07BAD45F1E9BC3B8009B6691 /* OAuth.storyboard in Resources */,
 				07670F211EA06DE60027E3EA /* dislike_yes@2x.png in Resources */,
 				07FEF3651E9909FB00F6AC3B /* PodFile in Resources */,
+				071C0A9E1EA5AAAC0022C709 /* icon_120X120.png in Resources */,
+				071C0AA11EA5AAAC0022C709 /* icon_58X58.png in Resources */,
 				07FEF31C1E99018A00F6AC3B /* Main.storyboard in Resources */,
 				07670F1C1EA06D080027E3EA /* pause@2x.png in Resources */,
 				07670F201EA06DE60027E3EA /* dislike_no@2x.png in Resources */,
 				07670F131EA05A250027E3EA /* PTMusicPlayerBottomView.xib in Resources */,
 				07670ECA1E9E8B780027E3EA /* cover_default_image.png in Resources */,
 				07670F191EA06D080027E3EA /* fav_no@2x.png in Resources */,
+				071C0A9F1EA5AAAC0022C709 /* icon_180X180.png in Resources */,
 				07670F1B1EA06D080027E3EA /* next@2x.png in Resources */,
+				071C0AA41EA5AAAC0022C709 /* icon_87X87.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -639,6 +685,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				07670F111EA05A030027E3EA /* PTMusicPlayerBottomView.m in Sources */,
+				07E27B351EA5B88600CF7FDA /* RadioCollectionReusableView.m in Sources */,
 				07670EF11E9F7D3D0027E3EA /* RadioPlayListViewController.m in Sources */,
 				07FEF3631E99099600F6AC3B /* UserViewController.m in Sources */,
 				07670EC31E9E637F0027E3EA /* RadioParameters.m in Sources */,
@@ -716,7 +763,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: pengpingjun1989@qq.com (6S2P2LFKYG)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: pengpingjun1989@qq.com (6S2P2LFKYG)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -738,6 +786,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE_SPECIFIER = MoeFM;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -764,7 +813,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: pengpingjun1989@qq.com (6S2P2LFKYG)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: pengpingjun1989@qq.com (6S2P2LFKYG)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -779,6 +829,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE_SPECIFIER = MoeFM;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -789,12 +840,15 @@
 			baseConfigurationReference = 14B1279463BEC9D4A4938733 /* Pods-ProjectOfMoeFM.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: pengpingjun1989@qq.com (6S2P2LFKYG)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 4P3Y6F2LC5;
 				INFOPLIST_FILE = ProjectOfMoeFM/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pengpingjun.ProjectOfMoeFM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -803,12 +857,15 @@
 			baseConfigurationReference = 14F721D7A992BC45F496DDD3 /* Pods-ProjectOfMoeFM.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: pengpingjun1989@qq.com (6S2P2LFKYG)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 4P3Y6F2LC5;
 				INFOPLIST_FILE = ProjectOfMoeFM/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pengpingjun.ProjectOfMoeFM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};

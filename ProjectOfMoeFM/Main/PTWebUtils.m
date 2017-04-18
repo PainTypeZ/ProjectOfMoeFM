@@ -20,20 +20,13 @@
 #pragma mark - public methods
 // 请求电台列表信息
 + (void)requestRadioListInfoWithPagea:(NSUInteger)currentPage andPerPage:(NSUInteger)perpageNumber completionHandler:(callback)callback errorHandler:(error)errorHandler {
-//    static NSUInteger tryTimes = 0;
-//    tryTimes++;
-//    if (tryTimes == 5) {
-//        NSString *errorString = @"request over times";
-//        errorHandler(errorString);
-//        return;
-//    }
-    NSString *page = [NSString stringWithFormat:@"%lu", currentPage];
+    NSString *page = [NSString stringWithFormat:@"%lu", (unsigned long)currentPage];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:MoeWikiTypeValue forKey:MoeWikiTypeKey];
     [params setObject:page forKey:MoePageKey];
     if (perpageNumber != 0) {
-        NSString *perpage = [NSString stringWithFormat:@"%lu", perpageNumber];
+        NSString *perpage = [NSString stringWithFormat:@"%lu", (unsigned long)perpageNumber];
         [params setObject:perpage forKey:MoePerPageKey];
     }
     
@@ -69,12 +62,7 @@
 
 // 请求某个电台专辑的歌曲列表信息，除了获取歌曲总数外，大概是没其他用的接口。。。
 + (void)requestRadioSongsInfoWithWiki_id:(NSString *)wiki_id completionHandler:(callback)callback errorHandler:(error)errorHandler {
-//    static NSUInteger tryTimes = 0;
-//    if (tryTimes == 10) {
-//        NSString *errorString = @"request over times";
-//        errorHandler(errorString);
-//        return;
-//    }
+
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:MoeObjTypeValue forKey:MoeObjTypeKey];
     if ([wiki_id  isEqualToString: @"fav"]) {
@@ -89,7 +77,7 @@
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error) {
-//            tryTimes++;
+
             NSString *errorString = [NSString stringWithFormat:@"%@", error];
             NSLog(@"%@", errorString);
             errorHandler(errorString);
@@ -104,7 +92,7 @@
                 RadioInformation *radioInformation = radioResponse.information;
                 callback(radioInformation);
             }else{
-//                tryTimes++;
+
                 NSString *errorString = @"request data is nil";
 //                NSLog(@"%@", errorString);
                 errorHandler(errorString);
@@ -117,13 +105,8 @@
 
 // 请求电台播放列表，需要radio = wiki_id参数，第几页page，每页多少歌曲数量perpage，注意最后一页返回的结果可能不够perpage数量; 本工程使用perpage=@"9"测试;登录后需要将radio参数改为fav = "song"
 + (void)requestRadioPlayListWithRadio_id:(NSString *)radio_id andPage:(NSUInteger)currentPage andPerpage:(NSUInteger)perpageNumber completionHandler:(callback)callback errorHandler:(error)errorHandler {
-//    static NSUInteger tryTimes = 0;
-//    if (tryTimes == 10) {
-//        NSString *errorString = @"request over times";
-//        errorHandler(errorString);
-//        return;
-//    }
-    NSString *page = [NSString stringWithFormat:@"%lu", currentPage];
+    
+    NSString *page = [NSString stringWithFormat:@"%lu", (unsigned long)currentPage];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:MoeAPIValue forKey:MoeAPIKey];
@@ -135,7 +118,7 @@
     }
     [params setObject:page forKey:MoePageKey];
     if (perpageNumber != 0) {
-        NSString *perpage = [NSString stringWithFormat:@"%lu", perpageNumber];
+        NSString *perpage = [NSString stringWithFormat:@"%lu", (unsigned long)perpageNumber];
         [params setObject:perpage forKey:MoePerPageKey];
     }
     
@@ -145,7 +128,7 @@
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error) {
-//            tryTimes++;
+
             NSString *errorString = [NSString stringWithFormat:@"%@", error];
             NSLog(@"%@", errorString);
             errorHandler(errorString);
@@ -162,7 +145,7 @@
                 callback(callbackMutableArray);
                 
             }else{
-//                tryTimes++;
+
                 NSString *errorString = @"request data is nil";
 //                NSLog(@"%@", errorString);
                 errorHandler(errorString);
@@ -190,7 +173,7 @@
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error) {
-            //            tryTimes++;
+
             NSString *errorString = [NSString stringWithFormat:@"%@", error];
             NSLog(@"%@", errorString);
             errorHandler(errorString);

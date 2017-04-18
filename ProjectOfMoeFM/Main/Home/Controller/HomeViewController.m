@@ -13,7 +13,7 @@
 #define kSectionSpacing 10.0
 #define kItemSpacing 15.0
 #define kCellViewHeight 30.0 // 记得与storyboard包含3个label的View高度保持一致
-#define kHeaderViewHeight 30.0 // 记得与storyboard的collectionheaderView保持一致
+#define kHeaderViewHeight 35.0 // 记得与storyboard的collectionheaderView保持一致
 
 #import "HomeViewController.h"
 #import "RadioPlayListViewController.h"
@@ -156,7 +156,7 @@ static NSString * const reuseIdentifier = @"radioCell";
     [userDefaults setBool:NO forKey:@"isLogin"];
     [userDefaults synchronize];
     [self.loginButton setTitle:@"登录"];
-    
+    [[PTAVPlayerManager sharedAVPlayerManager] updateFavInfo];
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     app.playerBottomView.favouriteButton.enabled = NO;
 //    app.playerBottomView.dislikeButton.enabled = NO;// 未实现

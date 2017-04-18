@@ -19,12 +19,13 @@
 
 @interface PTAVPlayerManager()<PTAVPlayerBottomViewDelegate>
 
-@property (strong, nonatomic) AVPlayer *player;
+
 @property (copy, nonatomic) NSString *currentRadioID;
 @property (assign, nonatomic) NSUInteger playIndex;
 @property (assign, nonatomic) NSUInteger currentPage;
 @property (assign, nonatomic) NSUInteger perpage;
 @property (strong, nonatomic) NSMutableArray <RadioPlaySong *>* playList;
+@property (strong, nonatomic) AVPlayer *player;
 
 @property (strong, nonatomic) PlayerData *playerData;
 
@@ -66,10 +67,46 @@
 //        _isNextEnable = NO;
         AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         app.playerBottomView.delegate = self;
-        
+        // 在通知中心注册一个事件中断的通知：
+        //处理中断事件的通知
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleInterreption:) name:AVAudioSessionInterruptionNotification object:[AVAudioSession sharedInstance]];
     }
     return self;
 }
+
+#pragma mark - 后台运行时的方法
+// 实现接收到中断通知时的方法
+//处理中断事件
+-(void)handleInterreption:(NSNotification *)sender
+{
+    if(_isPlay == YES)
+    {
+        [self.player pause];
+        self.isPlay = NO;
+    }
+    else
+    {
+        [self.player play];
+        self.isPlay = YES;
+    }
+}
+// 播放
+- (void)play {
+    [self.player play];
+    self.isPlay = YES;
+}
+
+// 暂停
+- (void)pause {
+    [self.player pause];
+    self.isPlay = NO;
+}
+
+// 下一曲
+- (void)playNextSong {
+    [self playDidEnd];
+}
+
 #pragma mark - 重写setter方法发送通知
 - (void)setPlayerData:(PlayerData *)playerData {
     _playerData = playerData;
@@ -179,11 +216,21 @@
         data.bufferProgress = totalBufferProgress;
         weakSelf.playerData = data;
     }
-    // 发送data通知
-//    [[NSNotificationCenter defaultCenter] postNotification:weakSelf.playDataNotification];
 }
 
 #pragma mark - 业务逻辑
+
+- (void)updateFavInfo {
+    if (self.player.currentItem) {
+        [self.player.currentItem removeObserver:self forKeyPath:@"status"];// 移除旧观察者
+    }
+    [PTWebUtils requestRadioPlayListWithRadio_id:self.currentRadioID andPage:self.currentPage andPerpage:self.perpage completionHandler:^(id object) {
+        self.playList = object;
+        [self handlePlayChangedAndAddNewOberserver];
+    } errorHandler:^(id error) {
+        NSLog(@"%@", error);
+    }];
+}
 
 // 改变播放列表，也是初始播放的方法
 - (void)changeToPlayList:(NSMutableArray<RadioPlaySong *> *)playList andRadioWikiID:(NSString *)wiki_id {
@@ -263,7 +310,7 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     if ([keyPath isEqualToString:@"status"]) {
         // 判断player是否准备好播放
-        if (self.player.currentItem.status == AVPlayerStatusReadyToPlay) {
+        if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
             [self.player play];
             self.isPlay = YES;
             self.isUIEnable = YES;
