@@ -19,7 +19,7 @@
 
 #pragma mark - public methods
 // 请求电台列表信息
-+ (void)requestRadioListInfoWithCompletionHandler:(callback)callback errorHandler:(error)errorHandler {
++ (void)requestRadioListInfoWithPagea:(NSUInteger)currentPage andPerPage:(NSUInteger)perpageNumber completionHandler:(callback)callback errorHandler:(error)errorHandler {
 //    static NSUInteger tryTimes = 0;
 //    tryTimes++;
 //    if (tryTimes == 5) {
@@ -27,10 +27,16 @@
 //        errorHandler(errorString);
 //        return;
 //    }
+    NSString *page = [NSString stringWithFormat:@"%lu", currentPage];
+    
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:MoeWikiTypeValue forKey:MoeWikiTypeKey];
-    [params setObject:MoePageValue forKey:MoePageKey];
-    [params setObject:MoePerPageValue forKey:MoePerPageKey];
+    [params setObject:page forKey:MoePageKey];
+    if (perpageNumber != 0) {
+        NSString *perpage = [NSString stringWithFormat:@"%lu", perpageNumber];
+        [params setObject:perpage forKey:MoePerPageKey];
+    }
+    
     
     NSURL *url = [PTWebUtils getCompletedAPIKeyRequestURLWithURLString:MoeRadioListURL andParams:params];
     
@@ -48,6 +54,7 @@
                 NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
                 RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
+                NSLog(@"%@", jsonModelError);
                 NSMutableArray *callbackMuatableArray = [radioResponse.wikis mutableCopy];
                 callback(callbackMuatableArray);
             }else{
@@ -61,7 +68,7 @@
 }
 
 // 请求某个电台专辑的歌曲列表信息，除了获取歌曲总数外，大概是没其他用的接口。。。
-+ (void)requestRadioSongsInfoWithWiki_id:(NSString *)wiki_id CompletionHandler:(callback)callback errorHandler:(error)errorHandler {
++ (void)requestRadioSongsInfoWithWiki_id:(NSString *)wiki_id completionHandler:(callback)callback errorHandler:(error)errorHandler {
 //    static NSUInteger tryTimes = 0;
 //    if (tryTimes == 10) {
 //        NSString *errorString = @"request over times";
@@ -70,7 +77,11 @@
 //    }
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:MoeObjTypeValue forKey:MoeObjTypeKey];
-    [params setObject:wiki_id forKey:MoeWikiIdKey];
+    if ([wiki_id  isEqualToString: @"fav"]) {
+        [params setObject:@"song" forKey:@"fav"];
+    }else{
+        [params setObject:wiki_id forKey:MoeWikiIdKey];
+    }
     
     NSURL *url = [PTWebUtils getCompletedAPIKeyRequestURLWithURLString:MoeRadioSongsURL andParams:params];
     
@@ -89,6 +100,7 @@
                 NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
                 RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
+                NSLog(@"%@", jsonModelError);
                 RadioInformation *radioInformation = radioResponse.information;
                 callback(radioInformation);
             }else{
@@ -103,67 +115,29 @@
     [task resume];
 }
 
-// 请求电台播放列表，需要radio = wiki_id参数, 若填写参数为nil，则返回随机列表
-//+ (void)requestRadioPlayListWithRadio_id:(NSString *)radio_id CompletionHandler:(callback)callback errorHandler:(error)errorHandler {
-////    static NSUInteger tryTimes = 0;
-////    if (tryTimes == 10) {
-////        NSString *errorString = @"request over times";
-////        errorHandler(errorString);
-////        return;
-////    }
-//    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-//    [params setObject:MoeAPIValue forKey:MoeAPIKey];
-//    if (radio_id) {
-//        [params setObject:radio_id forKey:MoeRadioPlayListKey];
-//    }
-//    [params setObject:MoePageValue forKey:MoePageKey];
-//    [params setObject:MoePerPageValue forKey:MoePerPageKey];
-//
-//    NSURL *url = [PTWebUtils getCompletedAPIKeyRequestURLWithURLString:MoeRadioPlayURL andParams:params];
-//    
-//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-//    NSURLSession *session = [NSURLSession sharedSession];
-//    NSURLSessionTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-//        if (error) {
-////            tryTimes++;
-//            NSString *errorString = [NSString stringWithFormat:@"%@", error];
-//            NSLog(@"%@", errorString);
-//            errorHandler(errorString);
-//        }else{
-//            if (data) {
-//                NSError *jsonModelError;
-//                
-//                NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-//
-//                RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
-//                NSMutableArray *callbackMutableArray = [radioResponse.playlist mutableCopy];
-//                callback(callbackMutableArray);
-//
-//            }else{
-////                tryTimes++;
-//                NSString *errorString = @"request data is nil";
-////                NSLog(@"%@", errorString);
-//                errorHandler(errorString);
-//            }
-//        }
-//    }];
-//    [task resume];
-//}
-// 请求电台播放列表，需要radio = wiki_id参数，第几页page，每页多少歌曲数量perpage，注意最后一页返回的结果可能不够perpage数量; 本工程使用perpage=@"30"测试;
-+ (void)requestRadioPlayListWithRadio_id:(NSString *)radio_id andPage:(NSString *)page andPerpage:(NSString *)perpage CompletionHandler:(callback)callback errorHandler:(error)errorHandler {
+// 请求电台播放列表，需要radio = wiki_id参数，第几页page，每页多少歌曲数量perpage，注意最后一页返回的结果可能不够perpage数量; 本工程使用perpage=@"9"测试;登录后需要将radio参数改为fav = "song"
++ (void)requestRadioPlayListWithRadio_id:(NSString *)radio_id andPage:(NSUInteger)currentPage andPerpage:(NSUInteger)perpageNumber completionHandler:(callback)callback errorHandler:(error)errorHandler {
 //    static NSUInteger tryTimes = 0;
 //    if (tryTimes == 10) {
 //        NSString *errorString = @"request over times";
 //        errorHandler(errorString);
 //        return;
 //    }
+    NSString *page = [NSString stringWithFormat:@"%lu", currentPage];
+    
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:MoeAPIValue forKey:MoeAPIKey];
-    if (radio_id) {
+    
+    if ([radio_id  isEqualToString: @"fav"]) {
+        [params setObject:@"song" forKey:@"fav"];
+    }else{
         [params setObject:radio_id forKey:MoeRadioPlayListKey];
     }
     [params setObject:page forKey:MoePageKey];
-    [params setObject:perpage forKey:MoePerPageKey];
+    if (perpageNumber != 0) {
+        NSString *perpage = [NSString stringWithFormat:@"%lu", perpageNumber];
+        [params setObject:perpage forKey:MoePerPageKey];
+    }
     
     NSURL *url = [PTWebUtils getCompletedAPIKeyRequestURLWithURLString:MoeRadioPlayURL andParams:params];
     
@@ -182,6 +156,8 @@
                 NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
                 RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
+                NSLog(@"%@", jsonModelError);
+                
                 NSMutableArray *callbackMutableArray = [radioResponse.playlist mutableCopy];
                 callback(callbackMutableArray);
                 
@@ -195,6 +171,60 @@
     }];
     [task resume];
 }
+// 添加或者删除收藏
++ (void)requestUpdateToAddOrDelete:(NSString *)addOrDelete andObjectType:(NSString *)fav_obj_type andObjectID:(NSString *)fav_obj_id completionHandler:(callback)callback errorHandler:(error)errorHandler {
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:fav_obj_type forKey:@"fav_obj_type"];
+    [params setObject:fav_obj_id forKey:@"fav_obj_id"];
+    NSString *urlString;
+    if ([addOrDelete  isEqualToString: @"add"]) {
+        urlString = MoeAddFavURL;
+        [params setObject:@"1" forKey:@"fav_type"];
+    }else if([addOrDelete  isEqualToString: @"delete"]){
+        urlString = MoeDeleteFavURL;
+    }
+    
+    NSURL *url = [PTWebUtils getCompletedAPIKeyRequestURLWithURLString:urlString andParams:params];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            //            tryTimes++;
+            NSString *errorString = [NSString stringWithFormat:@"%@", error];
+            NSLog(@"%@", errorString);
+            errorHandler(errorString);
+        }else{
+            if (data) {
+                NSError *jsonModelError;
+                
+                NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                
+                RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
+                NSLog(@"%@", jsonModelError);
+                
+                
+                NSString *callbackString;
+                if(radioResponse.fav) {
+                    callbackString = @"添加收藏成功";
+                }
+                if (radioResponse.fav_id) {
+                    callbackString = @"取消收藏成功";
+                }
+
+                callback(callbackString);
+                
+            }else{
+                //                tryTimes++;
+                NSString *errorString = @"request data is nil";
+                //                NSLog(@"%@", errorString);
+                errorHandler(errorString);
+            }
+        }
+    }];
+    [task resume];
+}
+
 #pragma mark - private methods
 // 获取API Key请求的完整URL
 + (NSURL *)getCompletedAPIKeyRequestURLWithURLString:(NSString *)url andParams:(NSDictionary *)params {

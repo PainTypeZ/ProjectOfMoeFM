@@ -13,7 +13,5 @@
 @property (assign, nonatomic) float playTimeValue;
 @property (assign, nonatomic) float playProgress;
 @property (assign, nonatomic) float bufferProgress;
-@property (strong, nonatomic) RadioPlaySong *song;
-@property (assign, nonatomic) BOOL isPlay;
-@property (assign, nonatomic) BOOL isEnableUI;
+
 @end

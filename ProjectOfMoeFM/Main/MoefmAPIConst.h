@@ -21,8 +21,8 @@ extern NSString * const MoeRadioPlayListKey;
 
 /* MoeFM API value */
 extern NSString * const MoeWikiTypeValue;
-extern NSString * const MoePageValue;
-extern NSString * const MoePerPageValue;// 只能设置20+
+//extern NSString * const MoePageValue;
+extern NSString * const MoePerPageValue;// 使用默认值9，不然有BUG
 extern NSString * const MoeObjTypeValue;
 extern NSString * const MoeAPIValue;// 本工程全部使用JSON
 
@@ -33,6 +33,8 @@ extern NSString * const MoeRadioSongsURL;// 电台的歌曲列表, 主要是拿�
 
 extern NSString * const MoeRadioPlayURL;// 电台播放列表，可以作为标准电台播放列表使用，需要添加参数api=json;添加电台专辑wiki_id可以返回指定的电台专辑
 
+extern NSString * const MoeAddFavURL;// 添加收藏，参数fav_obj_type，fav_obj_id，fav_type
+extern NSString * const MoeDeleteFavURL;// 取消收藏，参数fav_obj_type，fav_obj_id
 /* MoeFM API response key */
 extern NSString * const MoeResponseKey;
 

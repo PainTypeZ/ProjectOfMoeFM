@@ -8,12 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "PTMusicPlayerBottomView.h"
-#import "PTAVPlayerManager.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, PTAVPlayerBottomViewDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) PTMusicPlayerBottomView *playerBottomView;
-@property (strong, nonatomic) PTAVPlayerManager *avPlayerManager;
 
 @property (strong, nonatomic) UIWindow *window;
 

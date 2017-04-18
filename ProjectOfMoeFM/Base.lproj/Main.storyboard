@@ -103,17 +103,17 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                             </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="dB3-FW-q0j">
-                                <rect key="frame" x="0.0" y="64" width="375" height="484"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="494"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="4IX-dm-hnq">
                                     <size key="itemSize" width="180" height="210"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="headerReferenceSize" width="375" height="30"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="radioCell" id="tLU-DT-bZg" customClass="RadioCollectionViewCell">
-                                        <rect key="frame" x="0.0" y="0.0" width="180" height="210"/>
+                                        <rect key="frame" x="0.0" y="30" width="180" height="210"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="180" height="210"/>
@@ -189,6 +189,55 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="RadioListHeaderView" id="Trc-fx-A2C">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="exc-oP-4E4">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NVJ-46-qR0">
+                                                    <rect key="frame" x="0.0" y="0.0" width="187.5" height="30"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="black" pointSize="15"/>
+                                                    <state key="normal" title="随机播放收藏曲目">
+                                                        <color key="titleColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="playFavouriteAction:" destination="oBN-0W-LO8" eventType="touchUpInside" id="pdI-ww-OwE"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uEh-D6-3Vz">
+                                                    <rect key="frame" x="187.5" y="0.0" width="187.5" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="black" pointSize="15"/>
+                                                    <state key="normal" title="查看收藏曲目">
+                                                        <color key="titleColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="browseFavouriteAction:" destination="oBN-0W-LO8" eventType="touchUpInside" id="3qZ-wS-q8t"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstItem="uEh-D6-3Vz" firstAttribute="top" secondItem="exc-oP-4E4" secondAttribute="top" id="589-jn-Opz"/>
+                                                <constraint firstAttribute="bottom" secondItem="NVJ-46-qR0" secondAttribute="bottom" id="6cL-Dh-BE3"/>
+                                                <constraint firstItem="uEh-D6-3Vz" firstAttribute="leading" secondItem="NVJ-46-qR0" secondAttribute="trailing" id="B30-4a-cZx"/>
+                                                <constraint firstItem="NVJ-46-qR0" firstAttribute="width" secondItem="uEh-D6-3Vz" secondAttribute="width" id="GVQ-cG-Rsv"/>
+                                                <constraint firstItem="NVJ-46-qR0" firstAttribute="leading" secondItem="exc-oP-4E4" secondAttribute="leading" id="J4I-mM-3H7"/>
+                                                <constraint firstAttribute="trailing" secondItem="uEh-D6-3Vz" secondAttribute="trailing" id="QA7-Ed-8Uw"/>
+                                                <constraint firstItem="NVJ-46-qR0" firstAttribute="top" secondItem="exc-oP-4E4" secondAttribute="top" id="hEx-nJ-a6P"/>
+                                                <constraint firstAttribute="bottom" secondItem="uEh-D6-3Vz" secondAttribute="bottom" id="umY-WC-sZC"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="exc-oP-4E4" secondAttribute="trailing" id="3Dw-RG-LNt"/>
+                                        <constraint firstItem="exc-oP-4E4" firstAttribute="leading" secondItem="Trc-fx-A2C" secondAttribute="leading" id="Kac-kw-VGK"/>
+                                        <constraint firstItem="exc-oP-4E4" firstAttribute="top" secondItem="Trc-fx-A2C" secondAttribute="top" id="TR3-JD-zlu"/>
+                                        <constraint firstAttribute="bottom" secondItem="exc-oP-4E4" secondAttribute="bottom" id="vUR-VN-06R"/>
+                                    </constraints>
+                                </collectionReusableView>
                                 <connections>
                                     <outlet property="dataSource" destination="oBN-0W-LO8" id="ZMa-8P-djM"/>
                                     <outlet property="delegate" destination="oBN-0W-LO8" id="PYB-Mp-RuV"/>
@@ -200,7 +249,7 @@
                             <constraint firstItem="dB3-FW-q0j" firstAttribute="top" secondItem="zkv-gY-dgO" secondAttribute="bottom" id="1af-s1-cmb"/>
                             <constraint firstItem="dB3-FW-q0j" firstAttribute="leading" secondItem="NuI-zY-Vro" secondAttribute="leading" id="6Jj-9k-5tI"/>
                             <constraint firstAttribute="trailing" secondItem="U7Y-l1-T0z" secondAttribute="trailing" id="8sD-d5-beL"/>
-                            <constraint firstItem="p9f-bg-Alg" firstAttribute="top" secondItem="dB3-FW-q0j" secondAttribute="bottom" constant="70" id="GFt-Hc-pQ6"/>
+                            <constraint firstItem="p9f-bg-Alg" firstAttribute="top" secondItem="dB3-FW-q0j" secondAttribute="bottom" constant="60" id="GFt-Hc-pQ6"/>
                             <constraint firstItem="p9f-bg-Alg" firstAttribute="top" secondItem="U7Y-l1-T0z" secondAttribute="bottom" id="KVB-bo-kRI"/>
                             <constraint firstItem="U7Y-l1-T0z" firstAttribute="leading" secondItem="NuI-zY-Vro" secondAttribute="leading" id="Wm2-bM-Shj"/>
                             <constraint firstItem="U7Y-l1-T0z" firstAttribute="top" secondItem="zkv-gY-dgO" secondAttribute="bottom" id="sHt-4v-GJd"/>
@@ -209,7 +258,6 @@
                     </view>
                     <navigationItem key="navigationItem" title="电台列表" id="YLK-XN-Xqu">
                         <barButtonItem key="rightBarButtonItem" title="登录" id="gvb-H2-Cc2">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="oauthLogin:" destination="oBN-0W-LO8" id="Dwi-5Y-mDK"/>
                             </connections>
@@ -220,7 +268,7 @@
                         <outlet property="loginButton" destination="gvb-H2-Cc2" id="f39-rn-cqP"/>
                         <outlet property="radioCollectionView" destination="dB3-FW-q0j" id="ksm-vR-t2T"/>
                         <outlet property="radioCollectionViewFlowLayout" destination="4IX-dm-hnq" id="UvX-1b-v79"/>
-                        <segue destination="1Lh-8c-1Zw" kind="push" identifier="pushRadioPlayListViewController" id="nIS-fk-sUg"/>
+                        <segue destination="1Lh-8c-1Zw" kind="show" identifier="pushRadioPlayListViewController" id="nIS-fk-sUg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5eV-Ks-Jxe" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -248,7 +296,7 @@
                                 <color key="backgroundColor" red="0.2819526792" green="0.6659956574" blue="0.96032720800000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelectionDuringEditing="YES" rowHeight="113" sectionHeaderHeight="44" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="E5n-Wg-tfa">
-                                <rect key="frame" x="0.0" y="64" width="375" height="484"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="494"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="WT1-m6-TGV">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
@@ -284,13 +332,13 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hOU-aB-OUV">
-                                                    <rect key="frame" x="112.5" y="21" width="260.5" height="17"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="black" pointSize="14"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <rect key="frame" x="112.5" y="21" width="260.5" height="14.5"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="black" pointSize="12"/>
+                                                    <color key="textColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8y5-91-EXI">
-                                                    <rect key="frame" x="331" y="93.5" width="39" height="17"/>
+                                                    <rect key="frame" x="331" y="94" width="39" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" weight="black" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -301,6 +349,16 @@
                                                         <constraint firstAttribute="width" secondItem="fNN-DV-xQx" secondAttribute="height" multiplier="1:1" id="5RD-Fr-JRF"/>
                                                     </constraints>
                                                 </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oEw-rx-zm5">
+                                                    <rect key="frame" x="113" y="84" width="50" height="27"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="black" pointSize="12"/>
+                                                    <state key="normal" title="立即播放">
+                                                        <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="playSingleSongAction:" destination="1Lh-8c-1Zw" eventType="touchUpInside" id="mgX-hC-PFf"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
@@ -312,6 +370,8 @@
                                                 <constraint firstItem="hOU-aB-OUV" firstAttribute="leading" secondItem="fNN-DV-xQx" secondAttribute="trailing" constant="2" id="K2g-oV-Byl"/>
                                                 <constraint firstAttribute="trailing" secondItem="0nj-Rf-Lob" secondAttribute="trailing" constant="2" id="NJj-xx-Msp"/>
                                                 <constraint firstAttribute="bottom" secondItem="8y5-91-EXI" secondAttribute="bottom" constant="2" id="PTC-ur-lve"/>
+                                                <constraint firstItem="oEw-rx-zm5" firstAttribute="leading" secondItem="fNN-DV-xQx" secondAttribute="trailing" constant="2" id="RV4-tj-gdC"/>
+                                                <constraint firstAttribute="bottom" secondItem="oEw-rx-zm5" secondAttribute="bottom" constant="2" id="XOC-YW-ekS"/>
                                                 <constraint firstItem="0nj-Rf-Lob" firstAttribute="top" secondItem="qIJ-mU-z8R" secondAttribute="top" constant="2" id="bww-9l-wHr"/>
                                                 <constraint firstItem="hOU-aB-OUV" firstAttribute="top" secondItem="0nj-Rf-Lob" secondAttribute="bottom" constant="2" id="oIR-it-sdq"/>
                                                 <constraint firstAttribute="trailing" secondItem="8y5-91-EXI" secondAttribute="trailing" constant="5" id="tMO-y2-jZ1"/>
@@ -335,7 +395,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="v6W-vH-VbQ" firstAttribute="top" secondItem="UfJ-Op-ufl" secondAttribute="bottom" id="4GS-ld-fEu"/>
-                            <constraint firstItem="v6W-vH-VbQ" firstAttribute="top" secondItem="E5n-Wg-tfa" secondAttribute="bottom" constant="70" id="AMt-CY-9Lv"/>
+                            <constraint firstItem="v6W-vH-VbQ" firstAttribute="top" secondItem="E5n-Wg-tfa" secondAttribute="bottom" constant="60" id="AMt-CY-9Lv"/>
                             <constraint firstItem="UfJ-Op-ufl" firstAttribute="top" secondItem="vmX-l3-zPU" secondAttribute="bottom" id="Ce3-rt-Ihq"/>
                             <constraint firstItem="E5n-Wg-tfa" firstAttribute="top" secondItem="vmX-l3-zPU" secondAttribute="bottom" id="GMw-n3-axj"/>
                             <constraint firstItem="UfJ-Op-ufl" firstAttribute="leading" secondItem="4GJ-FX-5Hy" secondAttribute="leading" id="OAQ-L0-pZb"/>
@@ -344,7 +404,13 @@
                             <constraint firstAttribute="trailing" secondItem="UfJ-Op-ufl" secondAttribute="trailing" id="icD-dz-P63"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="电台播放列表" id="BBg-sh-4Yl"/>
+                    <navigationItem key="navigationItem" title="电台播放列表" id="BBg-sh-4Yl">
+                        <barButtonItem key="rightBarButtonItem" title="全部播放" id="dBG-GQ-tSB">
+                            <connections>
+                                <action selector="playAllSongsAction:" destination="1Lh-8c-1Zw" id="UYX-uQ-37q"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="radioPlayListTableView" destination="E5n-Wg-tfa" id="F2x-j8-hRX"/>
                         <outlet property="titeLabel" destination="qZJ-rF-p63" id="x2l-zn-KiF"/>

@@ -25,6 +25,6 @@
 @property (copy, nonatomic) NSString *sub_url;
 @property (copy, nonatomic) NSString *sub_fm_url;
 @property (copy, nonatomic) NSString *sub_view_title;
-@property (copy, nonatomic) NSArray *sub_upload;
+@property (strong, nonatomic) NSArray *sub_upload;
 
 @end

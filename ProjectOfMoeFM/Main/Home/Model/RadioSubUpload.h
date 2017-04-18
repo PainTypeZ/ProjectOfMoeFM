@@ -19,7 +19,7 @@
 @property (copy, nonatomic) NSString *up_md5;
 @property (copy, nonatomic) NSString *up_size;
 @property (copy, nonatomic) NSString *up_quality;
-@property (copy, nonatomic) NSDictionary *up_data; //@{bitrate, length, time, filesize}
+@property (strong, nonatomic) NSDictionary *up_data; //@{bitrate, length, time, filesize}
 @property (copy, nonatomic) NSString *up_date;
 @property (copy, nonatomic) NSString *up_url;
 

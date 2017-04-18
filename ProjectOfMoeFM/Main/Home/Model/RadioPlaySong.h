@@ -7,7 +7,7 @@
 //
 
 #import <JSONModel/JSONModel.h>
-
+#import "SongFavSub.h"
 @protocol RadioPlaySong;
 
 @interface RadioPlaySong : JSONModel
@@ -29,6 +29,6 @@
 @property (copy, nonatomic) NSString <Optional> *sub_url;
 @property (copy, nonatomic) NSString <Optional> *artist;
 @property (copy, nonatomic) NSString <Optional> *fav_wiki;
-@property (copy, nonatomic) NSString <Optional> *fav_sub;
+@property (strong, nonatomic) SongFavSub <Optional> *fav_sub;
 
 @end

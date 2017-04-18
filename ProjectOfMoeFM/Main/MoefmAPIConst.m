@@ -21,8 +21,8 @@ NSString * const MoeRadioPlayListKey = @"radio";
 
 /* MoeFM API value */
 NSString * const MoeWikiTypeValue = @"radio";
-NSString * const MoePageValue = @"1";
-NSString * const MoePerPageValue = @"30";// 只能设置20+
+//NSString * const MoePageValue = @"1";
+NSString * const MoePerPageValue = @"9";// 使用默认值9，不然bug很多
 NSString * const MoeObjTypeValue = @"song";
 NSString * const MoeAPIValue = @"json";// 本工程全部使用JSON
 
@@ -32,7 +32,8 @@ NSString * const MoeRadioListURL = @"http://api.moefou.org/wikis.json";// 电台
 NSString * const MoeRadioSongsURL = @"http://api.moefou.org/radio/relationships.json";// 电台的歌曲列表, 主要是拿电台专辑的歌曲总数，注意某些wiki_id查询结果relationships可能是null
 
 NSString * const MoeRadioPlayURL = @"http://moe.fm/listen/playlist";// 电台播放列表，可以作为标准电台播放列表使用，需要添加参数api=json;添加电台专辑wiki_id可以返回指定的电台专辑
-
+NSString * const MoeAddFavURL = @"http://api.moefou.org/fav/add.json";// 添加收藏，参数fav_obj_type，fav_obj_id，fav_type
+NSString * const MoeDeleteFavURL = @"http://api.moefou.org/fav/delete.json";// 取消收藏，参数fav_obj_type，fav_obj_id
 /* MoeFM API response key */
 NSString * const MoeResponseKey = @"response";
 

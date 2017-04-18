@@ -7,20 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PlayerData.h"
 
 @protocol PTAVPlayerBottomViewDelegate <NSObject>
 @required
-- (void)didClickPlayButton;
+- (void)didClickPlayButtonAndSendState:(BOOL)isSelected;
 - (void)didClickNextButton;
-- (void)didClickFavouriteButton;
-- (void)didClickDislikeButton;
+- (void)didClickFavouriteButtonAndSendState:(BOOL)isSelected;
+- (void)didClickDislikeButtonAndSendState:(BOOL)isSelected;
 
 @end
 
 @interface PTMusicPlayerBottomView : UIView
-
-@property (strong, nonatomic) PlayerData *playerData;
+// 检查登录状态需要访问这两个按钮的可选状态，所以公开属性
+@property (weak, nonatomic) IBOutlet UIButton *favouriteButton;
+@property (weak, nonatomic) IBOutlet UIButton *dislikeButton;
 @property (strong, nonatomic) id<PTAVPlayerBottomViewDelegate> delegate;
 
 @end

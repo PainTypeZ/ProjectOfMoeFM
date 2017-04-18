@@ -9,18 +9,14 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 #import "RadioPlaySong.h"
-#import "PlayerData.h"
 
 @interface PTAVPlayerManager : NSObject
-//@property (strong, nonatomic) AVPlayer *avPlayer;
-@property (strong, nonatomic) PlayerData *playerData;
-@property (assign, nonatomic) BOOL isFavourite;
-@property (assign, nonatomic) BOOL isPlay;
-@property (assign, nonatomic) BOOL isDislike;
+@property (strong, nonatomic) RadioPlaySong *currentSong;
 
+// 播放某首单曲
+- (void)playSingleSong:(RadioPlaySong *)song;
 // 添加初始播放列表或改变播放列表的方法
 - (void)changeToPlayList:(NSMutableArray <RadioPlaySong *>*)playList andRadioWikiID:(NSString *)wiki_id;
-// 下一曲
-- (void)playNextSong;
-//+ (instancetype)sharedAVPlayerManager;
+// 单例构造方法
++ (instancetype)sharedAVPlayerManager;
 @end

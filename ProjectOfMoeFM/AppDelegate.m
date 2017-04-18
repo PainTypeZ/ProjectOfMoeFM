@@ -7,67 +7,22 @@
 //
 
 
-#define kPTMusicPlayerBottomViewHeight 70.0
+#define kPTMusicPlayerBottomViewHeight 60.0
 #define kTestRadioID @"11138"
 
 #import "AppDelegate.h"
 #import "PTOAuthTool.h"
 #import "PTWebUtils.h"
 #import "MoefmAPIConst.h"
+#import "PTAVPlayerManager.h"
 
 NSString * const kConsumerKey = @"2a964c3a6cf90dcb31fccd75703bafbc058e8e3ba";
 NSString * const kConsumerSecret = @"8af19f17b8f7494853b8e2a3ea5f4669";
 
 @interface AppDelegate ()
-@property (strong, nonatomic) PlayerData *playerData;
 @end
 
 @implementation AppDelegate
-#pragma makr - custom methods
-- (void)updateModeldataForPlayerView:(NSNotification *)noti {
-    self.playerBottomView.playerData = noti.object;
-    
-}
-// 懒加载
-- (PTMusicPlayerBottomView *)playerBottomView {
-    if (!_playerBottomView) {
-        _playerBottomView = [[[NSBundle mainBundle] loadNibNamed:@"PTMusicPlayerBottomView" owner:self options:nil] lastObject];
-        _playerBottomView.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height - kPTMusicPlayerBottomViewHeight, [UIScreen mainScreen].bounds.size.width, kPTMusicPlayerBottomViewHeight);
-        [self.window addSubview:_playerBottomView];
-        [self.window bringSubviewToFront:_playerBottomView];
-        
-        _playerBottomView.delegate = self;// 设置代理
-    }
-    return _playerBottomView;
-}
-
-// 懒加载方式创建manager，实际上管理类并不需要单例
-- (PTAVPlayerManager *)avPlayerManager {
-    if (!_avPlayerManager) {
-        _avPlayerManager = [[PTAVPlayerManager alloc] init];
-    }
-    return _avPlayerManager;
-}
-
-#pragma makr - PTAVPlayerBottomViewDelegate
-// 这些方法去控制manager中的对应方法
-- (void)didClickFavouriteButton {
-    
-}
-
-- (void)didClickPlayButton {
-    self.avPlayerManager.isPlay = !self.avPlayerManager.isPlay;
-}
-
-- (void)didClickDislikeButton {
-    
-}
-
-- (void)didClickNextButton {
-    [self.avPlayerManager playNextSong];
-}
-
-#pragma mark - default Methods
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
@@ -77,16 +32,19 @@ NSString * const kConsumerSecret = @"8af19f17b8f7494853b8e2a3ea5f4669";
         [userDefaults setObject:kConsumerSecret forKey:@"consumer_secret"];
         [userDefaults synchronize];
     }
-    
+    // 创建bottomView，不能懒加载
+    self.playerBottomView = [[[NSBundle mainBundle] loadNibNamed:@"PTMusicPlayerBottomView" owner:self options:nil] lastObject];
+    self.playerBottomView.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height - kPTMusicPlayerBottomViewHeight, [UIScreen mainScreen].bounds.size.width, kPTMusicPlayerBottomViewHeight);
+    [self.window addSubview:_playerBottomView];
+    [self.window bringSubviewToFront:_playerBottomView];
+    // 用单例构造方法初始化playerManager实例
+    PTAVPlayerManager *playerManager = [PTAVPlayerManager sharedAVPlayerManager];
     // 启动时默认开始播放，测试用
-    [PTWebUtils requestRadioPlayListWithRadio_id:kTestRadioID andPage:MoePageValue andPerpage:MoePerPageValue CompletionHandler:^(id object) {
-        [self.avPlayerManager changeToPlayList:object andRadioWikiID:kTestRadioID];
+    [PTWebUtils requestRadioPlayListWithRadio_id:kTestRadioID andPage:1 andPerpage:9 completionHandler:^(id object) {
+        [playerManager changeToPlayList:object andRadioWikiID:kTestRadioID];
     } errorHandler:^(id error) {
         NSLog(@"%@", error);
     }];
-    
-    // 注册通知，接收playerdata
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateModeldataForPlayerView:) name:@"playerDataNotification" object:nil];
     
     return YES;
 }

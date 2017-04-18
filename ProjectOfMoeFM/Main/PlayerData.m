@@ -16,8 +16,6 @@
         _playTime = @"-00:00";
         _playProgress = 0.0;
         _bufferProgress = 0.0;
-        _isPlay = NO;
-        _isEnableUI = NO;
     }
     return self;
 }

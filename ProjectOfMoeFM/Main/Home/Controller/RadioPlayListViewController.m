@@ -6,12 +6,17 @@
 //  Copyright © 2017年 彭平军. All rights reserved.
 //
 
+#define kFavouriteKey @"fav"
+
 #import "RadioPlayListViewController.h"
 #import "RadioPlayListCell.h"
+#import <MJRefresh.h>
 
 #import "RadioPlaySong.h"
 
 #import "PTWebUtils.h"
+
+#import "PTAVPlayerManager.h"
 
 @interface RadioPlayListViewController ()<UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching>
 
@@ -20,7 +25,8 @@
 @property (strong, nonatomic) NSMutableArray *radio_playlist;// 保存电台播放列表信息
 @property (weak, nonatomic) IBOutlet UILabel *titeLabel;
 
-
+@property (assign, nonatomic) NSUInteger currentPage;
+@property (assign, nonatomic) NSUInteger perpage;
 @end
 
 @implementation RadioPlayListViewController
@@ -34,28 +40,133 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
     return _radio_playlist;
 }
 
+- (NSUInteger)currentPage {
+    if (!_currentPage) {
+        _currentPage = 1;
+    }
+    return _currentPage;
+}
+
+- (NSUInteger)perpage {
+    if (!_perpage) {
+        _perpage = 9;
+    }
+    return _perpage;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:72.0/255 green:170.0/255 blue:245.0/255 alpha:1.0];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
+    [self addTableViewRefresh];
+}
+
+- (void)addTableViewRefresh {
+//    __weak RadioPlayListViewController *weakSelf = self;
+    // 下拉刷新
+    self.radioPlayListTableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        // 加载数据
+        self.currentPage = 1;
+        if (self.isFavourite) {
+            // 请求收藏列表信息
+            [PTWebUtils requestRadioPlayListWithRadio_id:kFavouriteKey andPage:self.currentPage andPerpage:0 completionHandler:^(id object) {
+                self.radio_playlist = object;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.radioPlayListTableView reloadData];
+                    [self.radioPlayListTableView.mj_header endRefreshing];
+                });
+                
+            } errorHandler:^(id error) {
+                NSLog(@"%@", error);
+            }];
+        }else{
+            // 请求电台播放列表信息
+            [PTWebUtils requestRadioPlayListWithRadio_id:self.radioWiki.wiki_id andPage:self.currentPage andPerpage:0 completionHandler:^(id object) {
+                self.radio_playlist = object;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.radioPlayListTableView reloadData];
+                    [self.radioPlayListTableView.mj_header endRefreshing];
+                });
+                
+            } errorHandler:^(id error) {
+                NSLog(@"%@", error);
+            }];
+        }
+    }];
+    
+    // 设置自动切换透明度(在导航栏下面自动隐藏)
+    self.radioPlayListTableView.mj_header.automaticallyChangeAlpha = YES;
+    
+    // 上拉刷新
+    self.radioPlayListTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        // 加载数据
+        self.currentPage++;
+        
+        if (self.isFavourite) {
+            // 请求收藏列表信息
+            
+            [PTWebUtils requestRadioPlayListWithRadio_id:kFavouriteKey andPage:self.currentPage andPerpage:0 completionHandler:^(id object) {
+                [self.radio_playlist addObjectsFromArray:object];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.radioPlayListTableView reloadData];
+                    [self.radioPlayListTableView.mj_footer endRefreshing];
+                });
+                
+            } errorHandler:^(id error) {
+                NSLog(@"%@", error);
+            }];
+        }else{
+            // 请求电台播放列表信息
+            self.currentPage++;
+            [PTWebUtils requestRadioPlayListWithRadio_id:self.radioWiki.wiki_id andPage:self.currentPage andPerpage:0 completionHandler:^(id object) {
+                [self.radio_playlist addObjectsFromArray:object];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.radioPlayListTableView reloadData];
+                    [self.radioPlayListTableView.mj_footer endRefreshing];
+                });
+                
+            } errorHandler:^(id error) {
+                NSLog(@"%@", error);
+            }];
+        }
+
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
-    if (self.radioWiki.wiki_id) {
-        self.titeLabel.text = self.radioWiki.wiki_title;
-        // 请求播放列表信息
-        [PTWebUtils requestRadioPlayListWithRadio_id:self.radioWiki.wiki_id andPage:@"1" andPerpage:@"30" CompletionHandler:^(id object) {
+    if (self.isFavourite) {
+        self.titeLabel.text = @"我收藏的曲目";
+        // 请求收藏曲目列表
+        [PTWebUtils requestRadioPlayListWithRadio_id:kFavouriteKey andPage:self.currentPage andPerpage:0 completionHandler:^(id object) {
             self.radio_playlist = object;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.radioPlayListTableView reloadData];
             });
-
         } errorHandler:^(id error) {
             NSLog(@"%@", error);
         }];
+    }else{
+        self.titeLabel.text = self.radioWiki.wiki_title;
+        // 请求电台播放列表信息
+        [PTWebUtils requestRadioPlayListWithRadio_id:self.radioWiki.wiki_id andPage:self.currentPage andPerpage:0 completionHandler:^(id object) {
+            self.radio_playlist = object;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.radioPlayListTableView reloadData];
+            });
+        } errorHandler:^(id error) {
+            NSLog(@"%@", error);
+        }];
+
     }
+}
+- (IBAction)playSingleSongAction:(UIButton *)sender {
+    RadioPlayListCell *cell = (RadioPlayListCell *)sender.superview.superview;
+    [[PTAVPlayerManager sharedAVPlayerManager] playSingleSong:cell.radioPlaySong];
+}
+- (IBAction)playAllSongsAction:(UIBarButtonItem *)sender {
+    [[PTAVPlayerManager sharedAVPlayerManager] changeToPlayList:self.radio_playlist andRadioWikiID:self.radioWiki.wiki_id];
 }
 
 - (void)didReceiveMemoryWarning {

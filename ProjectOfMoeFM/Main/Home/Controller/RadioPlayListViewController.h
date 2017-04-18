@@ -10,5 +10,6 @@
 #import "RadioWiki.h"
 @interface RadioPlayListViewController : UIViewController
 @property (strong, nonatomic) RadioWiki *radioWiki;
+@property (assign, nonatomic) BOOL isFavourite;
 
 @end
