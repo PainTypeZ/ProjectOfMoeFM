@@ -33,16 +33,18 @@ NSString * const kConsumerSecret = @"8af19f17b8f7494853b8e2a3ea5f4669";
         [userDefaults setObject:kConsumerSecret forKey:@"consumer_secret"];
         [userDefaults synchronize];
     }
-    // 创建bottomView，不能懒加载
+    
+    // 创建bottomView，可以选择懒加载
     self.playerBottomView = [[[NSBundle mainBundle] loadNibNamed:@"PTMusicPlayerBottomView" owner:self options:nil] lastObject];
     self.playerBottomView.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height - kPTMusicPlayerBottomViewHeight, [UIScreen mainScreen].bounds.size.width, kPTMusicPlayerBottomViewHeight);
     [self.window addSubview:_playerBottomView];
     [self.window bringSubviewToFront:_playerBottomView];
+    
     // 用单例构造方法初始化playerManager实例
     PTAVPlayerManager *playerManager = [PTAVPlayerManager sharedAVPlayerManager];
     // 启动时默认开始播放，测试用
     [PTWebUtils requestRadioPlayListWithRadio_id:kTestRadioID andPage:1 andPerpage:9 completionHandler:^(id object) {
-        [playerManager changeToPlayList:object andRadioWikiID:kTestRadioID];
+        [playerManager changeToPlayList:object andRadioWikiID:kTestRadioID completionHandler:nil];
     } errorHandler:^(id error) {
         NSLog(@"%@", error);
     }];
@@ -98,7 +100,7 @@ NSString * const kConsumerSecret = @"8af19f17b8f7494853b8e2a3ea5f4669";
 //                break;
                 
             case UIEventSubtypeRemoteControlNextTrack:
-                [[PTAVPlayerManager sharedAVPlayerManager] playNextSong];
+                [[PTAVPlayerManager sharedAVPlayerManager] playNextSongWithCompletionHandler:nil];
                 break;
                 
             case UIEventSubtypeRemoteControlPlay:

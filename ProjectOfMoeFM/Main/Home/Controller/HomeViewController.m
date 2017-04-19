@@ -165,8 +165,12 @@ static NSString * const reuseIdentifier = @"radioCell";
     BOOL isLogin = [[NSUserDefaults standardUserDefaults] boolForKey:@"isLogin"];
     if (isLogin) {
         [PTWebUtils requestRadioPlayListWithRadio_id:@"fav" andPage:1 andPerpage:0 completionHandler:^(id object) {
-            [[PTAVPlayerManager sharedAVPlayerManager] changeToPlayList:object andRadioWikiID:@"fav"];
-            [SVProgressHUD showSuccessWithStatus:@"获取收藏曲目成功!"];
+            [[PTAVPlayerManager sharedAVPlayerManager] changeToPlayList:object andRadioWikiID:@"fav" completionHandler:^(BOOL isSuccess) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [SVProgressHUD showSuccessWithStatus:@"获取收藏曲目成功!"];
+                    [SVProgressHUD dismissWithDelay:1];
+                });                
+            }];            
         } errorHandler:^(id error) {
             NSLog(@"%@", error);
         }];
@@ -182,6 +186,7 @@ static NSString * const reuseIdentifier = @"radioCell";
         [self performSegueWithIdentifier:@"pushRadioPlayListViewController" sender:@"favourite"];        
     }else{
         [SVProgressHUD showErrorWithStatus:@"请先登录OAuth授权"];
+        
     }
 }
 

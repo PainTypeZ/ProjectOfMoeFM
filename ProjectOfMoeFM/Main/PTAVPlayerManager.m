@@ -11,13 +11,7 @@
 #import "MoefmAPIConst.h"
 #import <SVProgressHUD.h>
 
-#import "PTMusicPlayerBottomView.h"
-
-#import "PlayerData.h"
-
-#import "AppDelegate.h"
-
-@interface PTAVPlayerManager()<PTAVPlayerBottomViewDelegate>
+@interface PTAVPlayerManager()
 
 
 @property (copy, nonatomic) NSString *currentRadioID;
@@ -29,11 +23,7 @@
 
 @property (strong, nonatomic) PlayerData *playerData;
 
-@property (assign, nonatomic) BOOL isUIEnable;
 @property (assign, nonatomic) BOOL isPlay;
-@property (assign, nonatomic) BOOL isFavourite;
-@property (assign, nonatomic) BOOL isDislike;
-//@property (assign, nonatomic) BOOL isNextEnable;
 
 @end
 
@@ -60,26 +50,19 @@
         _perpage = 9;
         
         _playerData = [[PlayerData alloc] init];
-        _isUIEnable = NO;
         _isPlay = NO;
-        _isFavourite = NO;
-        _isDislike = NO;
-//        _isNextEnable = NO;
-        AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-        app.playerBottomView.delegate = self;
+
         // 在通知中心注册一个事件中断的通知：
-        //处理中断事件的通知
+        // 处理中断事件的通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleInterreption:) name:AVAudioSessionInterruptionNotification object:[AVAudioSession sharedInstance]];
     }
     return self;
 }
-
-#pragma mark - 后台运行时的方法
 // 实现接收到中断通知时的方法
-//处理中断事件
+// 处理中断事件，需要发送代理告知view播放状态
 -(void)handleInterreption:(NSNotification *)sender
 {
-    if(_isPlay == YES)
+    if(self.isPlay == YES)
     {
         [self.player pause];
         self.isPlay = NO;
@@ -90,92 +73,68 @@
         self.isPlay = YES;
     }
 }
-// 播放
-- (void)play {
-    [self.player play];
-    self.isPlay = YES;
-}
-
-// 暂停
-- (void)pause {
-    [self.player pause];
-    self.isPlay = NO;
-}
-
-// 下一曲
-- (void)playNextSong {
-    [self playDidEnd];
-}
-
-#pragma mark - 重写setter方法发送通知
-- (void)setPlayerData:(PlayerData *)playerData {
-    _playerData = playerData;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"playerData" object:_playerData];
-}
+#pragma mark - 重写setter方法发送播放状态和歌曲信息代理消息
 - (void)setCurrentSong:(RadioPlaySong *)currentSong {
     _currentSong = currentSong;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"songInfo" object:_currentSong];
+    [self.delegate sendCurrentSongInfo:_currentSong];
 }
-- (void)setIsUIEnable:(BOOL)isUIEnable {
-    _isUIEnable = isUIEnable;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"isUIEnable" object:@(_isUIEnable)];
-}
+
 - (void)setIsPlay:(BOOL)isPlay {
     _isPlay = isPlay;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"playButton" object:@(_isPlay)];
+    [self.delegate sendPlayOrPauseStateWhenIsPlayChanged:_isPlay];
 }
-- (void)setIsFavourite:(BOOL)isFavourite {
-    _isFavourite = isFavourite;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"favouriteButton" object:@(_isFavourite)];
-}
-#pragma mark - PTAVPlayerBottomViewDelegate
-- (void)didClickFavouriteButtonAndSendState:(BOOL)isSelected {
-    NSString *action = isSelected ? @"add" : @"delete";
-    NSString *objectType;
-    NSString *objectID;
-    if (self.currentSong.sub_type && self.currentSong.sub_id) {
-        objectType = self.currentSong.sub_type;
-        objectID = self.currentSong.sub_id;
+#pragma mark - private methods
+// 歌曲结束时的处理
+- (void)playDidEnd {
+    self.isPlay = NO;// 改变播放状态
+    [self.player.currentItem removeObserver:self forKeyPath:@"status"];// 移除旧观察者
+    
+    if (self.playIndex == self.playList.count - 1) {
+        self.playIndex = 0;
+        self.currentPage++;
+        [PTWebUtils requestRadioPlayListWithRadio_id:self.currentRadioID andPage:self.currentPage andPerpage:self.perpage completionHandler:^(id object) {
+            // 需要判断返回的object.count是不是9，如果小于9要作处理
+            NSArray *backArray = object;
+            if (backArray.count < 9) {
+                /* 写判断后的处理 */
+                self.currentPage = 1;
+            }
+            self.playList = [backArray mutableCopy];
+            [self handlePlayChangedAndAddNewOberserver];
+        } errorHandler:^(id error) {
+            NSLog(@"%@", error);
+        }];
     }else{
-        objectType = self.currentSong.wiki_type;
-        objectID = self.currentSong.wiki_id;
+        self.playIndex++;// 播放序号+1
+        [self handlePlayChangedAndAddNewOberserver];
     }
+}
 
-    [PTWebUtils requestUpdateToAddOrDelete:action andObjectType:objectType andObjectID:objectID completionHandler:^(id object) {
-        [SVProgressHUD showSuccessWithStatus:object];
-        self.isFavourite = isSelected;// 更新状态
-    } errorHandler:^(id error) {
-        NSLog(@"%@", error);
-    }];
-}
-- (void)didClickPlayButtonAndSendState:(BOOL)isSelected {
-    isSelected ? [self.player play] : [self.player pause];
-    if (isSelected) {
-        [self.player play];
-        self.isPlay = YES;
-    }else{
-        [self.player pause];
-        self.isPlay = NO;
+// KVO方法，播放全是从这里控制开始
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"status"]) {
+        // 判断player是否准备好播放
+        if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
+            [self.player play];
+            self.isPlay = YES; // 更新播放状态           
+        }
     }
 }
-- (void)didClickDislikeButtonAndSendState:(BOOL)isSelected {
-    // 待实现，还没查看接口
-}
-- (void)didClickNextButton {
-    [self playDidEnd];
-}
-#pragma mark - 简化代码的方法
+
+// 处理换歌和添加新观察者
 - (void)handlePlayChangedAndAddNewOberserver {
     self.currentSong = self.playList[self.playIndex];
     NSURL *url = [NSURL URLWithString:self.currentSong.url];
     AVPlayerItem *item = [AVPlayerItem playerItemWithURL:url];
     [self.player replaceCurrentItemWithPlayerItem:item];
+    
     // 开始播放
     [self.player.currentItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];// 添加新观察者
     [self observeValueForKeyPath:@"status" ofObject:nil change:nil context:nil];
 }
-// 处理播放时间、播放进度、缓冲进度
-- (void)handlePlayTimeAndPlayProgressAndBufferProgressWithWeakSelf:(__weak PTAVPlayerManager *)weakSelf andWeakAVPlayer:(__weak AVPlayer *)weakAVPlayer {
+
+// 处理播放时间、播放进度、缓冲进度,注意要使用weakSelf
+- (void)handlePlayTimeAndPlayProgressAndBufferProgressWithWeakSelf:(__weak PTAVPlayerManager *)weakSelf andWeakAVPlayer:(AVPlayer *)weakAVPlayer {
     // 播放进度
     CGFloat currentPlayTime = weakAVPlayer.currentItem.currentTime.value;// 当前播放器时间
     CGFloat currenTimeScale = weakAVPlayer.currentItem.currentTime.timescale;// 当前播放时间的比例,用于转换value为float格式的秒数，float = value / scale
@@ -216,24 +175,101 @@
         data.bufferProgress = totalBufferProgress;
         weakSelf.playerData = data;
     }
+    [weakSelf.delegate sendPlayerDataInRealTime:weakSelf.playerData];
+}
+#pragma mark - public methods
+
+// 播放
+- (void)play {
+    [self.player play];
+    self.isPlay = YES;    
 }
 
-#pragma mark - 业务逻辑
+// 暂停
+- (void)pause {
+    [self.player pause];
+    self.isPlay = NO;
+}
 
+// 下一曲
+- (void)playNextSongWithCompletionHandler:(callbackBOOL)callbackBOOL {
+    [self playDidEnd];
+    
+    if (callbackBOOL) {
+        BOOL isSuccess = YES;
+        callbackBOOL(isSuccess);
+    };
+}
+// 添加收藏
+- (void)addToFavouriteWithCompletionHandler:(callbackBOOL)callbackBOOL {
+    NSString *acitonType = @"add";
+    NSString *objectType;
+    NSString *objectID;
+    if (self.currentSong.sub_type && self.currentSong.sub_id) {
+        objectType = self.currentSong.sub_type;
+        objectID = self.currentSong.sub_id;
+    }else{
+        objectType = self.currentSong.wiki_type;
+        objectID = self.currentSong.wiki_id;
+    }
+    
+    [PTWebUtils requestUpdateToAddOrDelete:acitonType andObjectType:objectType andObjectID:objectID completionHandler:^(id object) {
+        if (callbackBOOL) {
+            BOOL isSuccess = YES;
+            callbackBOOL(isSuccess);
+        }
+    } errorHandler:^(id error) {
+        if (callbackBOOL) {
+            BOOL isSuccess = NO;            
+            callbackBOOL(isSuccess);
+        }
+    }];
+}
+
+// 取消收藏
+- (void)deleteFromFavouriteWithCompletionHandler:(callbackBOOL)callbackBOOL {
+    NSString *acitonType = @"delete";
+    NSString *objectType;
+    NSString *objectID;
+    if (self.currentSong.sub_type && self.currentSong.sub_id) {
+        objectType = self.currentSong.sub_type;
+        objectID = self.currentSong.sub_id;
+    }else{
+        objectType = self.currentSong.wiki_type;
+        objectID = self.currentSong.wiki_id;
+    }
+    
+    
+    [PTWebUtils requestUpdateToAddOrDelete:acitonType andObjectType:objectType andObjectID:objectID completionHandler:^(id object) {
+        if (callbackBOOL) {
+            BOOL isSuccess = YES;
+            callbackBOOL(isSuccess);
+        }
+    } errorHandler:^(id error) {
+        if (callbackBOOL) {
+            BOOL isSuccess = NO;
+            callbackBOOL(isSuccess);
+        }
+        NSLog(@"%@", error);
+    }];
+}
+
+// 登录或退出登录是调用，更新收藏状态信息,还没实现保存歌曲播放状态，如播放时间等
 - (void)updateFavInfo {
+    // 如果有当前播放的歌曲，就先移除观察者
     if (self.player.currentItem) {
         [self.player.currentItem removeObserver:self forKeyPath:@"status"];// 移除旧观察者
     }
     [PTWebUtils requestRadioPlayListWithRadio_id:self.currentRadioID andPage:self.currentPage andPerpage:self.perpage completionHandler:^(id object) {
         self.playList = object;
-        [self handlePlayChangedAndAddNewOberserver];
+        [self handlePlayChangedAndAddNewOberserver];        
     } errorHandler:^(id error) {
         NSLog(@"%@", error);
     }];
 }
 
 // 改变播放列表，也是初始播放的方法
-- (void)changeToPlayList:(NSMutableArray<RadioPlaySong *> *)playList andRadioWikiID:(NSString *)wiki_id {
+- (void)changeToPlayList:(NSMutableArray<RadioPlaySong *> *)playList andRadioWikiID:(NSString *)wiki_id completionHandler:(callbackBOOL)callbackBOOL {
     
     self.playList = [playList mutableCopy];
     self.currentRadioID = wiki_id;// 设置电台id，供自动请求下一页歌曲使用
@@ -256,13 +292,17 @@
         [self.player.currentItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
         
         __weak PTAVPlayerManager *weakSelf = self;
-        __weak AVPlayer *weakPlayer = self.player;
         
         [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 1) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
             // 处理播放时间、播放进度、缓冲进度
-            [weakSelf handlePlayTimeAndPlayProgressAndBufferProgressWithWeakSelf:weakSelf andWeakAVPlayer:weakPlayer];
+            [weakSelf handlePlayTimeAndPlayProgressAndBufferProgressWithWeakSelf:weakSelf andWeakAVPlayer:weakSelf.player];
         }];
     });
+    
+    if (callbackBOOL) {
+        BOOL isSuccess = YES;
+        callbackBOOL(isSuccess);
+    }
 }
 // 添加新项目到现有播放列表中，还未实现
 - (void)addObjectToPlaylist:(id)object {
@@ -270,53 +310,16 @@
 }
 
 // 播放单曲
-- (void)playSingleSong:(RadioPlaySong *)song {
+- (void)playSingleSong:(RadioPlaySong *)song completionHandler:(callbackBOOL)callbackBOOL {
     [self.player.currentItem removeObserver:self forKeyPath:@"status"];// 移除旧观察者
     [self.playList removeObjectAtIndex:self.playIndex];
     [self.playList insertObject:song atIndex:self.playIndex];
     
     [self handlePlayChangedAndAddNewOberserver];
-}
-
-// 歌曲结束时的处理
-- (void)playDidEnd {
-    // 关闭交互
-    self.isUIEnable = NO;
-    
-    [self.player.currentItem removeObserver:self forKeyPath:@"status"];// 移除旧观察者
-        
-    if (self.playIndex == self.playList.count - 1) {
-        self.playIndex = 0;
-        self.currentPage++;
-        [PTWebUtils requestRadioPlayListWithRadio_id:self.currentRadioID andPage:self.currentPage andPerpage:self.perpage completionHandler:^(id object) {
-            // 需要判断返回的object.count是不是9，如果小于9要作处理
-            NSArray *backArray = object;
-            if (backArray.count < 9) {
-                /* 写判断后的处理 */
-                self.currentPage = 1;
-            }
-            self.playList = [backArray mutableCopy];
-            [self handlePlayChangedAndAddNewOberserver];
-        } errorHandler:^(id error) {
-            NSLog(@"%@", error);
-        }];
-    }else{
-        self.playIndex++;// 播放序号+1
-        [self handlePlayChangedAndAddNewOberserver];
-    }
-}
-
-// KVO方法
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"status"]) {
-        // 判断player是否准备好播放
-        if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
-            [self.player play];
-            self.isPlay = YES;
-            self.isUIEnable = YES;
-
-        }
-    }
+    if (callbackBOOL) {
+        BOOL isSuccess = YES;
+        callbackBOOL(isSuccess);
+    }    
 }
 
 @end

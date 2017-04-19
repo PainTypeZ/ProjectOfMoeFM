@@ -57,6 +57,7 @@ NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_t
             //得到的accessToken和Secret已保存存到偏好设置
             // 此处可以添加提示信息等效果
             [SVProgressHUD showSuccessWithStatus:@"登录OAuth授权成功"];
+            [SVProgressHUD dismissWithDelay:1];
             // 更新当前播放列表的歌曲信息
             [[PTAVPlayerManager sharedAVPlayerManager] updateFavInfo];
             // 跳转回mainStoryBoard初始界面
