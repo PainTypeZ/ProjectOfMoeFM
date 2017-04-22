@@ -12,8 +12,8 @@
 #import "RadioPlaySong.h"
 #import "MoefmAPIConst.h"
 #import "PlayerData.h"
-#import "PTAVPlayerManager.h"
-@interface PTMusicPlayerBottomView()<PTAVPlayerManagerDelegate>
+#import "PTPlayerManager.h"
+@interface PTMusicPlayerBottomView()<PTPlayerManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *radioSongCoverImageView;
 @property (weak, nonatomic) IBOutlet UILabel *radioSongTitleLabel;
@@ -35,7 +35,7 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // 设置代理，接收播放数据
-    [PTAVPlayerManager sharedAVPlayerManager].delegate = self;
+    [PTPlayerManager sharedAVPlayerManager].delegate = self;
     
     [self initProperties];
     
@@ -58,27 +58,10 @@
 #pragma mark - UI action methods
 // 点击收藏按钮
 - (IBAction)favouriteAction:(UIButton *)sender {
-    self.userInteractionEnabled = NO;// 关闭交互
     if (self.favouriteButton.selected) {
-        [[PTAVPlayerManager sharedAVPlayerManager] deleteFromFavouriteWithCompletionHandler:^(BOOL isSuccess) {
-            if (isSuccess) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [SVProgressHUD showSuccessWithStatus:@"取消收藏成功"];
-                    [SVProgressHUD dismissWithDelay:1];
-                    self.userInteractionEnabled = YES;
-                });
-            }            
-        }];
+        [[PTPlayerManager sharedAVPlayerManager] deleteFromFavourite];
     }else{
-        [[PTAVPlayerManager sharedAVPlayerManager] addToFavouriteWithCompletionHandler:^(BOOL isSuccess) {
-            if (isSuccess) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [SVProgressHUD showSuccessWithStatus:@"添加收藏成功"];
-                    [SVProgressHUD dismissWithDelay:1];
-                    self.userInteractionEnabled = YES;
-                });
-            }
-        }];
+        [[PTPlayerManager sharedAVPlayerManager] addToFavourite];
     }
     self.favouriteButton.selected = !self.favouriteButton.selected;
     
@@ -87,9 +70,9 @@
 // 点击播放/暂停按钮,按钮的选中状态更新由代理方法控制
 - (IBAction)playAciton:(UIButton *)sender {
     if (self.playButton.selected) {
-        [[PTAVPlayerManager sharedAVPlayerManager] pause];
+        [[PTPlayerManager sharedAVPlayerManager] pause];
     }else{
-        [[PTAVPlayerManager sharedAVPlayerManager] play];
+        [[PTPlayerManager sharedAVPlayerManager] play];
     }
 }
 // 点击不喜欢按钮(垃圾桶)，还未实现相关功能
@@ -99,14 +82,7 @@
 }
 // 点击下一曲
 - (IBAction)nextAction:(UIButton *)sender {
-    self.userInteractionEnabled = NO;// 关闭可用
-    [[PTAVPlayerManager sharedAVPlayerManager] playNextSongWithCompletionHandler:^(BOOL isSuccess) {
-        if (isSuccess) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.userInteractionEnabled = YES;
-            });
-        }
-    }];
+    [[PTPlayerManager sharedAVPlayerManager] playNextSong];
 }
 #pragma mark - PTAVPlayerManagerDelegate
 // 接收实时播放数据
@@ -139,21 +115,23 @@
         }
         // 改变播放按钮状态
         self.playButton.selected = YES;
-    });
-    // 显示歌曲图片，SDWebImage方法
-    if (self.playingSong.cover[MoeCoverSizeSquareKey]) {
-        NSURL *url = self.playingSong.cover[MoeCoverSizeSquareKey];
-        [self.radioSongCoverImageView sd_setImageWithURL:url];
-    }   
+        
+        // 显示歌曲图片，SDWebImage方法
+        if (self.playingSong.cover[MoeCoverSizeSquareKey]) {
+            NSURL *url = self.playingSong.cover[MoeCoverSizeSquareKey];
+            [self.radioSongCoverImageView sd_setImageWithURL:url];
+        }
+    });  
 }
 
-// 接收非自动播放时的播放状态信息
+// 接收非初次播放时的播放状态信息
 - (void)sendPlayOrPauseStateWhenIsPlayChanged:(BOOL)isPlay {
     self.playButton.selected = isPlay;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        self.userInteractionEnabled = YES;// 首次加载时的处理
-    });
+}
+
+// 接收用户交互状态
+- (void)sendUIEnableState:(BOOL)isUIEnable {
+    self.userInteractionEnabled = isUIEnable;
 }
 
 @end

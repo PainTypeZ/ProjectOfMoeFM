@@ -64,9 +64,7 @@ typedef NS_ENUM(NSUInteger, OAuthSteps) {
                 return;
             }
             // 返回block
-            dispatch_async(dispatch_get_main_queue(), ^{
                 requestCompleted();
-            });
         }else{
             NSLog(@"%@", [error description]);
         }
@@ -127,9 +125,7 @@ typedef NS_ENUM(NSUInteger, OAuthSteps) {
                 return;
             }
             // 返回block
-            dispatch_async(dispatch_get_main_queue(), ^{
-                requestCompleted();
-            });
+            requestCompleted();
         }else{
             NSLog(@"%@", [error description]);
         }

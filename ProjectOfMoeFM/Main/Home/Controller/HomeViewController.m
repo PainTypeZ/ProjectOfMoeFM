@@ -31,7 +31,7 @@
 #import "MoefmAPIConst.h"
 
 #import "AppDelegate.h"
-#import "PTAVPlayerManager.h"
+#import "PTPlayerManager.h"
 
 @interface HomeViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching, UICollectionViewDelegateFlowLayout>
 
@@ -140,7 +140,7 @@ static NSString * const reuseIdentifier = @"radioCell";
     if (isLogin) {
         NSLog(@"loginState:%@", isLogin?@"YES":@"NO");
         NSLog(@"%@,%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"oauth_token"], [[NSUserDefaults standardUserDefaults] objectForKey:@"oauth_token_secret"]);
-        [self.loginButton setTitle:@"退出登录"];
+        [self.loginButton setTitle:@"退出登录"];        
         
         AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         app.playerBottomView.favouriteButton.enabled = YES;
@@ -150,27 +150,38 @@ static NSString * const reuseIdentifier = @"radioCell";
 
 // 退出登录
 - (void)oauthLoginOut {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults removeObjectForKey:@"oauth_token"];
-    [userDefaults removeObjectForKey:@"oauth_token_secret"];
-    [userDefaults setBool:NO forKey:@"isLogin"];
-    [userDefaults synchronize];
-    [self.loginButton setTitle:@"登录"];
-    [[PTAVPlayerManager sharedAVPlayerManager] updateFavInfo];
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    app.playerBottomView.favouriteButton.enabled = NO;
-//    app.playerBottomView.dislikeButton.enabled = NO;// 未实现
+    app.playerBottomView.userInteractionEnabled = NO;// 先关闭播放器底部视图的用户交互
+    
+    UIAlertController *alretController = [UIAlertController alertControllerWithTitle:@"退出登录" message:@"退出登录后将无法使用收藏功能，确定退出吗？" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *actionConfirm = [UIAlertAction actionWithTitle:@"确定退出" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [alretController dismissViewControllerAnimated:YES completion:nil];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults removeObjectForKey:@"oauth_token"];
+        [userDefaults removeObjectForKey:@"oauth_token_secret"];
+        [userDefaults setBool:NO forKey:@"isLogin"];
+        [userDefaults synchronize];
+        [self.loginButton setTitle:@"登录"];
+        [[PTPlayerManager sharedAVPlayerManager] updateFavInfo];
+        app.playerBottomView.favouriteButton.enabled = NO;
+        //    app.playerBottomView.dislikeButton.enabled = NO;// 未实现
+        app.playerBottomView.userInteractionEnabled = YES;// 重新开启用户交互
+        
+    }];
+    UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [alretController dismissViewControllerAnimated:YES completion:nil];
+        app.playerBottomView.userInteractionEnabled = YES;// 重新开启用户交互
+    }];
+    [alretController addAction:actionCancel];
+    [alretController addAction:actionConfirm];
+    [self presentViewController:alretController animated:YES completion:nil];
+    
 }
 - (IBAction)playFavouriteAction:(UIButton *)sender {
     BOOL isLogin = [[NSUserDefaults standardUserDefaults] boolForKey:@"isLogin"];
     if (isLogin) {
         [PTWebUtils requestRadioPlayListWithRadio_id:@"fav" andPage:1 andPerpage:0 completionHandler:^(id object) {
-            [[PTAVPlayerManager sharedAVPlayerManager] changeToPlayList:object andRadioWikiID:@"fav" completionHandler:^(BOOL isSuccess) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [SVProgressHUD showSuccessWithStatus:@"获取收藏曲目成功!"];
-                    [SVProgressHUD dismissWithDelay:1];
-                });                
-            }];            
+            [[PTPlayerManager sharedAVPlayerManager] changeToPlayList:object andRadioWikiID:@"fav"];            
         } errorHandler:^(id error) {
             NSLog(@"%@", error);
         }];

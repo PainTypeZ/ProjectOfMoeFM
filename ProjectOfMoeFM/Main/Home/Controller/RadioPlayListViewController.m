@@ -17,7 +17,7 @@
 
 #import "PTWebUtils.h"
 
-#import "PTAVPlayerManager.h"
+#import "PTPlayerManager.h"
 
 @interface RadioPlayListViewController ()<UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching>
 
@@ -164,15 +164,10 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
 }
 - (IBAction)playSingleSongAction:(UIButton *)sender {
     RadioPlayListCell *cell = (RadioPlayListCell *)sender.superview.superview;
-    [[PTAVPlayerManager sharedAVPlayerManager] playSingleSong:cell.radioPlaySong completionHandler:^(BOOL isSuccess) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [SVProgressHUD showSuccessWithStatus:@"播放单曲成功"];
-            [SVProgressHUD dismissWithDelay:1];
-        });        
-    }];
+    [[PTPlayerManager sharedAVPlayerManager] playSingleSong:cell.radioPlaySong];
 }
 - (IBAction)playAllSongsAction:(UIBarButtonItem *)sender {
-    [[PTAVPlayerManager sharedAVPlayerManager] changeToPlayList:self.radio_playlist andRadioWikiID:self.radioWiki.wiki_id completionHandler:nil];
+    [[PTPlayerManager sharedAVPlayerManager] changeToPlayList:self.radio_playlist andRadioWikiID:self.radioWiki.wiki_id];
 }
 
 - (void)didReceiveMemoryWarning {

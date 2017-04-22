@@ -9,7 +9,8 @@
 #import "OAuthViewController.h"
 #import "PTOAuthTool.h"
 #import <SVProgressHUD.h>
-#import "PTAVPlayerManager.h"
+#import "PTPlayerManager.h"
+#import "AppDelegate.h"
 NSString * const kRequestTokenURL = @"http://api.moefou.org/oauth/request_token";
 NSString * const kRequestAuthorizeURL = @"http://api.moefou.org/oauth/authorize";
 NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_token";
@@ -22,6 +23,8 @@ NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_t
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [app.window bringSubviewToFront:app.playerBottomView];
     [self oauthStepsBegin];
 }
 
@@ -55,20 +58,36 @@ NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_t
         // OAuth授权第三步
         [PTOAuthTool requestAccessOAuthTokenAndSecretWithURL:kRequestAccessTokenURL andVerifier:verifier completionHandler:^{
             //得到的accessToken和Secret已保存存到偏好设置
-            // 此处可以添加提示信息等效果
-            [SVProgressHUD showSuccessWithStatus:@"登录OAuth授权成功"];
-            [SVProgressHUD dismissWithDelay:1];
-            // 更新当前播放列表的歌曲信息
-            [[PTAVPlayerManager sharedAVPlayerManager] updateFavInfo];
-            // 跳转回mainStoryBoard初始界面
-            UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-            UIApplication *application = [UIApplication sharedApplication];
-            application.keyWindow.rootViewController = [mainStoryBoard instantiateInitialViewController];
-
+            // 此处可以返回主线程添加提示信息等效果
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // 更新当前播放列表的歌曲信息
+                [[PTPlayerManager sharedAVPlayerManager] updateFavInfo];
+                [SVProgressHUD showSuccessWithStatus:@"登录OAuth授权成功"];
+                [SVProgressHUD dismissWithDelay:2 completion:^{
+                    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                    app.playerBottomView.userInteractionEnabled = NO;// 先关闭播放器底部视图的用户交互
+                    
+                    UIAlertController *alretController = [UIAlertController alertControllerWithTitle:@"登录成功" message:@"现在可以使用收藏功能了" preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *actionConfirm = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                        [alretController dismissViewControllerAnimated:YES completion:nil];
+                        app.playerBottomView.userInteractionEnabled = YES;// 开启用户交互
+                        // 跳转回mainStoryBoard初始界面
+                        UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+                        UIApplication *application = [UIApplication sharedApplication];
+                        application.keyWindow.rootViewController = [mainStoryBoard instantiateInitialViewController];
+                    }];
+                    [alretController addAction:actionConfirm];
+                    [self presentViewController:alretController animated:YES completion:nil];
+                }];
+            });
         }];
         return NO;
     }
     return YES;
+}
+
+- (void)dealloc {
+    NSLog(@"授权界面被销毁了");
 }
 
 /*

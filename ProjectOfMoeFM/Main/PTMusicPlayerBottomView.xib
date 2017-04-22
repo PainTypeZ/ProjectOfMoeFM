@@ -38,15 +38,6 @@
                         <constraint firstAttribute="width" secondItem="hst-Lt-nbm" secondAttribute="height" multiplier="1:1" id="CJH-tk-1Tm"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AYZ-iD-9RG">
-                    <rect key="frame" x="312" y="32.5" width="61" height="21"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="61" id="9AW-HL-UGP"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" weight="black" pointSize="17"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="歌曲名" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oxk-aP-ZoC">
                     <rect key="frame" x="60" y="2" width="315" height="20"/>
                     <constraints>
@@ -111,6 +102,15 @@
                         <action selector="nextAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="etE-Wa-00R"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AYZ-iD-9RG">
+                    <rect key="frame" x="305" y="33.5" width="65" height="19.5"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="65" id="9AW-HL-UGP"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="black" pointSize="16"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.2819526792" green="0.6659956574" blue="0.96032720800000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -139,7 +139,7 @@
                 <constraint firstItem="Oxk-aP-ZoC" firstAttribute="leading" secondItem="hst-Lt-nbm" secondAttribute="trailing" id="cmI-iD-bsF"/>
                 <constraint firstItem="1XS-4z-f7s" firstAttribute="height" secondItem="lhO-EL-bTL" secondAttribute="height" id="cnI-HF-v4I"/>
                 <constraint firstItem="rxx-Az-TJY" firstAttribute="width" secondItem="lhO-EL-bTL" secondAttribute="width" id="eFn-Xz-82p"/>
-                <constraint firstAttribute="trailing" secondItem="AYZ-iD-9RG" secondAttribute="trailing" constant="2" id="fMB-Q8-4JI"/>
+                <constraint firstAttribute="trailing" secondItem="AYZ-iD-9RG" secondAttribute="trailing" constant="5" id="fMB-Q8-4JI"/>
                 <constraint firstItem="1XS-4z-f7s" firstAttribute="centerY" secondItem="lhO-EL-bTL" secondAttribute="centerY" id="hK3-Hr-VIk"/>
                 <constraint firstAttribute="bottom" secondItem="hst-Lt-nbm" secondAttribute="bottom" id="kaW-oH-1ku"/>
                 <constraint firstItem="lhO-EL-bTL" firstAttribute="leading" secondItem="hst-Lt-nbm" secondAttribute="trailing" constant="5" id="lTj-ih-blp"/>
@@ -164,7 +164,7 @@
                 <outlet property="radioSongPlayTimeLabel" destination="AYZ-iD-9RG" id="pn0-hp-wor"/>
                 <outlet property="radioSongTitleLabel" destination="Oxk-aP-ZoC" id="J23-fX-TlE"/>
             </connections>
-            <point key="canvasLocation" x="349.5" y="-123.5"/>
+            <point key="canvasLocation" x="349.5" y="-124"/>
         </view>
     </objects>
     <resources>

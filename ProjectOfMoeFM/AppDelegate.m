@@ -14,7 +14,7 @@
 #import "PTOAuthTool.h"
 #import "PTWebUtils.h"
 #import "MoefmAPIConst.h"
-#import "PTAVPlayerManager.h"
+#import "PTPlayerManager.h"
 
 NSString * const kConsumerKey = @"2a964c3a6cf90dcb31fccd75703bafbc058e8e3ba";
 NSString * const kConsumerSecret = @"8af19f17b8f7494853b8e2a3ea5f4669";
@@ -27,6 +27,7 @@ NSString * const kConsumerSecret = @"8af19f17b8f7494853b8e2a3ea5f4669";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [[UIButton appearance] setExclusiveTouch:YES];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];    
     if (![userDefaults objectForKey:@"consumer_key"]) {
         [userDefaults setObject:kConsumerKey forKey:@"consumer_key"];
@@ -41,10 +42,10 @@ NSString * const kConsumerSecret = @"8af19f17b8f7494853b8e2a3ea5f4669";
     [self.window bringSubviewToFront:_playerBottomView];
     
     // 用单例构造方法初始化playerManager实例
-    PTAVPlayerManager *playerManager = [PTAVPlayerManager sharedAVPlayerManager];
+    PTPlayerManager *playerManager = [PTPlayerManager sharedAVPlayerManager];
     // 启动时默认开始播放，测试用
     [PTWebUtils requestRadioPlayListWithRadio_id:kTestRadioID andPage:1 andPerpage:9 completionHandler:^(id object) {
-        [playerManager changeToPlayList:object andRadioWikiID:kTestRadioID completionHandler:nil];
+        [playerManager changeToPlayList:object andRadioWikiID:kTestRadioID];
     } errorHandler:^(id error) {
         NSLog(@"%@", error);
     }];
@@ -67,7 +68,7 @@ NSString * const kConsumerSecret = @"8af19f17b8f7494853b8e2a3ea5f4669";
     //其中的_bgTaskId是后台任务UIBackgroundTaskIdentifier _bgTaskId;
 }
 // 实现一下backgroundPlayerID:这个方法:
-+(UIBackgroundTaskIdentifier)backgroundPlayerID:(UIBackgroundTaskIdentifier)backTaskId
++ (UIBackgroundTaskIdentifier)backgroundPlayerID:(UIBackgroundTaskIdentifier)backTaskId
 {
     //设置并激活音频会话类别
     AVAudioSession *session=[AVAudioSession sharedInstance];
@@ -84,11 +85,9 @@ NSString * const kConsumerSecret = @"8af19f17b8f7494853b8e2a3ea5f4669";
     }
     return newTaskId;
 }
-
 //重写父类方法，接受外部事件的处理
 - (void) remoteControlReceivedWithEvent: (UIEvent *) receivedEvent {
     if (receivedEvent.type == UIEventTypeRemoteControl) {
-        
         switch (receivedEvent.subtype) {
                 
 //            case UIEventSubtypeRemoteControlTogglePlayPause:
@@ -100,15 +99,15 @@ NSString * const kConsumerSecret = @"8af19f17b8f7494853b8e2a3ea5f4669";
 //                break;
                 
             case UIEventSubtypeRemoteControlNextTrack:
-                [[PTAVPlayerManager sharedAVPlayerManager] playNextSongWithCompletionHandler:nil];
+                [[PTPlayerManager sharedAVPlayerManager] playNextSong];
                 break;
                 
             case UIEventSubtypeRemoteControlPlay:
-                [[PTAVPlayerManager sharedAVPlayerManager] play];
+                [[PTPlayerManager sharedAVPlayerManager] play];
                 break;
                 
             case UIEventSubtypeRemoteControlPause:
-                [[PTAVPlayerManager sharedAVPlayerManager] pause];
+                [[PTPlayerManager sharedAVPlayerManager] pause];
                 break;
                 
             default:
@@ -116,7 +115,6 @@ NSString * const kConsumerSecret = @"8af19f17b8f7494853b8e2a3ea5f4669";
         }
     }
 }
-
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
