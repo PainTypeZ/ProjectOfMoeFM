@@ -4,11 +4,6 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>AFNetworking.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>JSONModel.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -36,37 +31,6 @@
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
-	<dict>
-		<key>04CF549EBEEE7BC87AEAE35397184D94</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>160E6A74704301FBF4747F172EA9C6CD</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>43FFE29DE6992D31D5E7B5FCCEDC951D</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>55E3CFFEDC2629EE0C17B343EC00595B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>9B4F6CA35E30AF689A4CEE84B20C58A2</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>9E033EDB5EC0819481B0546434FA577B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-	</dict>
+	<dict/>
 </dict>
 </plist>
