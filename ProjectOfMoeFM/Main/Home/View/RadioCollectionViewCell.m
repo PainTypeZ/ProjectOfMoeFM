@@ -39,8 +39,8 @@
     // 重设默认图片，防止cell复用时错误显示图片
     _radioCoverImageView.image = [UIImage imageNamed:@"cover_default_image.png"];
     
-    NSString *coverURLString = _radioWiki.wiki_cover[MoeCoverSizeSquareKey];
-    if (![coverURLString isEqualToString:MoeDefaultCoverURL]) {
+    NSString *coverURLString = _radioWiki.wiki_cover[MoePictureSizeSquareKey];
+    if (![coverURLString isEqualToString:MoeDefaultPictureURL]) {
         NSURL *coverURL = [NSURL URLWithString:coverURLString];
         [_radioCoverImageView sd_setImageWithURL:coverURL];
     }

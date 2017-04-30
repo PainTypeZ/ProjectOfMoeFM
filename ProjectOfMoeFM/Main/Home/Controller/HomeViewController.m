@@ -7,6 +7,8 @@
 //
 
 
+
+#define kTestRadioID @"11138"
 /* collectionViewConstants */
 #define kMainScreenWidth [UIScreen mainScreen].bounds.size.width
 #define kNumberOfItemsPerRow 3
@@ -60,6 +62,42 @@ static NSString * const reuseIdentifier = @"radioCell";
     [self initSubObjects];
     [self addCollectionViewRefresh];
     
+    // 只有在程序启动时执行一次
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [SVProgressHUD showWithStatus:@"正在检查OAuth授权状态，请稍后"];
+        // 检查OAuth授权是否任然有效
+        [PTWebUtils requestUserInfoWithCompletionHandler:^(id object) {
+            NSDictionary *userDict = [NSDictionary dictionaryWithDictionary:object];
+            
+            if ([userDict[@"isOAuth"] isEqualToString:@"NO"]) {
+                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isLogin"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                    app.playerBottomView.favouriteButton.enabled = NO;
+                    [self.loginButton setTitle:@"登录"];
+                    [self sendRadioListRequest];
+                    [self sendPlayListRequest];// 测试用
+                });
+                NSLog(@"OAuthToken已失效");
+            }else{
+                NSLog(@"%@,%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"oauth_token"], [[NSUserDefaults standardUserDefaults] objectForKey:@"oauth_token_secret"]);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                    app.playerBottomView.favouriteButton.enabled = YES;
+                    // app.playerBottomView.dislikeButton.enabled = YES;// 未实现
+                    [self.loginButton setTitle:@"退出登录"];
+                    [self sendRadioListRequest];
+                    [self sendPlayListRequest];// 测试用
+                });
+            }
+            [SVProgressHUD dismiss];
+        } errorHandler:^(id error) {
+            NSLog(@"%@", error);
+        }];
+    });
+
     // 设置背景图的毛玻璃效果
 //    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
 //    UIVisualEffectView *visualEffect = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
@@ -67,6 +105,7 @@ static NSString * const reuseIdentifier = @"radioCell";
 //    [self.backgroundImageView addSubview:visualEffect];
   
 }
+
 // MJRefresh
 - (void)addCollectionViewRefresh {
     __weak HomeViewController *weakSelf = self;
@@ -111,16 +150,7 @@ static NSString * const reuseIdentifier = @"radioCell";
     [super viewWillAppear:YES];
     [self checkOAuthState];
     if (self.radio_wikis.count == 0) {
-        // 请求电台列表信息
-        [PTWebUtils requestRadioListInfoWithPagea:self.currentPage andPerPage:self.perpage completionHandler:^(id object) {
-            self.radio_wikis = object;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.radioCollectionView reloadData];
-            });
-
-        } errorHandler:^(id error) {
-            NSLog(@"%@", error);
-        }];
+        [self sendRadioListRequest];
     }
 }
 
@@ -136,16 +166,43 @@ static NSString * const reuseIdentifier = @"radioCell";
 // 检查是否登录OAuth
 - (void)checkOAuthState {
     BOOL isLogin = [[NSUserDefaults standardUserDefaults] boolForKey:@"isLogin"];
-    
+    NSLog(@"loginState:%@", isLogin?@"YES":@"NO");
     if (isLogin) {
-        NSLog(@"loginState:%@", isLogin?@"YES":@"NO");
-        NSLog(@"%@,%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"oauth_token"], [[NSUserDefaults standardUserDefaults] objectForKey:@"oauth_token_secret"]);
-        [self.loginButton setTitle:@"退出登录"];        
-        
+        [self.loginButton setTitle:@"退出登录"];
         AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         app.playerBottomView.favouriteButton.enabled = YES;
-//        app.playerBottomView.dislikeButton.enabled = YES;// 未实现
+        // app.playerBottomView.dislikeButton.enabled = YES;// 未实现
+    }else{
+        AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        app.playerBottomView.favouriteButton.enabled = NO;
+        [self.loginButton setTitle:@"登录"];
     }
+}
+
+- (void)sendRadioListRequest {
+    if (self.radio_wikis.count == 0) {
+        // 请求电台列表信息
+        [PTWebUtils requestRadioListInfoWithPagea:self.currentPage andPerPage:self.perpage completionHandler:^(id object) {
+            self.radio_wikis = object;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.radioCollectionView reloadData];
+            });
+            
+        } errorHandler:^(id error) {
+            NSLog(@"%@", error);
+        }];
+    }
+}
+
+- (void)sendPlayListRequest {
+    // 用单例构造方法初始化playerManager实例
+    PTPlayerManager *playerManager = [PTPlayerManager sharedAVPlayerManager];
+    // 启动时默认开始播放，测试用
+    [PTWebUtils requestRadioPlayListWithRadio_id:kTestRadioID andPage:1 andPerpage:9 completionHandler:^(id object) {
+        [playerManager changeToPlayList:object andRadioWikiID:kTestRadioID];
+    } errorHandler:^(id error) {
+        NSLog(@"%@", error);
+    }];
 }
 
 // 退出登录
@@ -203,8 +260,8 @@ static NSString * const reuseIdentifier = @"radioCell";
 
 // 点击OAuth登录按钮事件
 - (IBAction)oauthLogin:(UIBarButtonItem *)sender {
-    BOOL isLogin = [[NSUserDefaults standardUserDefaults] boolForKey:@"isLogin"];
-    if (isLogin) {
+//    BOOL isLogin = [[NSUserDefaults standardUserDefaults] boolForKey:@"isLogin"];
+    if ([sender.title isEqualToString:@"退出登录"]) {
         [self oauthLoginOut];
     }else {
         UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"OAuth" bundle:[NSBundle mainBundle]];

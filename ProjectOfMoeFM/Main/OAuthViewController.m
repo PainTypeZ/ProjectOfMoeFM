@@ -59,9 +59,9 @@ NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_t
         [PTOAuthTool requestAccessOAuthTokenAndSecretWithURL:kRequestAccessTokenURL andVerifier:verifier completionHandler:^{
             //得到的accessToken和Secret已保存存到偏好设置
             // 此处可以返回主线程添加提示信息等效果
+            [[PTPlayerManager sharedAVPlayerManager] updateFavInfo];
             dispatch_async(dispatch_get_main_queue(), ^{
-                // 更新当前播放列表的歌曲信息
-                [[PTPlayerManager sharedAVPlayerManager] updateFavInfo];
+                // 更新当前播放列表的歌曲信息                
                 [SVProgressHUD showSuccessWithStatus:@"登录OAuth授权成功"];
                 [SVProgressHUD dismissWithDelay:2 completion:^{
                     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;

@@ -1,18 +1,18 @@
 //
-//  UserViewController.m
+//  MineViewController.m
 //  ProjectOfMoeFM
 //
-//  Created by 彭平军 on 2017/4/8.
+//  Created by 彭平军 on 2017/4/25.
 //  Copyright © 2017年 彭平军. All rights reserved.
 //
 
-#import "UserViewController.h"
+#import "MineViewController.h"
 
-@interface UserViewController ()
+@interface MineViewController ()
 
 @end
 
-@implementation UserViewController
+@implementation MineViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

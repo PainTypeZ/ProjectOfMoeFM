@@ -151,8 +151,8 @@ typedef NS_ENUM(NSUInteger, OAuthSteps) {
 // 根据步骤数用传入PTOAuthModel实例生成OAuth加密签名,返回拼接好的URL
 + (NSURL *)createOAuthCompletedGETURLWithPTOAuthModel:(PTOAuthModel *)oauthModel inOAuthSteps:(OAuthSteps)oauthStep {
     
-    // 创建参数字典,判断是否为通用方法
-    NSMutableDictionary *paramsDictionary = (oauthStep == OAuthStepsGetResource) ? [NSMutableDictionary dictionaryWithDictionary:oauthModel.params] : [NSMutableDictionary dictionary];
+    // 创建参数字典,判断是否为通用方法且参数不是nil
+    NSMutableDictionary *paramsDictionary = (oauthStep == OAuthStepsGetResource) && oauthModel.params ? [NSMutableDictionary dictionaryWithDictionary:oauthModel.params] : [NSMutableDictionary dictionary];
     [paramsDictionary setObject:oauthModel.oauthConsumerKey forKey:@"oauth_consumer_key"];
     [paramsDictionary setObject:oauthModel.oauthTimestamp forKey:@"oauth_timestamp"];
     [paramsDictionary setObject:oauthModel.oauthNonce forKey:@"oauth_nonce"];

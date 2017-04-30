@@ -43,6 +43,8 @@
 		07670F1D1EA06D080027E3EA /* play@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07670F181EA06D080027E3EA /* play@2x.png */; };
 		07670F201EA06DE60027E3EA /* dislike_no@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07670F1E1EA06DE60027E3EA /* dislike_no@2x.png */; };
 		07670F211EA06DE60027E3EA /* dislike_yes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07670F1F1EA06DE60027E3EA /* dislike_yes@2x.png */; };
+		0769F0B31EAF74EE005EE315 /* RadioUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0769F0B21EAF74EE005EE315 /* RadioUser.m */; };
+		0769F0B61EAF769C005EE315 /* MineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0769F0B51EAF769C005EE315 /* MineViewController.m */; };
 		07BAD4501E99FCF8009B6691 /* PTWebUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BAD44F1E99FCF8009B6691 /* PTWebUtils.m */; };
 		07BAD45F1E9BC3B8009B6691 /* OAuth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07BAD45E1E9BC3B8009B6691 /* OAuth.storyboard */; };
 		07BAD4621E9BC423009B6691 /* OAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BAD4611E9BC423009B6691 /* OAuthViewController.m */; };
@@ -58,7 +60,6 @@
 		07FEF3601E99099600F6AC3B /* CollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FEF34D1E99099600F6AC3B /* CollectionViewController.m */; };
 		07FEF3611E99099600F6AC3B /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FEF3531E99099600F6AC3B /* HomeViewController.m */; };
 		07FEF3621E99099600F6AC3B /* MainTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FEF3571E99099600F6AC3B /* MainTabBarController.m */; };
-		07FEF3631E99099600F6AC3B /* UserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FEF35B1E99099600F6AC3B /* UserViewController.m */; };
 		07FEF3651E9909FB00F6AC3B /* PodFile in Resources */ = {isa = PBXBuildFile; fileRef = 07FEF3641E9909FB00F6AC3B /* PodFile */; };
 		07FEF3681E990F8500F6AC3B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FEF3671E990F8500F6AC3B /* AppDelegate.m */; };
 		AD2C4EDC213B5E911500E7B1 /* libPods-ProjectOfMoeFM.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CE97BC1DFD5452A0EC3D77D /* libPods-ProjectOfMoeFM.a */; };
@@ -120,6 +121,10 @@
 		07670F181EA06D080027E3EA /* play@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play@2x.png"; sourceTree = "<group>"; };
 		07670F1E1EA06DE60027E3EA /* dislike_no@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dislike_no@2x.png"; sourceTree = "<group>"; };
 		07670F1F1EA06DE60027E3EA /* dislike_yes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dislike_yes@2x.png"; sourceTree = "<group>"; };
+		0769F0B11EAF74EE005EE315 /* RadioUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioUser.h; sourceTree = "<group>"; };
+		0769F0B21EAF74EE005EE315 /* RadioUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadioUser.m; sourceTree = "<group>"; };
+		0769F0B41EAF769C005EE315 /* MineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MineViewController.h; sourceTree = "<group>"; };
+		0769F0B51EAF769C005EE315 /* MineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MineViewController.m; sourceTree = "<group>"; };
 		07BAD44E1E99FCF8009B6691 /* PTWebUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PTWebUtils.h; path = Main/PTWebUtils.h; sourceTree = "<group>"; };
 		07BAD44F1E99FCF8009B6691 /* PTWebUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PTWebUtils.m; path = Main/PTWebUtils.m; sourceTree = "<group>"; };
 		07BAD45E1E9BC3B8009B6691 /* OAuth.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = OAuth.storyboard; sourceTree = "<group>"; };
@@ -147,8 +152,6 @@
 		07FEF3531E99099600F6AC3B /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		07FEF3561E99099600F6AC3B /* MainTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTabBarController.h; sourceTree = "<group>"; };
 		07FEF3571E99099600F6AC3B /* MainTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTabBarController.m; sourceTree = "<group>"; };
-		07FEF35A1E99099600F6AC3B /* UserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserViewController.h; sourceTree = "<group>"; };
-		07FEF35B1E99099600F6AC3B /* UserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserViewController.m; sourceTree = "<group>"; };
 		07FEF3641E9909FB00F6AC3B /* PodFile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PodFile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		07FEF3661E990F8500F6AC3B /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		07FEF3671E990F8500F6AC3B /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -179,8 +182,6 @@
 		071C0A571EA4A4DF0022C709 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				074CCB0C1EAA42BB00BE2B83 /* PTPlayerManager.h */,
-				074CCB0D1EAA42BB00BE2B83 /* PTPlayerManager.m */,
 				071C0A521EA394650022C709 /* PlayerData.h */,
 				071C0A531EA394650022C709 /* PlayerData.m */,
 				07670EFD1E9F8ED40027E3EA /* MoefmAPIConst.h */,
@@ -198,6 +199,8 @@
 				07FEF3671E990F8500F6AC3B /* AppDelegate.m */,
 				07BAD4601E9BC423009B6691 /* OAuthViewController.h */,
 				07BAD4611E9BC423009B6691 /* OAuthViewController.m */,
+				074CCB0C1EAA42BB00BE2B83 /* PTPlayerManager.h */,
+				074CCB0D1EAA42BB00BE2B83 /* PTPlayerManager.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -298,6 +301,48 @@
 			name = Playlist;
 			sourceTree = "<group>";
 		};
+		0769F0A91EAF7473005EE315 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				0769F0B11EAF74EE005EE315 /* RadioUser.h */,
+				0769F0B21EAF74EE005EE315 /* RadioUser.m */,
+			);
+			name = User;
+			sourceTree = "<group>";
+		};
+		0769F0AA1EAF74B4005EE315 /* Mine */ = {
+			isa = PBXGroup;
+			children = (
+				0769F0AB1EAF74B4005EE315 /* Controller */,
+				0769F0AE1EAF74B4005EE315 /* Model */,
+				0769F0AF1EAF74B4005EE315 /* View */,
+			);
+			path = Mine;
+			sourceTree = "<group>";
+		};
+		0769F0AB1EAF74B4005EE315 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				0769F0B41EAF769C005EE315 /* MineViewController.h */,
+				0769F0B51EAF769C005EE315 /* MineViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		0769F0AE1EAF74B4005EE315 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0769F0AF1EAF74B4005EE315 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		07E7B6131E9D0C27004C9CF1 /* PTOAuthTool */ = {
 			isa = PBXGroup;
 			children = (
@@ -368,7 +413,7 @@
 				07FEF3501E99099600F6AC3B /* Home */,
 				07FEF3421E99099600F6AC3B /* Album */,
 				07FEF34A1E99099600F6AC3B /* Collection */,
-				07FEF3581E99099600F6AC3B /* User */,
+				0769F0AA1EAF74B4005EE315 /* Mine */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -465,6 +510,7 @@
 			children = (
 				07670EAC1E9E49BD0027E3EA /* RadioResponse.h */,
 				07670EAD1E9E49BD0027E3EA /* RadioResponse.m */,
+				0769F0A91EAF7473005EE315 /* User */,
 				07670ED81E9E9D550027E3EA /* Infomation */,
 				07670ED61E9E9CB60027E3EA /* Wikis */,
 				07670ED71E9E9CFA0027E3EA /* Relationships */,
@@ -483,39 +529,6 @@
 				07E27B341EA5B88600CF7FDA /* RadioCollectionReusableView.m */,
 				07670EF21E9F83390027E3EA /* RadioPlayListCell.h */,
 				07670EF31E9F83390027E3EA /* RadioPlayListCell.m */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		07FEF3581E99099600F6AC3B /* User */ = {
-			isa = PBXGroup;
-			children = (
-				07FEF3591E99099600F6AC3B /* Controller */,
-				07FEF35C1E99099600F6AC3B /* Model */,
-				07FEF35D1E99099600F6AC3B /* View */,
-			);
-			path = User;
-			sourceTree = "<group>";
-		};
-		07FEF3591E99099600F6AC3B /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				07FEF35A1E99099600F6AC3B /* UserViewController.h */,
-				07FEF35B1E99099600F6AC3B /* UserViewController.m */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		07FEF35C1E99099600F6AC3B /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		07FEF35D1E99099600F6AC3B /* View */ = {
-			isa = PBXGroup;
-			children = (
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -686,8 +699,8 @@
 			files = (
 				07670F111EA05A030027E3EA /* PTMusicPlayerBottomView.m in Sources */,
 				07E27B351EA5B88600CF7FDA /* RadioCollectionReusableView.m in Sources */,
+				0769F0B31EAF74EE005EE315 /* RadioUser.m in Sources */,
 				07670EF11E9F7D3D0027E3EA /* RadioPlayListViewController.m in Sources */,
-				07FEF3631E99099600F6AC3B /* UserViewController.m in Sources */,
 				07670EC31E9E637F0027E3EA /* RadioParameters.m in Sources */,
 				07E7B61B1E9D0C27004C9CF1 /* PTOAuthModel.m in Sources */,
 				07E7B61A1E9D0C27004C9CF1 /* NSString+PTCollection.m in Sources */,
@@ -711,6 +724,7 @@
 				07670EE21E9F3DD40027E3EA /* RadioInformation.m in Sources */,
 				07670EDF1E9F380E0027E3EA /* RadioPlaySong.m in Sources */,
 				071C0A6E1EA593290022C709 /* Favourite.m in Sources */,
+				0769F0B61EAF769C005EE315 /* MineViewController.m in Sources */,
 				07FEF3681E990F8500F6AC3B /* AppDelegate.m in Sources */,
 				071C0A711EA593490022C709 /* FavObject.m in Sources */,
 				07670EAE1E9E49BD0027E3EA /* RadioResponse.m in Sources */,

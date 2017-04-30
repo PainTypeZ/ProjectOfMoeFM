@@ -47,7 +47,9 @@
                 NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
                 RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
-                NSLog(@"%@", jsonModelError);
+                if (jsonModelError) {
+                    NSLog(@"%@", jsonModelError);
+                }
                 NSMutableArray *callbackMuatableArray = [radioResponse.wikis mutableCopy];
                 callback(callbackMuatableArray);
             }else{
@@ -59,7 +61,43 @@
     }];
     [task resume];
 }
+// 请求热门电台列表
++ (void)requestHotRadiosWithCompletionHandler:(callback)callback errorHandler:(error)errorHandler {
 
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:@"json" forKey:@"api"];
+    [params setObject:@"1" forKey:@"hot_radios"];
+    
+    NSURL *url = [PTWebUtils getCompletedAPIKeyRequestURLWithURLString:MoeRadioListURL andParams:params];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            NSString *errorString = [NSString stringWithFormat:@"%@", error];
+            NSLog(@"%@", errorString);
+            errorHandler(errorString);
+        }else{
+            if (data) {
+                NSError *jsonModelError;
+                
+                NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                
+                RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
+                if (jsonModelError) {
+                    NSLog(@"%@", jsonModelError);
+                }
+                NSMutableArray *callbackMuatableArray = [radioResponse.wikis mutableCopy];
+                callback(callbackMuatableArray);
+            }else{
+                NSString *errorString = @"request data is nil";
+                //                NSLog(@"%@", errorString);
+                errorHandler(errorString);
+            }
+        }
+    }];
+    [task resume];
+}
 // 请求某个电台专辑的歌曲列表信息，除了获取歌曲总数外，大概是没其他用的接口。。。
 + (void)requestRadioSongsInfoWithWiki_id:(NSString *)wiki_id completionHandler:(callback)callback errorHandler:(error)errorHandler {
 
@@ -88,7 +126,9 @@
                 NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
                 RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
-                NSLog(@"%@", jsonModelError);
+                if (jsonModelError) {
+                    NSLog(@"%@", jsonModelError);
+                }
                 RadioInformation *radioInformation = radioResponse.information;
                 callback(radioInformation);
             }else{
@@ -139,7 +179,9 @@
                 NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
                 RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
-                NSLog(@"%@", jsonModelError);
+                if (jsonModelError) {
+                    NSLog(@"%@", jsonModelError);
+                }
                 
                 NSMutableArray *callbackMutableArray = [radioResponse.playlist mutableCopy];
                 callback(callbackMutableArray);
@@ -184,7 +226,9 @@
                 NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
                 RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
-                NSLog(@"%@", jsonModelError);
+                if (jsonModelError) {
+                    NSLog(@"%@", jsonModelError);
+                }
                 
                 
                 NSString *callbackString;
@@ -207,6 +251,47 @@
     }];
     [task resume];
 }
+// 请求用户信息,同时用作登录状态检查
++ (void)requestUserInfoWithCompletionHandler:(callback)callback errorHandler:(error)errorHandler {
+    
+    
+    NSURL *url = [PTWebUtils getCompletedAPIKeyRequestURLWithURLString:MoeUserInfoURL andParams:nil];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            
+            NSString *errorString = [NSString stringWithFormat:@"%@", error];
+            NSLog(@"%@", errorString);
+            errorHandler(errorString);
+        }else{
+            if (data) {
+                NSError *jsonModelError;
+                
+                NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
+                if (jsonModelError) {
+                    NSLog(@"%@", jsonModelError);
+                }
+                NSMutableDictionary *callbackdict = [NSMutableDictionary dictionary];
+                if (radioResponse.information.has_error == YES) {
+                    [callbackdict setObject:@"NO" forKey:@"isOAuth"];
+                }else{
+                    [callbackdict setObject:@"YES" forKey:@"isOAuth"];
+                    [callbackdict setObject:radioResponse.user forKey:@"user"];
+                }
+                
+                callback(callbackdict);
+                
+            }else{
+                NSString *errorString = @"request data is nil";
+                errorHandler(errorString);
+            }
+        }
+    }];
+    [task resume];
+}
 
 #pragma mark - private methods
 // 获取API Key请求的完整URL
@@ -218,7 +303,12 @@
         completedGETURL = [PTOAuthTool getCompletedOAuthResourceRequestURLWithURLString:url andParams:params];
     } else {
         // 创建参数字典
-        NSMutableDictionary *paramsDictionary =[NSMutableDictionary dictionaryWithDictionary:params];
+        NSMutableDictionary *paramsDictionary;
+        if (params) {
+           paramsDictionary =[NSMutableDictionary dictionaryWithDictionary:params];
+        }else{
+            paramsDictionary = [NSMutableDictionary dictionary];
+        }
         NSString *api_key = [[NSUserDefaults standardUserDefaults] objectForKey:@"consumer_key"];
         [paramsDictionary setObject:api_key forKey:@"api_key"];
         

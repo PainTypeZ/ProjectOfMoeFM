@@ -68,10 +68,10 @@
             </objects>
             <point key="canvasLocation" x="1168.8" y="441.22938530734638"/>
         </scene>
-        <!--用户-->
+        <!--我的-->
         <scene sceneID="JUa-gc-aXV">
             <objects>
-                <viewController id="xb7-x2-cNQ" customClass="UserViewController" sceneMemberID="viewController">
+                <viewController id="xb7-x2-cNQ" customClass="MineViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="0iy-PA-x23"/>
                         <viewControllerLayoutGuide type="bottom" id="rnk-BG-udJ"/>
@@ -81,7 +81,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="用户" id="bo1-xT-599"/>
+                    <navigationItem key="navigationItem" title="我的" id="bo1-xT-599"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mdB-bg-dmo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -309,7 +309,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="电台名称" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qZJ-rF-p63">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
                                             <fontDescription key="fontDescription" type="system" weight="black" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -332,19 +332,19 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0nj-Rf-Lob">
-                                                    <rect key="frame" x="112.5" y="2" width="205.5" height="17"/>
+                                                    <rect key="frame" x="112.5" y="2" width="260.5" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" weight="black" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hOU-aB-OUV">
-                                                    <rect key="frame" x="112.5" y="21" width="205.5" height="14.5"/>
+                                                    <rect key="frame" x="112.5" y="21" width="260.5" height="14.5"/>
                                                     <fontDescription key="fontDescription" type="system" weight="black" pointSize="12"/>
                                                     <color key="textColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8y5-91-EXI">
-                                                    <rect key="frame" x="276" y="94" width="39" height="17"/>
+                                                    <rect key="frame" x="331" y="94" width="39" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" weight="black" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -484,11 +484,11 @@
             </objects>
             <point key="canvasLocation" x="229.59999999999999" y="441.22938530734638"/>
         </scene>
-        <!--用户-->
+        <!--我的-->
         <scene sceneID="et9-Ep-gGw">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="LG9-E9-zec" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="用户" id="d0l-2X-Hga"/>
+                    <tabBarItem key="tabBarItem" title="我的" id="d0l-2X-Hga"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="a9r-WZ-DCn">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -496,7 +496,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="xb7-x2-cNQ" kind="relationship" relationship="rootViewController" id="ndx-u6-seo"/>
+                        <segue destination="xb7-x2-cNQ" kind="relationship" relationship="rootViewController" id="fu5-W0-SX4"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JXw-3P-UmK" userLabel="First Responder" sceneMemberID="firstResponder"/>

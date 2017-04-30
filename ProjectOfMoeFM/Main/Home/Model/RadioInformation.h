@@ -12,7 +12,7 @@
 
 @property (strong, nonatomic) RadioParameters *parameters;// @{wiki_type, page, pergage, oauth_consumer_key, oauth_token, oauth_signature_method, oauth_timestamp, oauth_nonce, oauth_version, oauth_signature}
 @property (strong, nonatomic) NSArray <Optional> *msg;// @[]
-@property (copy, nonatomic) NSString *has_error;
+@property (assign, nonatomic) BOOL has_error;
 @property (copy, nonatomic) NSString *error;
 @property (copy, nonatomic) NSString *request;
 @property (copy, nonatomic) NSString <Optional> *page;

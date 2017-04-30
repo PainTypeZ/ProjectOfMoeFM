@@ -117,8 +117,8 @@
         self.playButton.selected = YES;
         
         // 显示歌曲图片，SDWebImage方法
-        if (self.playingSong.cover[MoeCoverSizeSquareKey]) {
-            NSURL *url = self.playingSong.cover[MoeCoverSizeSquareKey];
+        if (self.playingSong.cover[MoePictureSizeSquareKey]) {
+            NSURL *url = self.playingSong.cover[MoePictureSizeSquareKey];
             [self.radioSongCoverImageView sd_setImageWithURL:url];
         }
     });  

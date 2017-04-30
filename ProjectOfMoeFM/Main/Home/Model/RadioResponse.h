@@ -12,10 +12,12 @@
 #import "RadioRelationships.h"
 #import "RadioPlaySong.h"
 #import "Favourite.h"
+#import "RadioUser.h"
 
 @interface RadioResponse : JSONModel
 
 @property (strong, nonatomic) RadioInformation <Optional> *information;
+@property (strong, nonatomic) RadioUser <Optional> *user;
 @property (strong, nonatomic) NSArray <Optional, Favourite> *favs;
 @property (strong, nonatomic) NSDictionary <Optional> *fav;
 @property (copy, nonatomic) NSString <Optional> *fav_id;

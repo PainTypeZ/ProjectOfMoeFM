@@ -18,6 +18,7 @@
 @property (copy, nonatomic) NSString *wiki_type;
 @property (copy, nonatomic) NSString *wiki_date;
 @property (copy, nonatomic) NSString *wiki_modified;
+@property (copy, nonatomic) NSString <Optional>*fav_count;
 @property (strong, nonatomic) NSArray <Optional>*wiki_meta;// @[@{meta_value, meta_key, meta_type}, @{meta_key, meta_type, meta_value = @{bg = @{url, color, position}}}];
 @property (copy, nonatomic) NSString *wiki_fm_url;
 @property (copy, nonatomic) NSString *wiki_url;

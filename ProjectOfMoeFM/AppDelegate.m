@@ -8,11 +8,9 @@
 
 
 #define kPTMusicPlayerBottomViewHeight 60.0
-#define kTestRadioID @"11138"
 
 #import "AppDelegate.h"
 #import "PTOAuthTool.h"
-#import "PTWebUtils.h"
 #import "MoefmAPIConst.h"
 #import "PTPlayerManager.h"
 
@@ -40,15 +38,6 @@ NSString * const kConsumerSecret = @"8af19f17b8f7494853b8e2a3ea5f4669";
     self.playerBottomView.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height - kPTMusicPlayerBottomViewHeight, [UIScreen mainScreen].bounds.size.width, kPTMusicPlayerBottomViewHeight);
     [self.window addSubview:_playerBottomView];
     [self.window bringSubviewToFront:_playerBottomView];
-    
-    // 用单例构造方法初始化playerManager实例
-    PTPlayerManager *playerManager = [PTPlayerManager sharedAVPlayerManager];
-    // 启动时默认开始播放，测试用
-    [PTWebUtils requestRadioPlayListWithRadio_id:kTestRadioID andPage:1 andPerpage:9 completionHandler:^(id object) {
-        [playerManager changeToPlayList:object andRadioWikiID:kTestRadioID];
-    } errorHandler:^(id error) {
-        NSLog(@"%@", error);
-    }];
     
     return YES;
 }

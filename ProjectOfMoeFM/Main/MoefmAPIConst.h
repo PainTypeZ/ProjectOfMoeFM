@@ -35,11 +35,15 @@ extern NSString * const MoeRadioPlayURL;// 电台播放列表，可以作为标�
 
 extern NSString * const MoeAddFavURL;// 添加收藏，参数fav_obj_type，fav_obj_id，fav_type
 extern NSString * const MoeDeleteFavURL;// 取消收藏，参数fav_obj_type，fav_obj_id
+
+extern NSString * const MoeUserInfoURL;// 查询用户信息(OAuth方式)
 /* MoeFM API response key */
 extern NSString * const MoeResponseKey;
 
 /* 封面 */
-extern NSString * const MoeDefaultCoverURL;
-extern NSString * const MoeCoverSizeSquareKey;
+extern NSString * const MoeDefaultPictureURL;
+extern NSString * const MoePictureSizeSquareKey;
+extern NSString * const MoePictureSizeMediumKey;
+extern NSString * const MoePictureSizeLargeKey;
 
 @end
