@@ -6,7 +6,7 @@
 //  Copyright © 2017年 彭平军. All rights reserved.
 //
 
-#define kCornerRadius 10.0
+//#define kCornerRadius 10.0
 
 #import "RadioCollectionViewCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
@@ -18,17 +18,8 @@
 @implementation RadioCollectionViewCell
 - (void)awakeFromNib {
     [super awakeFromNib];
-    self.radioCoverImageView.layer.cornerRadius = kCornerRadius;
-    [self.radioCoverImageView.layer setMasksToBounds:YES];
-    
-//    self.radioSongCountLabel.layer.cornerRadius = kCornerRadius;
-//    [self.radioSongCountLabel.layer setMasksToBounds:YES];
-//    
-//    self.radioDateLabel.layer.cornerRadius = kCornerRadius;
-//    [self.radioDateLabel.layer setMasksToBounds:YES];
-//    
-//    self.radioTitleLabel.layer.cornerRadius = kCornerRadius;
-//    [self.radioTitleLabel.layer setMasksToBounds:YES];
+//    self.radioCoverImageView.layer.cornerRadius = kCornerRadius;用IB的运行时属性实现
+//    [self.radioCoverImageView.layer setMasksToBounds:YES];
     
 }
 

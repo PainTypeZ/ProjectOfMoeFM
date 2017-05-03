@@ -31,7 +31,7 @@
 
 @implementation PTPlayerManager
 
-+ (instancetype)sharedAVPlayerManager {
++ (instancetype)sharedPlayerManager {
     static dispatch_once_t onceToken;
     static id avPlayerManager;
     dispatch_once(&onceToken, ^{
@@ -46,12 +46,12 @@
     if (self) {
         _playList = [NSMutableArray array];
         _currentRadioID = @"11138";
-        _currentSong = [[RadioPlaySong alloc] init];
+//        _currentSong = [[RadioPlaySong alloc] init];
         _playIndex = 0;
         _currentPage = 1;
         _perpage = 9;
         
-        _playerData = [[PlayerData alloc] init];
+        _playerData = [[PlayerData alloc] init];// 不能省略，因为后面的playerData赋值是用的weakself，如果没有进行初始化，则weakself.playerData会被释放掉，传值结果全是nil
         _isPlay = NO;
         _isUIEnable = NO;
         // 在通知中心注册一个事件中断的通知：
@@ -141,20 +141,48 @@
     if (self.playIndex == self.playList.count - 1) {
         self.playIndex = 0;
         self.currentPage++;
-        [PTWebUtils requestRadioPlayListWithRadio_id:self.currentRadioID andPage:self.currentPage andPerpage:self.perpage completionHandler:^(id object) {
-            // 需要判断返回的object.count是不是9，如果小于9要作处理
-            NSArray *backArray = object;
-            if (backArray.count < 9) {
-                /* 写判断后的处理 */
-                self.currentPage = 1;
-            }
-            self.playList = [backArray mutableCopy];
-            RadioPlaySong *song = self.playList[self.playIndex];
-            [self readyToPlayNewSong:song];
-            //            [self handlePlayChangedAndAddNewOberserver];
-        } errorHandler:^(id error) {
-            NSLog(@"%@", error);
-        }];
+        // 判断是不是顺序播放的收藏歌曲
+        if ([self.currentRadioID isEqualToString:@"ordered_fav"]) {
+            [PTWebUtils requestFavSongListWithPage:self.currentPage andPerPage:self.perpage completionHandler:^(id object) {
+                NSDictionary *dict = object;
+                self.currentRadioID = dict[@"songID"];
+                // 用songID请求的时候不要page和perpage参数
+                [PTWebUtils requestRadioPlayListWithRadio_id:self.currentRadioID andPage:0 andPerpage:0 completionHandler:^(id object) {
+                    // 需要判断返回的object.count是不是9，如果小于9要作处理
+                    NSDictionary *dict = object;
+                    NSArray *backArray = dict[@"songs"];
+                    if (backArray.count < self.perpage) {
+                        /* 写判断后的处理 */
+                        self.currentPage = 1;
+                    }
+                    self.playList = [backArray mutableCopy];
+                    RadioPlaySong *song = self.playList[self.playIndex];
+                    [self readyToPlayNewSong:song];
+                } errorHandler:^(id error) {
+                    NSLog(@"%@", error);
+                }];
+                
+            } errorHandler:^(id error) {
+                NSLog(@"%@", error);
+            }];
+        }else{
+            [PTWebUtils requestRadioPlayListWithRadio_id:self.currentRadioID andPage:self.currentPage andPerpage:self.perpage completionHandler:^(id object) {
+                // 需要判断返回的object.count是不是9，如果小于9要作处理
+                NSDictionary *dict = object;
+                NSArray *backArray = dict[@"songs"];
+                if (backArray.count < 9) {
+                    /* 写判断后的处理 */
+                    self.currentPage = 1;
+                }
+                self.playList = [backArray mutableCopy];
+                RadioPlaySong *song = self.playList[self.playIndex];
+                [self readyToPlayNewSong:song];
+                //            [self handlePlayChangedAndAddNewOberserver];
+            } errorHandler:^(id error) {
+                NSLog(@"%@", error);
+            }];
+            
+        }
     }else{
         self.playIndex++;// 播放序号+1
         RadioPlaySong *song = self.playList[self.playIndex];
@@ -286,18 +314,23 @@
 
 // 登录或退出登录是调用，更新收藏状态信息,还没实现保存歌曲播放状态，如播放时间等
 - (void)updateFavInfo {
-    [PTWebUtils requestRadioPlayListWithRadio_id:self.currentRadioID andPage:self.currentPage andPerpage:self.perpage completionHandler:^(id object) {
-        self.playList = object;
-        RadioPlaySong *song = self.playList[self.playIndex];
-        [self readyToPlayNewSong:song];// 调用处理换歌的方法
-    } errorHandler:^(id error) {
-        NSLog(@"%@", error);
-    }];
+    if (self.player.currentItem) {
+        [PTWebUtils requestRadioPlayListWithRadio_id:self.currentRadioID andPage:self.currentPage andPerpage:self.perpage completionHandler:^(id object) {
+            NSDictionary *dict = object;
+            self.playList = dict[@"songs"];
+            RadioPlaySong *song = self.playList[self.playIndex];
+            [self readyToPlayNewSong:song];// 调用处理换歌的方法
+        } errorHandler:^(id error) {
+            NSLog(@"%@", error);
+        }];
+    }
 }
 
 // 改变播放列表，也是初始播放的方法
 - (void)changeToPlayList:(NSMutableArray<RadioPlaySong *> *)playList andRadioWikiID:(NSString *)wiki_id {
-    
+    if (playList.count == 0) {
+        return;
+    }
     self.playList = [playList mutableCopy];
     self.currentRadioID = wiki_id;// 设置电台id，供自动请求下一页歌曲使用
     self.playIndex = 0;// 播放序号归0
@@ -328,27 +361,33 @@
     // 要判断object类型
 }
 
-// 播放单曲
-- (void)playSingleSong:(RadioPlaySong *)singleSong {
-    [self.playList removeObjectAtIndex:self.playIndex];
-    [self.playList insertObject:singleSong atIndex:self.playIndex];
-    
-    RadioPlaySong *song = self.playList[self.playIndex];
-    [self readyToPlayNewSong:song];
-    //    [self handlePlayChangedAndAddNewOberserver];
+// 播放单曲,这里逻辑有点乱
+- (void)playSingleSong:(RadioPlaySong *)singleSong andRadioID:(NSString *)radioID {
+    if (self.playList.count != 0) {
+        [self.playList removeObjectAtIndex:self.playIndex];
+        [self.playList insertObject:singleSong atIndex:self.playIndex];
+        
+        RadioPlaySong *song = self.playList[self.playIndex];
+        [self readyToPlayNewSong:song];
+    }else{
+        [self.playList insertObject:singleSong atIndex:self.playIndex];
+        [self changeToPlayList:self.playList andRadioWikiID:radioID];
+    }
 }
 
 // 后台播放和锁屏时在控制中心显示播放信息
 - (void)setupNowPlayingInfoCenterWithPlayTime:(float)playTime {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     [[SDWebImageManager sharedManager] downloadImageWithURL:self.currentSong.cover[MoePictureSizeLargeKey] options:SDWebImageRetryFailed progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-        MPMediaItemArtwork *artwork = [[MPMediaItemArtwork alloc] initWithBoundsSize:CGSizeMake(100, 100) requestHandler:^UIImage * _Nonnull(CGSize size) {
+        MPMediaItemArtwork *artwork = [[MPMediaItemArtwork alloc] initWithBoundsSize:CGSizeMake(200, 200) requestHandler:^UIImage * _Nonnull(CGSize size) {
             return image;
         }];
         // 歌曲名称
-        [dict setObject:self.currentSong.title forKey:MPMediaItemPropertyTitle];
+        [dict setObject:self.currentSong.sub_title forKey:MPMediaItemPropertyTitle];
         // 演唱者
-        [dict setObject:self.currentSong.artist forKey:MPMediaItemPropertyArtist];
+        if (self.currentSong.artist) {
+            [dict setObject:self.currentSong.artist forKey:MPMediaItemPropertyArtist];
+        }        
         // 专辑名
         [dict setObject:self.currentSong.wiki_title forKey:MPMediaItemPropertyAlbumTitle];
         // 图片

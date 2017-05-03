@@ -6,10 +6,11 @@
 //  Copyright © 2017年 彭平军. All rights reserved.
 //
 
-#define kCornerRadius 5.0
+//#define kCornerRadius 5.0
 
 #import "RadioPlayListCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "UIButton+PT_FixMultiClick.h"
 
 #import "MoefmAPIConst.h"
 
@@ -17,8 +18,10 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    self.radioSongCoverImageView.layer.cornerRadius = kCornerRadius;
-    [self.radioSongCoverImageView.layer setMasksToBounds:YES];
+    [UIButton load];
+    self.playSongButton.pt_acceptEventInterval = 1.5;
+//    self.radioSongCoverImageView.layer.cornerRadius = kCornerRadius;
+//    [self.radioSongCoverImageView.layer setMasksToBounds:YES];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -39,8 +42,9 @@
         [_radioSongCoverImageView sd_setImageWithURL:coverURL];
     }
 
-    _radioSongTitleLabel.text = radioPlaySong.title;
-    _radioSongArtistLabel.text = radioPlaySong.artist;
+    _radioSongTitleLabel.text = _radioPlaySong.sub_title;
+    _radioSongAlbumLabel.text = _radioPlaySong.wiki_title;
+    _radioSongArtistLabel.text = _radioPlaySong.artist;
     _radioSongTimeLabel.text = _radioPlaySong.stream_time;
 }
 

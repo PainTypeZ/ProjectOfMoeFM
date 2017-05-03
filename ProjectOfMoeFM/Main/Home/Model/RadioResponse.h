@@ -24,4 +24,5 @@
 @property (strong, nonatomic) NSArray <Optional, RadioWiki> *wikis;
 @property (strong, nonatomic) NSArray <Optional, RadioRelationships> *relationships;
 @property (strong, nonatomic) NSArray <Optional, RadioPlaySong> *playlist;
+@property (strong, nonatomic) NSArray <Optional, RadioWiki> *hot_radios;
 @end

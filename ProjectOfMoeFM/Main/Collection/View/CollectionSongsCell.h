@@ -1,22 +1,23 @@
 //
-//  RadioPlayListCell.h
+//  CollectionSongsCell.h
 //  ProjectOfMoeFM
 //
-//  Created by 彭平军 on 2017/4/13.
+//  Created by 彭平军 on 2017/5/2.
 //  Copyright © 2017年 彭平军. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import "RadioPlaySong.h"
-@interface RadioPlayListCell : UITableViewCell
 
-@property (strong, nonatomic) RadioPlaySong *radioPlaySong;
-
+@interface CollectionSongsCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *radioSongCoverImageView;
 @property (weak, nonatomic) IBOutlet UILabel *radioSongTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *radioSongArtistLabel;
 @property (weak, nonatomic) IBOutlet UILabel *radioSongTimeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *collectionDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *radioSongAlbumLabel;
 @property (weak, nonatomic) IBOutlet UIButton *playSongButton;
+
+@property (strong, nonatomic) RadioPlaySong *radioPlaySong;
 
 @end

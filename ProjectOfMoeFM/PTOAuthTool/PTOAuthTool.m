@@ -181,7 +181,7 @@ typedef NS_ENUM(NSUInteger, OAuthSteps) {
     } else {
         secret = [NSString stringWithFormat:@"%@&", oauthModel.oauthConsumerSecret];
     }
-    // OAuth签名Base64_HMA-CHA1加密
+    // OAuth签名Base64_HMAC-SHA1加密
     NSString *signature = [NSString base64_HMAC_SHA1:secret string:baseString];// 自定义分类实现
     // OAuth签名URL编码
     NSString *encodeSignature = [NSString urlEncodeString:signature];// 自定义分类实现

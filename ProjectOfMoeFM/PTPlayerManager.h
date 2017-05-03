@@ -46,13 +46,13 @@ typedef void(^callbackBOOL)(BOOL isSuccess);
 - (void)deleteFromFavourite;
 
 // 播放某首单曲
-- (void)playSingleSong:(RadioPlaySong *)song;
+- (void)playSingleSong:(RadioPlaySong *)song andRadioID:(NSString *)radioID;
 // 添加初始播放列表或改变播放列表的方法
 - (void)changeToPlayList:(NSMutableArray <RadioPlaySong *>*)playList andRadioWikiID:(NSString *)wiki_id;
 // 登录或退出登录是调用，更新收藏状态信息
 - (void)updateFavInfo;
 
 // 单例构造方法
-+ (instancetype)sharedAVPlayerManager;
++ (instancetype)sharedPlayerManager;
 
 @end

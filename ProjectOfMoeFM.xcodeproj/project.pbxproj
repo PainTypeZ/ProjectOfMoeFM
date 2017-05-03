@@ -45,13 +45,13 @@
 		07670F211EA06DE60027E3EA /* dislike_yes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07670F1F1EA06DE60027E3EA /* dislike_yes@2x.png */; };
 		0769F0B31EAF74EE005EE315 /* RadioUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0769F0B21EAF74EE005EE315 /* RadioUser.m */; };
 		0769F0B61EAF769C005EE315 /* MineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0769F0B51EAF769C005EE315 /* MineViewController.m */; };
+		07B8EE251EB798E100162868 /* CollectionSongsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B8EE241EB798E100162868 /* CollectionSongsCell.m */; };
 		07BAD4501E99FCF8009B6691 /* PTWebUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BAD44F1E99FCF8009B6691 /* PTWebUtils.m */; };
-		07BAD45F1E9BC3B8009B6691 /* OAuth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07BAD45E1E9BC3B8009B6691 /* OAuth.storyboard */; };
 		07BAD4621E9BC423009B6691 /* OAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BAD4611E9BC423009B6691 /* OAuthViewController.m */; };
-		07E27B351EA5B88600CF7FDA /* RadioCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E27B341EA5B88600CF7FDA /* RadioCollectionReusableView.m */; };
 		07E7B61A1E9D0C27004C9CF1 /* NSString+PTCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E7B6151E9D0C27004C9CF1 /* NSString+PTCollection.m */; };
 		07E7B61B1E9D0C27004C9CF1 /* PTOAuthModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E7B6171E9D0C27004C9CF1 /* PTOAuthModel.m */; };
 		07E7B61C1E9D0C27004C9CF1 /* PTOAuthTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E7B6191E9D0C27004C9CF1 /* PTOAuthTool.m */; };
+		07F6A9121EB6346900BC3C60 /* UIButton+PT_FixMultiClick.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F6A9111EB6346900BC3C60 /* UIButton+PT_FixMultiClick.m */; };
 		07FEF3131E99018A00F6AC3B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FEF3121E99018A00F6AC3B /* main.m */; };
 		07FEF31C1E99018A00F6AC3B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07FEF31A1E99018A00F6AC3B /* Main.storyboard */; };
 		07FEF31E1E99018A00F6AC3B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07FEF31D1E99018A00F6AC3B /* Assets.xcassets */; };
@@ -125,19 +125,20 @@
 		0769F0B21EAF74EE005EE315 /* RadioUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadioUser.m; sourceTree = "<group>"; };
 		0769F0B41EAF769C005EE315 /* MineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MineViewController.h; sourceTree = "<group>"; };
 		0769F0B51EAF769C005EE315 /* MineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MineViewController.m; sourceTree = "<group>"; };
+		07B8EE231EB798E100162868 /* CollectionSongsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionSongsCell.h; sourceTree = "<group>"; };
+		07B8EE241EB798E100162868 /* CollectionSongsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionSongsCell.m; sourceTree = "<group>"; };
 		07BAD44E1E99FCF8009B6691 /* PTWebUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PTWebUtils.h; path = Main/PTWebUtils.h; sourceTree = "<group>"; };
 		07BAD44F1E99FCF8009B6691 /* PTWebUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PTWebUtils.m; path = Main/PTWebUtils.m; sourceTree = "<group>"; };
-		07BAD45E1E9BC3B8009B6691 /* OAuth.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = OAuth.storyboard; sourceTree = "<group>"; };
 		07BAD4601E9BC423009B6691 /* OAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OAuthViewController.h; path = Main/OAuthViewController.h; sourceTree = "<group>"; };
 		07BAD4611E9BC423009B6691 /* OAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OAuthViewController.m; path = Main/OAuthViewController.m; sourceTree = "<group>"; };
-		07E27B331EA5B88600CF7FDA /* RadioCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioCollectionReusableView.h; sourceTree = "<group>"; };
-		07E27B341EA5B88600CF7FDA /* RadioCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadioCollectionReusableView.m; sourceTree = "<group>"; };
 		07E7B6141E9D0C27004C9CF1 /* NSString+PTCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+PTCollection.h"; sourceTree = "<group>"; };
 		07E7B6151E9D0C27004C9CF1 /* NSString+PTCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+PTCollection.m"; sourceTree = "<group>"; };
 		07E7B6161E9D0C27004C9CF1 /* PTOAuthModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTOAuthModel.h; sourceTree = "<group>"; };
 		07E7B6171E9D0C27004C9CF1 /* PTOAuthModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTOAuthModel.m; sourceTree = "<group>"; };
 		07E7B6181E9D0C27004C9CF1 /* PTOAuthTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTOAuthTool.h; sourceTree = "<group>"; };
 		07E7B6191E9D0C27004C9CF1 /* PTOAuthTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTOAuthTool.m; sourceTree = "<group>"; };
+		07F6A9101EB6346900BC3C60 /* UIButton+PT_FixMultiClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+PT_FixMultiClick.h"; sourceTree = "<group>"; };
+		07F6A9111EB6346900BC3C60 /* UIButton+PT_FixMultiClick.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+PT_FixMultiClick.m"; sourceTree = "<group>"; };
 		07FEF30E1E99018A00F6AC3B /* ProjectOfMoeFM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProjectOfMoeFM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07FEF3121E99018A00F6AC3B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		07FEF31B1E99018A00F6AC3B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -175,6 +176,9 @@
 		071C0A561EA4A4DC0022C709 /* view */ = {
 			isa = PBXGroup;
 			children = (
+				07670F0F1EA05A030027E3EA /* PTMusicPlayerBottomView.h */,
+				07670F101EA05A030027E3EA /* PTMusicPlayerBottomView.m */,
+				07670F121EA05A250027E3EA /* PTMusicPlayerBottomView.xib */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -184,10 +188,6 @@
 			children = (
 				071C0A521EA394650022C709 /* PlayerData.h */,
 				071C0A531EA394650022C709 /* PlayerData.m */,
-				07670EFD1E9F8ED40027E3EA /* MoefmAPIConst.h */,
-				07670EFE1E9F8ED40027E3EA /* MoefmAPIConst.m */,
-				07BAD44E1E99FCF8009B6691 /* PTWebUtils.h */,
-				07BAD44F1E99FCF8009B6691 /* PTWebUtils.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -343,6 +343,43 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		07B8EE631EB91F3B00162868 /* Tool */ = {
+			isa = PBXGroup;
+			children = (
+				07F6A9101EB6346900BC3C60 /* UIButton+PT_FixMultiClick.h */,
+				07F6A9111EB6346900BC3C60 /* UIButton+PT_FixMultiClick.m */,
+				07670EFD1E9F8ED40027E3EA /* MoefmAPIConst.h */,
+				07670EFE1E9F8ED40027E3EA /* MoefmAPIConst.m */,
+				07BAD44E1E99FCF8009B6691 /* PTWebUtils.h */,
+				07BAD44F1E99FCF8009B6691 /* PTWebUtils.m */,
+			);
+			name = Tool;
+			sourceTree = "<group>";
+		};
+		07B8EE641EB91F6900162868 /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				07670EAC1E9E49BD0027E3EA /* RadioResponse.h */,
+				07670EAD1E9E49BD0027E3EA /* RadioResponse.m */,
+			);
+			name = Response;
+			sourceTree = "<group>";
+		};
+		07B8EE651EB91F7C00162868 /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				07B8EE641EB91F6900162868 /* Response */,
+				0769F0A91EAF7473005EE315 /* User */,
+				07670ED81E9E9D550027E3EA /* Infomation */,
+				07670ED61E9E9CB60027E3EA /* Wikis */,
+				07670ED71E9E9CFA0027E3EA /* Relationships */,
+				07670EDC1E9F2D4F0027E3EA /* Playlist */,
+				071C0A681EA592B60022C709 /* Favs */,
+			);
+			name = JSON;
+			path = Main/Home/Model;
+			sourceTree = "<group>";
+		};
 		07E7B6131E9D0C27004C9CF1 /* PTOAuthTool */ = {
 			isa = PBXGroup;
 			children = (
@@ -381,14 +418,12 @@
 				071C0A581EA4A4E10022C709 /* Controller */,
 				071C0A571EA4A4DF0022C709 /* Model */,
 				071C0A561EA4A4DC0022C709 /* view */,
-				07670F0F1EA05A030027E3EA /* PTMusicPlayerBottomView.h */,
-				07670F101EA05A030027E3EA /* PTMusicPlayerBottomView.m */,
-				07670F121EA05A250027E3EA /* PTMusicPlayerBottomView.xib */,
+				07B8EE631EB91F3B00162868 /* Tool */,
+				07B8EE651EB91F7C00162868 /* JSON */,
 				07FEF3411E99099600F6AC3B /* Main */,
 				07E7B6131E9D0C27004C9CF1 /* PTOAuthTool */,
 				07670EC71E9E8B780027E3EA /* Resource */,
 				07FEF31A1E99018A00F6AC3B /* Main.storyboard */,
-				07BAD45E1E9BC3B8009B6691 /* OAuth.storyboard */,
 				07FEF31D1E99018A00F6AC3B /* Assets.xcassets */,
 				07FEF31F1E99018A00F6AC3B /* LaunchScreen.storyboard */,
 				07FEF3221E99018A00F6AC3B /* Info.plist */,
@@ -480,6 +515,8 @@
 		07FEF34F1E99099600F6AC3B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				07B8EE231EB798E100162868 /* CollectionSongsCell.h */,
+				07B8EE241EB798E100162868 /* CollectionSongsCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -508,14 +545,6 @@
 		07FEF3541E99099600F6AC3B /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				07670EAC1E9E49BD0027E3EA /* RadioResponse.h */,
-				07670EAD1E9E49BD0027E3EA /* RadioResponse.m */,
-				0769F0A91EAF7473005EE315 /* User */,
-				07670ED81E9E9D550027E3EA /* Infomation */,
-				07670ED61E9E9CB60027E3EA /* Wikis */,
-				07670ED71E9E9CFA0027E3EA /* Relationships */,
-				07670EDC1E9F2D4F0027E3EA /* Playlist */,
-				071C0A681EA592B60022C709 /* Favs */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -525,8 +554,6 @@
 			children = (
 				07670EA01E9E3DB50027E3EA /* RadioCollectionViewCell.h */,
 				07670EA11E9E3DB50027E3EA /* RadioCollectionViewCell.m */,
-				07E27B331EA5B88600CF7FDA /* RadioCollectionReusableView.h */,
-				07E27B341EA5B88600CF7FDA /* RadioCollectionReusableView.m */,
 				07670EF21E9F83390027E3EA /* RadioPlayListCell.h */,
 				07670EF31E9F83390027E3EA /* RadioPlayListCell.m */,
 			);
@@ -625,7 +652,6 @@
 				07670F1D1EA06D080027E3EA /* play@2x.png in Resources */,
 				07670F1A1EA06D080027E3EA /* fav_yes@2x.png in Resources */,
 				07FEF31E1E99018A00F6AC3B /* Assets.xcassets in Resources */,
-				07BAD45F1E9BC3B8009B6691 /* OAuth.storyboard in Resources */,
 				07670F211EA06DE60027E3EA /* dislike_yes@2x.png in Resources */,
 				07FEF3651E9909FB00F6AC3B /* PodFile in Resources */,
 				071C0A9E1EA5AAAC0022C709 /* icon_120X120.png in Resources */,
@@ -698,7 +724,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				07670F111EA05A030027E3EA /* PTMusicPlayerBottomView.m in Sources */,
-				07E27B351EA5B88600CF7FDA /* RadioCollectionReusableView.m in Sources */,
 				0769F0B31EAF74EE005EE315 /* RadioUser.m in Sources */,
 				07670EF11E9F7D3D0027E3EA /* RadioPlayListViewController.m in Sources */,
 				07670EC31E9E637F0027E3EA /* RadioParameters.m in Sources */,
@@ -718,11 +743,13 @@
 				07FEF3621E99099600F6AC3B /* MainTabBarController.m in Sources */,
 				07670EB71E9E52930027E3EA /* RadioWiki.m in Sources */,
 				07FEF3131E99018A00F6AC3B /* main.m in Sources */,
+				07F6A9121EB6346900BC3C60 /* UIButton+PT_FixMultiClick.m in Sources */,
 				07FEF3611E99099600F6AC3B /* HomeViewController.m in Sources */,
 				071C0A771EA595B60022C709 /* SubUpload.m in Sources */,
 				071C0A541EA394650022C709 /* PlayerData.m in Sources */,
 				07670EE21E9F3DD40027E3EA /* RadioInformation.m in Sources */,
 				07670EDF1E9F380E0027E3EA /* RadioPlaySong.m in Sources */,
+				07B8EE251EB798E100162868 /* CollectionSongsCell.m in Sources */,
 				071C0A6E1EA593290022C709 /* Favourite.m in Sources */,
 				0769F0B61EAF769C005EE315 /* MineViewController.m in Sources */,
 				07FEF3681E990F8500F6AC3B /* AppDelegate.m in Sources */,

@@ -9,16 +9,7 @@
 #import "PTOAuthModel.h"
 
 @implementation PTOAuthModel
-// 包含线程安全的单例声明
-//+ (instancetype)sharedOAuthModel
-//{
-//    static dispatch_once_t once;
-//    static id oauthModel;
-//    dispatch_once(&once, ^{
-//        oauthModel = [[self alloc] init];
-//    });
-//    return oauthModel;
-//}
+
 - (instancetype)init
 {
     self = [super init];

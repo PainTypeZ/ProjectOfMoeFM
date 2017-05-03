@@ -13,6 +13,7 @@
 #import "PTOAuthTool.h"
 #import "MoefmAPIConst.h"
 #import "PTPlayerManager.h"
+#import "UIButton+PT_FixMultiClick.h"
 
 NSString * const kConsumerKey = @"2a964c3a6cf90dcb31fccd75703bafbc058e8e3ba";
 NSString * const kConsumerSecret = @"8af19f17b8f7494853b8e2a3ea5f4669";
@@ -25,11 +26,18 @@ NSString * const kConsumerSecret = @"8af19f17b8f7494853b8e2a3ea5f4669";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    // 设置button不会同时响应多个按钮同时点击
     [[UIButton appearance] setExclusiveTouch:YES];
+    
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];    
     if (![userDefaults objectForKey:@"consumer_key"]) {
         [userDefaults setObject:kConsumerKey forKey:@"consumer_key"];
         [userDefaults setObject:kConsumerSecret forKey:@"consumer_secret"];
+        [userDefaults synchronize];
+    }
+    if (![userDefaults objectForKey:@"oauth_token"]) {
+        [userDefaults setBool:NO forKey:@"isLogin"];
         [userDefaults synchronize];
     }
     
@@ -88,15 +96,15 @@ NSString * const kConsumerSecret = @"8af19f17b8f7494853b8e2a3ea5f4669";
 //                break;
                 
             case UIEventSubtypeRemoteControlNextTrack:
-                [[PTPlayerManager sharedAVPlayerManager] playNextSong];
+                [[PTPlayerManager sharedPlayerManager] playNextSong];
                 break;
                 
             case UIEventSubtypeRemoteControlPlay:
-                [[PTPlayerManager sharedAVPlayerManager] play];
+                [[PTPlayerManager sharedPlayerManager] play];
                 break;
                 
             case UIEventSubtypeRemoteControlPause:
-                [[PTPlayerManager sharedAVPlayerManager] pause];
+                [[PTPlayerManager sharedPlayerManager] pause];
                 break;
                 
             default:

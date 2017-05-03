@@ -13,5 +13,5 @@
 @interface SubUpload : JSONModel
 
 @property (copy, nonatomic) NSString *up_url;
-
+@property (strong, nonatomic) NSDictionary *up_data;
 @end

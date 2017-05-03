@@ -23,6 +23,7 @@ NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_t
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    self.title = @"OAuth授权";
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [app.window bringSubviewToFront:app.playerBottomView];
     [self oauthStepsBegin];
@@ -39,12 +40,9 @@ NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_t
         [self.authorizeWebView loadRequest:request];
     }];
 }
-
-- (IBAction)clickCancelAction:(UIBarButtonItem *)sender {
-    // 跳转回mainStoryBoard初始界面
-    UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-    UIApplication *application = [UIApplication sharedApplication];
-    application.keyWindow.rootViewController = [mainStoryBoard instantiateInitialViewController];
+// 点击cancel跳转回home
+- (IBAction)cancelAction:(UIBarButtonItem *)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UIWebViewDelegate
@@ -59,22 +57,18 @@ NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_t
         [PTOAuthTool requestAccessOAuthTokenAndSecretWithURL:kRequestAccessTokenURL andVerifier:verifier completionHandler:^{
             //得到的accessToken和Secret已保存存到偏好设置
             // 此处可以返回主线程添加提示信息等效果
-            [[PTPlayerManager sharedAVPlayerManager] updateFavInfo];
+            if ([PTPlayerManager sharedPlayerManager].currentSong) {
+                [[PTPlayerManager sharedPlayerManager] updateFavInfo];
+            }            
             dispatch_async(dispatch_get_main_queue(), ^{
                 // 更新当前播放列表的歌曲信息                
                 [SVProgressHUD showSuccessWithStatus:@"登录OAuth授权成功"];
                 [SVProgressHUD dismissWithDelay:2 completion:^{
-                    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-                    app.playerBottomView.userInteractionEnabled = NO;// 先关闭播放器底部视图的用户交互
-                    
                     UIAlertController *alretController = [UIAlertController alertControllerWithTitle:@"登录成功" message:@"现在可以使用收藏功能了" preferredStyle:UIAlertControllerStyleAlert];
                     UIAlertAction *actionConfirm = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
                         [alretController dismissViewControllerAnimated:YES completion:nil];
-                        app.playerBottomView.userInteractionEnabled = YES;// 开启用户交互
-                        // 跳转回mainStoryBoard初始界面
-                        UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-                        UIApplication *application = [UIApplication sharedApplication];
-                        application.keyWindow.rootViewController = [mainStoryBoard instantiateInitialViewController];
+                        // 跳转回home
+                        [self dismissViewControllerAnimated:YES completion:nil];
                     }];
                     [alretController addAction:actionConfirm];
                     [self presentViewController:alretController animated:YES completion:nil];

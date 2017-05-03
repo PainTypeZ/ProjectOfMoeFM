@@ -13,6 +13,8 @@
 #import "MoefmAPIConst.h"
 #import "PlayerData.h"
 #import "PTPlayerManager.h"
+#import "UIButton+PT_FixMultiClick.h"
+
 @interface PTMusicPlayerBottomView()<PTPlayerManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *radioSongCoverImageView;
@@ -34,8 +36,10 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
+    // 利用runtime修改button响应事件
+    [UIButton load];
     // 设置代理，接收播放数据
-    [PTPlayerManager sharedAVPlayerManager].delegate = self;
+    [PTPlayerManager sharedPlayerManager].delegate = self;
     
     [self initProperties];
     
@@ -45,34 +49,39 @@
 // 初始化属性和播放按钮状态
 - (void)initProperties {
 
+    self.favouriteButton.pt_acceptEventInterval = 1.5;
+    self.dislikeButton.pt_acceptEventInterval = 1.5;
+    self.playButton.pt_acceptEventInterval = 1.5;
+    self.nextButton.pt_acceptEventInterval = 1.5;
+    
     self.playButton.selected = NO;
     self.userInteractionEnabled = NO; // avplayer准备好之前关闭用户交互
     // 初始状态设置
     self.favouriteButton.enabled = NO;
     self.dislikeButton.enabled = NO;
     self.playSliderView.userInteractionEnabled = NO;// 还未实现拖动播放进度条
-    self.playingSong = [[RadioPlaySong alloc] init];
-    self.playerData = [[PlayerData alloc] init];// 这句应该可以不要
 }
 
 #pragma mark - UI action methods
 // 点击收藏按钮
 - (IBAction)favouriteAction:(UIButton *)sender {
-    if (self.favouriteButton.selected) {
-        [[PTPlayerManager sharedAVPlayerManager] deleteFromFavourite];
-    }else{
-        [[PTPlayerManager sharedAVPlayerManager] addToFavourite];
+    if (self.playingSong) {
+        if (self.favouriteButton.selected) {
+            [[PTPlayerManager sharedPlayerManager] deleteFromFavourite];
+        }else{
+            [[PTPlayerManager sharedPlayerManager] addToFavourite];
+        }
+        self.favouriteButton.selected = !self.favouriteButton.selected;
     }
-    self.favouriteButton.selected = !self.favouriteButton.selected;
-    
-    
 }
 // 点击播放/暂停按钮,按钮的选中状态更新由代理方法控制
 - (IBAction)playAciton:(UIButton *)sender {
-    if (self.playButton.selected) {
-        [[PTPlayerManager sharedAVPlayerManager] pause];
-    }else{
-        [[PTPlayerManager sharedAVPlayerManager] play];
+    if (self.playingSong) {
+        if (self.playButton.selected) {
+            [[PTPlayerManager sharedPlayerManager] pause];
+        }else{
+            [[PTPlayerManager sharedPlayerManager] play];
+        }
     }
 }
 // 点击不喜欢按钮(垃圾桶)，还未实现相关功能
@@ -82,7 +91,9 @@
 }
 // 点击下一曲
 - (IBAction)nextAction:(UIButton *)sender {
-    [[PTPlayerManager sharedAVPlayerManager] playNextSong];
+    if (self.playingSong) {
+        [[PTPlayerManager sharedPlayerManager] playNextSong];
+    }
 }
 #pragma mark - PTAVPlayerManagerDelegate
 // 接收实时播放数据
@@ -101,7 +112,7 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         // 显示歌曲标题
-        self.radioSongTitleLabel.text = self.playingSong.title;
+        self.radioSongTitleLabel.text = self.playingSong.sub_title;
         
         // 显示歌曲总时间
         if (self.playingSong.stream_length.floatValue) {

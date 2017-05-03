@@ -13,6 +13,8 @@
 @property (copy, nonatomic) NSString <Optional> *wiki_type;
 @property (copy, nonatomic) NSString <Optional> *page;
 @property (copy, nonatomic) NSString <Optional> *perpage;
+@property (copy, nonatomic) NSString <Optional> *api;
+@property (copy, nonatomic) NSString <Optional> *song;
 @property (copy, nonatomic) NSString <Optional> *consumer_key;
 @property (copy, nonatomic) NSString <Optional> *consumer_secret;
 @property (copy, nonatomic) NSString <Optional> *oauth_consumer_key;

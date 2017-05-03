@@ -15,6 +15,6 @@
 @property (copy, nonatomic) NSString *sub_id;
 @property (copy, nonatomic) NSString *sub_view_title;
 @property (strong, nonatomic) RadioWiki *wiki;
-@property (strong, nonatomic) NSArray<SubUpload> *sub_upload;
-
+@property (strong, nonatomic) NSArray <SubUpload> *sub_upload;
+@property (strong, nonatomic) NSArray <Optional> *sub_meta;
 @end

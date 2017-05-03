@@ -38,7 +38,7 @@
                         <constraint firstAttribute="width" secondItem="hst-Lt-nbm" secondAttribute="height" multiplier="1:1" id="CJH-tk-1Tm"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="歌曲名" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oxk-aP-ZoC">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="暂无歌曲" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oxk-aP-ZoC">
                     <rect key="frame" x="60" y="2" width="315" height="20"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="20" id="JaK-z4-YNi"/>
