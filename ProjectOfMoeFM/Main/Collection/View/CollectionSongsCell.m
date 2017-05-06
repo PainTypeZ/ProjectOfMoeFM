@@ -9,14 +9,14 @@
 #import "CollectionSongsCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "MoefmAPIConst.h"
-#import "UIButton+PT_FixMultiClick.h"
+#import "UIControl+PTFixMultiClick.h"
 
 @implementation CollectionSongsCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    [UIButton load];
-    self.playSongButton.pt_acceptEventInterval = 1.5;
+    // 利用runtime修改button响应事件
+    self.playSongButton.pt_acceptEventInterval = 2;
 }
 
 - (void)setRadioPlaySong:(RadioPlaySong *)radioPlaySong {

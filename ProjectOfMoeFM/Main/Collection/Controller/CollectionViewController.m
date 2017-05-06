@@ -52,31 +52,30 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
-    self.playAllSongsItem.enabled = NO;
-    
-    if (self.radioPlaylist.count == 0) {
-        [SVProgressHUD showWithStatus:@"加载数据中，请稍后"];
-        [PTWebUtils requestFavSongListWithPage:self.currentPage andPerPage:self.perpage completionHandler:^(id object) {
-            NSDictionary *dict = object;
-            self.songID = dict[@"songID"];
-            NSNumber *count = dict[@"count"];
-            self.songCount = count.integerValue;
-            [PTWebUtils requestRadioPlayListWithRadio_id:self.songID andPage:self.currentPage andPerpage:self.perpage completionHandler:^(id object) {
+    if (self.playAllSongsItem.enabled == NO) {
+        if (self.radioPlaylist.count == 0) {
+            [SVProgressHUD showWithStatus:@"加载数据中，请稍后"];
+            [PTWebUtils requestFavSongListWithPage:self.currentPage andPerPage:self.perpage completionHandler:^(id object) {
                 NSDictionary *dict = object;
-                self.radioPlaylist = dict[@"songs"];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.collectionTableView reloadData];
-                    self.playAllSongsItem.enabled = YES;
-                    [SVProgressHUD dismiss];
-                });
+                self.songID = dict[@"songID"];
+                NSNumber *count = dict[@"count"];
+                self.songCount = count.integerValue;
+                [PTWebUtils requestRadioPlayListWithRadio_id:self.songID andPage:self.currentPage andPerpage:self.perpage completionHandler:^(id object) {
+                    NSDictionary *dict = object;
+                    self.radioPlaylist = dict[@"songs"];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.collectionTableView reloadData];
+                        self.playAllSongsItem.enabled = YES;
+                        [SVProgressHUD dismiss];
+                    });
+                } errorHandler:^(id error) {
+                    NSLog(@"%@", error);
+                }];
+                
             } errorHandler:^(id error) {
                 NSLog(@"%@", error);
-            }];
-            
-        } errorHandler:^(id error) {
-            NSLog(@"%@", error);
-        }];
-
+            }];            
+        }
     }
 }
 
@@ -99,10 +98,12 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
                     [weakSelf.collectionTableView.mj_header endRefreshing];
                 });
             } errorHandler:^(id error) {
+                [weakSelf.collectionTableView.mj_header endRefreshing];
                 NSLog(@"%@", error);
             }];
             
         } errorHandler:^(id error) {
+            [weakSelf.collectionTableView.mj_header endRefreshing];
             NSLog(@"%@", error);
         }];
     }];
@@ -134,10 +135,14 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
                     [weakSelf.collectionTableView.mj_footer endRefreshing];
                 });
             } errorHandler:^(id error) {
+                // 结束刷新
+                [weakSelf.collectionTableView.mj_footer endRefreshing];
                 NSLog(@"%@", error);
             }];
             
         } errorHandler:^(id error) {
+            // 结束刷新
+            [weakSelf.collectionTableView.mj_footer endRefreshing];
             NSLog(@"%@", error);
         }];
     }];
@@ -152,6 +157,9 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
 
 - (IBAction)playAllSongsAction:(UIBarButtonItem *)sender {
     [[PTPlayerManager sharedPlayerManager] changeToPlayList:self.radioPlaylist andRadioWikiID:@"ordered_fav"];// 需要在manager添加处理顺序播放的逻辑
+    sender.enabled = NO;
+    sleep(3);
+    sender.enabled = YES;
 }
 
 - (IBAction)backToHomeAction:(UIBarButtonItem *)sender {

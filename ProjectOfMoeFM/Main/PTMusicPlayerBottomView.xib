@@ -34,12 +34,13 @@
                 </slider>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cover_default_image.png" translatesAutoresizingMaskIntoConstraints="NO" id="hst-Lt-nbm">
                     <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                    <color key="backgroundColor" red="0.2819526792" green="0.6659956574" blue="0.96032720800000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="hst-Lt-nbm" secondAttribute="height" multiplier="1:1" id="CJH-tk-1Tm"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="暂无歌曲" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oxk-aP-ZoC">
-                    <rect key="frame" x="60" y="2" width="315" height="20"/>
+                    <rect key="frame" x="62" y="2" width="313" height="20"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="20" id="JaK-z4-YNi"/>
                     </constraints>
@@ -136,7 +137,7 @@
                 <constraint firstItem="hst-Lt-nbm" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="cF3-gS-syn"/>
                 <constraint firstAttribute="bottom" secondItem="lhO-EL-bTL" secondAttribute="bottom" constant="2" id="cU3-UO-0gz"/>
                 <constraint firstItem="p6V-ZV-NR5" firstAttribute="leading" secondItem="hst-Lt-nbm" secondAttribute="trailing" constant="-15" id="cU3-wD-x9n"/>
-                <constraint firstItem="Oxk-aP-ZoC" firstAttribute="leading" secondItem="hst-Lt-nbm" secondAttribute="trailing" id="cmI-iD-bsF"/>
+                <constraint firstItem="Oxk-aP-ZoC" firstAttribute="leading" secondItem="hst-Lt-nbm" secondAttribute="trailing" constant="2" id="cmI-iD-bsF"/>
                 <constraint firstItem="1XS-4z-f7s" firstAttribute="height" secondItem="lhO-EL-bTL" secondAttribute="height" id="cnI-HF-v4I"/>
                 <constraint firstItem="rxx-Az-TJY" firstAttribute="width" secondItem="lhO-EL-bTL" secondAttribute="width" id="eFn-Xz-82p"/>
                 <constraint firstAttribute="trailing" secondItem="AYZ-iD-9RG" secondAttribute="trailing" constant="5" id="fMB-Q8-4JI"/>

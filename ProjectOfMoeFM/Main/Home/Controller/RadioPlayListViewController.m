@@ -92,6 +92,7 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
             });
             
         } errorHandler:^(id error) {
+            [weakSelf.radioPlayListTableView.mj_header endRefreshing];
             NSLog(@"%@", error);
         }];
     }];
@@ -129,6 +130,8 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
             });
             
         } errorHandler:^(id error) {
+            // 结束刷新
+            [weakSelf.radioPlayListTableView.mj_footer endRefreshing];
             NSLog(@"%@", error);
         }];
     }];
@@ -136,24 +139,26 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
-    self.playAllSongsItem.enabled = NO;
-    self.titeLabel.text = self.radioWiki.wiki_title;
-    // 请求电台播放列表信息
-    [SVProgressHUD showWithStatus:@"加载数据中，请稍后"];
-    [PTWebUtils requestRadioPlayListWithRadio_id:self.radioWiki.wiki_id andPage:self.currentPage andPerpage:0 completionHandler:^(id object) {
-        NSDictionary *dict = object;
-        NSNumber *count = dict[@"count"];
-        self.songCount = count.integerValue;
-        self.radioPlaylist = dict[@"songs"];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.radioPlayListTableView reloadData];
-            [SVProgressHUD dismiss];
-            self.playAllSongsItem.enabled = YES;
-        });
-    } errorHandler:^(id error) {
-        NSLog(@"%@", error);
-    }];
+    if (self.playAllSongsItem.enabled == NO) {
+        self.titeLabel.text = self.radioWiki.wiki_title;
+        // 请求电台播放列表信息
+        [SVProgressHUD showWithStatus:@"加载数据中，请稍后"];
+        [PTWebUtils requestRadioPlayListWithRadio_id:self.radioWiki.wiki_id andPage:self.currentPage andPerpage:0 completionHandler:^(id object) {
+            NSDictionary *dict = object;
+            NSNumber *count = dict[@"count"];
+            self.songCount = count.integerValue;
+            self.radioPlaylist = dict[@"songs"];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.radioPlayListTableView reloadData];
+                [SVProgressHUD dismiss];
+                self.playAllSongsItem.enabled = YES;
+            });
+        } errorHandler:^(id error) {
+            NSLog(@"%@", error);
+        }];
+
+    }
 }
 - (IBAction)playSingleSongAction:(UIButton *)sender {
     RadioPlayListCell *cell = (RadioPlayListCell *)sender.superview.superview;
@@ -161,12 +166,11 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
 }
 - (IBAction)playAllSongsAction:(UIBarButtonItem *)sender {
     [[PTPlayerManager sharedPlayerManager] changeToPlayList:self.radioPlaylist andRadioWikiID:self.radioWiki.wiki_id];
+    sender.enabled = NO;
+    sleep(3);
+    sender.enabled = YES;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

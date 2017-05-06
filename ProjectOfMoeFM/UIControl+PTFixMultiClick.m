@@ -1,32 +1,32 @@
 //
-//  UIButton+PT_FixMultiClick.m
+//  UIControl+PTFixMultiClick.m
 //  ProjectOfMoeFM
 //
-//  Created by 彭平军 on 2017/4/30.
+//  Created by 彭平军 on 2017/5/3.
 //  Copyright © 2017年 彭平军. All rights reserved.
 //
 
-#import "UIButton+PT_FixMultiClick.h"
+#import "UIControl+PTFixMultiClick.h"
 #import <objc/runtime.h>
-@implementation UIButton (PT_FixMultiClick)
+@implementation UIControl (PTFixMultiClick)
 // 因category不能添加属性，只能通过关联对象的方式。
-static const char *UIButton_acceptEventInterval = "UIButton_acceptEventInterval";
-static const char *UIButton_acceptEventTime = "UIButton_acceptEventTime";
+static const char *UIControl_acceptEventInterval = "UIControl_acceptEventInterval";
+static const char *UIControl_acceptEventTime = "UIControl_acceptEventTime";
 
 - (NSTimeInterval)pt_acceptEventInterval {
-    return [objc_getAssociatedObject(self, UIButton_acceptEventInterval) doubleValue];
+    return [objc_getAssociatedObject(self, UIControl_acceptEventInterval) doubleValue];
 }
 
 - (void)setPt_acceptEventInterval:(NSTimeInterval)pt_acceptEventInterval {
-    objc_setAssociatedObject(self, UIButton_acceptEventInterval, @(pt_acceptEventInterval), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, UIControl_acceptEventInterval, @(pt_acceptEventInterval), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (NSTimeInterval)pt_acceptEventTime {
-    return [objc_getAssociatedObject(self, UIButton_acceptEventTime) doubleValue];
+    return [objc_getAssociatedObject(self, UIControl_acceptEventTime) doubleValue];
 }
 
 - (void)setPt_acceptEventTime:(NSTimeInterval)pt_acceptEventTime {
-    objc_setAssociatedObject(self, UIButton_acceptEventTime, @(pt_acceptEventTime), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, UIControl_acceptEventTime, @(pt_acceptEventTime), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 // 在load时执行hook
@@ -45,6 +45,5 @@ static const char *UIButton_acceptEventTime = "UIButton_acceptEventTime";
     }
     [self pt_sendAction:action to:target forEvent:event];
 }
-
 
 @end

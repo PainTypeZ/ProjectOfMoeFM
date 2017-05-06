@@ -181,7 +181,7 @@
                                 <action selector="backToHomeAction:" destination="pDW-XP-EpL" id="xEq-CG-mms"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="播放全部" id="dTi-eG-Ljl">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="播放全部" id="dTi-eG-Ljl">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="playAllSongsAction:" destination="pDW-XP-EpL" id="bai-OX-DFW"/>
@@ -851,7 +851,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="电台播放列表" id="BBg-sh-4Yl">
-                        <barButtonItem key="rightBarButtonItem" title="播放全部" id="dBG-GQ-tSB">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="播放全部" id="dBG-GQ-tSB">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="playAllSongsAction:" destination="1Lh-8c-1Zw" id="UYX-uQ-37q"/>

@@ -13,7 +13,7 @@
 #import "MoefmAPIConst.h"
 #import "PlayerData.h"
 #import "PTPlayerManager.h"
-#import "UIButton+PT_FixMultiClick.h"
+#import "UIControl+PTFixMultiClick.h"
 
 @interface PTMusicPlayerBottomView()<PTPlayerManagerDelegate>
 
@@ -36,8 +36,7 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // 利用runtime修改button响应事件
-    [UIButton load];
+    
     // 设置代理，接收播放数据
     [PTPlayerManager sharedPlayerManager].delegate = self;
     
@@ -48,11 +47,11 @@
 
 // 初始化属性和播放按钮状态
 - (void)initProperties {
-
-    self.favouriteButton.pt_acceptEventInterval = 1.5;
-    self.dislikeButton.pt_acceptEventInterval = 1.5;
-    self.playButton.pt_acceptEventInterval = 1.5;
-    self.nextButton.pt_acceptEventInterval = 1.5;
+    // 利用runtime修改button响应事件
+    self.favouriteButton.pt_acceptEventInterval = 3;
+    self.dislikeButton.pt_acceptEventInterval = 3;
+    self.playButton.pt_acceptEventInterval = 1;
+    self.nextButton.pt_acceptEventInterval = 2;
     
     self.playButton.selected = NO;
     self.userInteractionEnabled = NO; // avplayer准备好之前关闭用户交互

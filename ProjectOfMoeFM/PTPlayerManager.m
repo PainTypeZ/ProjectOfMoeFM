@@ -13,7 +13,11 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
-@interface PTPlayerManager()
+#import "PTResourceLoader.h"
+#import "PTFileHandle.h"
+#import "NSURL+PTLoader.h"
+
+@interface PTPlayerManager()<PTResourceLoaderDelegate>
 
 @property (copy, nonatomic) NSString *currentRadioID;
 @property (assign, nonatomic) NSUInteger playIndex;
@@ -23,6 +27,8 @@
 @property (strong, nonatomic) AVPlayer *player;
 
 @property (strong, nonatomic) PlayerData *playerData;
+
+@property (strong, nonatomic) PTResourceLoader *loader;
 
 @property (assign, nonatomic) BOOL isPlay;
 @property (assign, nonatomic) BOOL isUIEnable;
@@ -45,7 +51,7 @@
     self = [super init];
     if (self) {
         _playList = [NSMutableArray array];
-        _currentRadioID = @"11138";
+//        _currentRadioID = @"";
 //        _currentSong = [[RadioPlaySong alloc] init];
         _playIndex = 0;
         _currentPage = 1;
@@ -94,16 +100,16 @@
 // KVO方法，播放全是从这里控制开始
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     if ([keyPath isEqualToString:@"status"]) {
-        AVPlayerStatus status= [[change objectForKey:@"new"] intValue];
-        if(status == AVPlayerStatusReadyToPlay){
+        AVPlayerItemStatus status= [[change objectForKey:@"new"] intValue];
+        if(status == AVPlayerItemStatusReadyToPlay){
             [self.player play];
-            [self setupNowPlayingInfoCenterWithPlayTime:0.0];// 后台播放所需的信息,开始播放时间是0.0
+            [self setupNowPlayingInfoCenterWithPlayTime:CMTimeGetSeconds(self.player.currentItem.currentTime)];// 后台播放所需的信息,开始播放时间是0.0
             self.isPlay = YES;
             self.isUIEnable =YES;
-        }else if(status == AVPlayerStatusUnknown){
-            NSLog(@"AVPlayerStatusUnknown");
-        }else if (status == AVPlayerStatusFailed){
-            NSLog(@"AVPlayerStatusFailed");
+        }else if(status == AVPlayerItemStatusUnknown){
+            NSLog(@"AVPlayerItemStatusUnknown");
+        }else if (status == AVPlayerItemStatusFailed){
+            NSLog(@"AVPlayerItemStatusFailed");
         }
     }else if([keyPath isEqualToString:@"loadedTimeRanges"]){
         
@@ -137,12 +143,23 @@
 - (void)playDidEnd {
     self.isPlay = NO;// 改变播放状态
     self.isUIEnable = NO;// 改变用户交互状态
+    // 如果是单曲就循环播放
+    if (self.playList.count == 1) {
+        [self.player.currentItem seekToTime:kCMTimeZero];
+        [self.player play];
+        [self removeOldOberserverFromPlayerItem:self.player.currentItem];
+        [self addNewOberserverToPlayerItem:self.player.currentItem];
+        self.isUIEnable = YES;
+        self.isPlay = YES;
+        return;
+    }
     
     if (self.playIndex == self.playList.count - 1) {
         self.playIndex = 0;
         self.currentPage++;
         // 判断是不是顺序播放的收藏歌曲
-        if ([self.currentRadioID isEqualToString:@"ordered_fav"]) {
+        BOOL isLogin = [[NSUserDefaults standardUserDefaults] objectForKey:@"isLogin"];// 判断登录状态
+        if ([self.currentRadioID isEqualToString:@"ordered_fav"] && isLogin) {
             [PTWebUtils requestFavSongListWithPage:self.currentPage andPerPage:self.perpage completionHandler:^(id object) {
                 NSDictionary *dict = object;
                 self.currentRadioID = dict[@"songID"];
@@ -166,6 +183,9 @@
                 NSLog(@"%@", error);
             }];
         }else{
+            if ([self.currentRadioID isEqualToString:@"ordered_fav"]) {
+                self.currentRadioID = @"random";
+            }
             [PTWebUtils requestRadioPlayListWithRadio_id:self.currentRadioID andPage:self.currentPage andPerpage:self.perpage completionHandler:^(id object) {
                 // 需要判断返回的object.count是不是9，如果小于9要作处理
                 NSDictionary *dict = object;
@@ -191,20 +211,36 @@
     }
 }
 
-// 处理换歌
+// 处理换歌,包括对resourceLoader的设置
 - (void)readyToPlayNewSong:(RadioPlaySong *)radioPlaySong {
     if (self.player.currentItem) {
         [self removeOldOberserverFromPlayerItem:self.player.currentItem];// 移除旧观察者
     }
     self.currentSong = radioPlaySong;
-    NSURL *url = [NSURL URLWithString:self.currentSong.url];
-    AVPlayerItem *item = [AVPlayerItem playerItemWithURL:url];
-    // 判断是不是第一次播放
-    if (self.player.currentItem) {
-        [self.player replaceCurrentItemWithPlayerItem:item];
+    // 检查缓存文件
+    NSString *cacheFilePath = [PTFileHandle cacheFileExistsWithURL:[NSURL URLWithString:self.currentSong.url]];
+    AVPlayerItem *item;
+    if (cacheFilePath) {
+        NSURL *url = [NSURL fileURLWithPath:cacheFilePath];
+        item = [AVPlayerItem playerItemWithURL:url];
+        NSLog(@"有缓存，播放已缓存的文件");
     }else{
-        self.player = [[AVPlayer alloc] initWithPlayerItem:item];
+        self.loader = [[PTResourceLoader alloc] init];
+        self.loader.delegate = self;
+        NSURL *url = [[NSURL URLWithString:self.currentSong.url] customSchemeURL];
+        AVURLAsset *asset = [AVURLAsset URLAssetWithURL:url options:nil];
+        [asset.resourceLoader setDelegate:self.loader queue:dispatch_get_main_queue()];
+        item = [AVPlayerItem playerItemWithAsset:asset];
+        NSLog(@"无缓存，边下边播");
     }
+    
+    // 判断是不是第一次播放
+//    if (self.player.currentItem) {
+//        [self.player replaceCurrentItemWithPlayerItem:item];
+//    }else{
+//        self.player = [[AVPlayer alloc] initWithPlayerItem:item];
+//    }
+    self.player = [[AVPlayer alloc] initWithPlayerItem:item];
     // 添加新观察者
     [self addNewOberserverToPlayerItem:self.player.currentItem]; // 这句应该能自动处理播放，之前的想法有问题
 }
@@ -212,14 +248,10 @@
 // 处理播放时间、播放进度、缓冲进度,注意要使用weakSelf
 - (void)handlePlayTimeAndPlayProgressAndBufferProgressWithWeakSelf:(__weak PTPlayerManager *)weakSelf andWeakAVPlayer:(AVPlayer *)weakAVPlayer {
     // 播放进度
-//    CGFloat currentPlayTime = weakAVPlayer.currentItem.currentTime.value;// 当前播放器时间
-//    CGFloat currenTimeScale = weakAVPlayer.currentItem.currentTime.timescale;// 当前播放时间的比例,用于转换value为float格式的秒数，float = value / scale
     CGFloat currentTime = CMTimeGetSeconds(weakAVPlayer.currentItem.currentTime);
     CMTime duration = weakAVPlayer.currentItem.duration;
     CGFloat totalDuration = CMTimeGetSeconds(duration);
-//    CGFloat currenPlayTimeSeconds = currentPlayTime / currenTimeScale;
-    
-    
+   
     // 播放时间
     NSInteger reducePlayerTime = totalDuration - currentTime;// 倒计时时间
     NSString *playTimeText = [NSString stringWithFormat:@"-%02ld:%02ld", reducePlayerTime / 60, reducePlayerTime % 60];// 播放时间
@@ -314,6 +346,16 @@
 
 // 登录或退出登录是调用，更新收藏状态信息,还没实现保存歌曲播放状态，如播放时间等
 - (void)updateFavInfo {
+    // 判断之前是不是单曲循环
+    if (self.playList.count == 1 && !self.currentRadioID) {
+        [PTWebUtils requestRadioPlayListWithRadio_id:self.currentSong.wiki_id andPage:0 andPerpage:0 completionHandler:^(id object) {
+            NSDictionary *dict = object;
+            self.playList = dict[@"songs"];
+            [self changeToPlayList:self.playList andRadioWikiID:self.currentRadioID];
+        } errorHandler:^(id error) {
+            NSLog(@"%@", error);
+        }];
+    }
     if (self.player.currentItem) {
         [PTWebUtils requestRadioPlayListWithRadio_id:self.currentRadioID andPage:self.currentPage andPerpage:self.perpage completionHandler:^(id object) {
             NSDictionary *dict = object;
@@ -339,8 +381,8 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         self.isUIEnable = NO;
-        RadioPlaySong *song = self.playList[self.playIndex];
-        [self readyToPlayNewSong:song];// 包含添加观察者等措施
+//        RadioPlaySong *song = self.playList[self.playIndex];
+//        [self readyToPlayNewSong:song];// 包含添加观察者等措施
         
         // 注册播放结束的通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playDidEnd) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
@@ -363,46 +405,62 @@
 
 // 播放单曲,这里逻辑有点乱
 - (void)playSingleSong:(RadioPlaySong *)singleSong andRadioID:(NSString *)radioID {
-    if (self.playList.count != 0) {
-        [self.playList removeObjectAtIndex:self.playIndex];
-        [self.playList insertObject:singleSong atIndex:self.playIndex];
-        
-        RadioPlaySong *song = self.playList[self.playIndex];
-        [self readyToPlayNewSong:song];
+    if (self.playList.count == 0) {
+        [self.playList addObject:singleSong];
+    }else if (self.playList.count == 1) {
+        [self.playList replaceObjectAtIndex:self.playIndex withObject:singleSong];
     }else{
         [self.playList insertObject:singleSong atIndex:self.playIndex];
-        [self changeToPlayList:self.playList andRadioWikiID:radioID];
     }
+    [self changeToPlayList:self.playList andRadioWikiID:radioID];
 }
+
+#pragma mark - PTResourceLoaderDelegate
+- (void)loader:(PTResourceLoader *)loader cacheProgress:(CGFloat)progress {
+//    NSLog(@"%f", progress);
+}
+
+- (void)loader:(PTResourceLoader *)loader failLoadingWithError:(NSError *)error {
+    
+}
+#pragma mark - background controller center
 
 // 后台播放和锁屏时在控制中心显示播放信息
 - (void)setupNowPlayingInfoCenterWithPlayTime:(float)playTime {
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    [[SDWebImageManager sharedManager] downloadImageWithURL:self.currentSong.cover[MoePictureSizeLargeKey] options:SDWebImageRetryFailed progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-        MPMediaItemArtwork *artwork = [[MPMediaItemArtwork alloc] initWithBoundsSize:CGSizeMake(200, 200) requestHandler:^UIImage * _Nonnull(CGSize size) {
-            return image;
+    if (self.currentSong) {
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+        [[SDWebImageManager sharedManager] downloadImageWithURL:self.currentSong.cover[MoePictureSizeLargeKey] options:SDWebImageRetryFailed progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+            MPMediaItemArtwork *artwork = [[MPMediaItemArtwork alloc] initWithBoundsSize:CGSizeMake(200, 200) requestHandler:^UIImage * _Nonnull(CGSize size) {
+                return image;
+            }];
+            // 歌曲名称
+            if (self.currentSong.sub_title) {
+                [dict setObject:self.currentSong.sub_title forKey:MPMediaItemPropertyTitle];
+            }
+            // 演唱者
+            if (self.currentSong.artist) {
+                [dict setObject:self.currentSong.artist forKey:MPMediaItemPropertyArtist];
+            }
+            // 专辑名
+            if (self.currentSong.wiki_title) {
+                [dict setObject:self.currentSong.wiki_title forKey:MPMediaItemPropertyAlbumTitle];
+            }
+            // 图片
+            if (artwork) {
+                [dict setObject:artwork forKey:MPMediaItemPropertyArtwork];
+            }
+            
+            // 音乐总时长
+            CGFloat duration = CMTimeGetSeconds(self.player.currentItem.duration);
+            [dict setObject:@(duration) forKey:MPMediaItemPropertyPlaybackDuration];
+            // 设置已经播放时长（初始播放时传的是0.0）
+            CGFloat playTime = CMTimeGetSeconds(self.player.currentItem.currentTime);
+            
+            [dict setObject:@(playTime) forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
+            // 设置锁屏状态下屏幕显示播放音乐信息
+            [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:dict];
         }];
-        // 歌曲名称
-        [dict setObject:self.currentSong.sub_title forKey:MPMediaItemPropertyTitle];
-        // 演唱者
-        if (self.currentSong.artist) {
-            [dict setObject:self.currentSong.artist forKey:MPMediaItemPropertyArtist];
-        }        
-        // 专辑名
-        [dict setObject:self.currentSong.wiki_title forKey:MPMediaItemPropertyAlbumTitle];
-        // 图片
-        [dict setObject:artwork forKey:MPMediaItemPropertyArtwork];
-        // 音乐总时长
-        CGFloat duration = CMTimeGetSeconds(self.player.currentItem.duration);
-        [dict setObject:@(duration) forKey:MPMediaItemPropertyPlaybackDuration];
-        // 设置已经播放时长（初始播放时传的是0.0）
-        CGFloat playTime = CMTimeGetSeconds(self.player.currentItem.currentTime);
-        
-        [dict setObject:@(playTime) forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
-        // 设置锁屏状态下屏幕显示播放音乐信息
-        [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:dict];
-    }];
-    
+    }
 }
 
 @end

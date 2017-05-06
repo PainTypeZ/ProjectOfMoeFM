@@ -10,7 +10,7 @@
 
 #import "RadioPlayListCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-#import "UIButton+PT_FixMultiClick.h"
+#import "UIControl+PTFixMultiClick.h"
 
 #import "MoefmAPIConst.h"
 
@@ -18,8 +18,9 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    [UIButton load];
-    self.playSongButton.pt_acceptEventInterval = 1.5;
+    // 利用runtime修改button响应事件
+    self.playSongButton.pt_acceptEventInterval = 2;
+    
 //    self.radioSongCoverImageView.layer.cornerRadius = kCornerRadius;
 //    [self.radioSongCoverImageView.layer setMasksToBounds:YES];
 }

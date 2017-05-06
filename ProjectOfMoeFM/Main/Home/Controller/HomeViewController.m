@@ -58,6 +58,7 @@ static NSString * const reuseIdentifier = @"radioCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:72.0/255 green:170.0/255 blue:245.0/255 alpha:1.0];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
@@ -143,7 +144,8 @@ static NSString * const reuseIdentifier = @"radioCell";
                     [weakSelf.radioCollectionView.mj_header endRefreshing];
                 });
             } errorHandler:^(id error) {
-                
+                [weakSelf.radioCollectionView.mj_header endRefreshing];
+                NSLog(@"%@", error);
             }];
         }else{
             weakSelf.currentPage = 1;
@@ -159,7 +161,10 @@ static NSString * const reuseIdentifier = @"radioCell";
                     [weakSelf.radioCollectionView.mj_header endRefreshing];
                 });
             } errorHandler:^(id error) {
+                // 结束刷新
+                [weakSelf.radioCollectionView.mj_header endRefreshing];
                 NSLog(@"%@", error);
+                
             }];
 
         }
@@ -196,6 +201,8 @@ static NSString * const reuseIdentifier = @"radioCell";
                 });
             } errorHandler:^(id error) {
                 NSLog(@"%@", error);
+                // 结束刷新
+                [weakSelf.radioCollectionView.mj_footer endRefreshing];
             }];
         }
     }];
@@ -291,7 +298,7 @@ static NSString * const reuseIdentifier = @"radioCell";
         [userDefaults setBool:NO forKey:@"isLogin"];
         [userDefaults synchronize];
         [self.loginButton setTitle:@"登录"];
-        [[PTPlayerManager sharedPlayerManager] updateFavInfo];
+//        [[PTPlayerManager sharedPlayerManager] updateFavInfo];
         app.playerBottomView.favouriteButton.enabled = NO;
     }];
     UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
