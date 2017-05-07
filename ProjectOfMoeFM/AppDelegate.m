@@ -62,7 +62,7 @@ NSString * const kConsumerSecret = @"8af19f17b8f7494853b8e2a3ea5f4669";
     self.bgTaskId = [AppDelegate backgroundPlayerID:self.bgTaskId];
     //其中的_bgTaskId是后台任务UIBackgroundTaskIdentifier _bgTaskId;
 }
-// 实现一下backgroundPlayerID:这个方法:
+// 实现backgroundPlayerID:这个方法:
 + (UIBackgroundTaskIdentifier)backgroundPlayerID:(UIBackgroundTaskIdentifier)backTaskId
 {
     //设置并激活音频会话类别

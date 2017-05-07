@@ -20,7 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *playAllSongsItem;
 
 @property (strong, nonatomic) NSMutableArray <RadioPlaySong *> *radioPlaylist;// 保存电台播放列表信息
-@property (copy, nonatomic) NSString *songID;// 保存songID拼接的字符串，用于请求播放列表信息
+@property (strong, nonatomic) NSArray *songIDs;// 保存songID的数组，用于请求播放列表信息
 @property (assign, nonatomic) NSUInteger songCount;// 目前只有请求favsongid的接口有返回歌曲总数这个功能
 @property (assign, nonatomic) NSUInteger currentPage;
 @property (assign, nonatomic) NSUInteger perpage;
@@ -57,12 +57,12 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
             [SVProgressHUD showWithStatus:@"加载数据中，请稍后"];
             [PTWebUtils requestFavSongListWithPage:self.currentPage andPerPage:self.perpage completionHandler:^(id object) {
                 NSDictionary *dict = object;
-                self.songID = dict[@"songID"];
-                NSNumber *count = dict[@"count"];
+                self.songIDs = dict[MoeCallbackDictSongIDKey];
+                NSNumber *count = dict[MoeCallbackDictCountKey];
                 self.songCount = count.integerValue;
-                [PTWebUtils requestRadioPlayListWithRadio_id:self.songID andPage:self.currentPage andPerpage:self.perpage completionHandler:^(id object) {
+                [PTWebUtils requestPlaylistWithSongIDs:self.songIDs CompletionHandler:^(id object) {
                     NSDictionary *dict = object;
-                    self.radioPlaylist = dict[@"songs"];
+                    self.radioPlaylist = dict[MoeCallbackDictSongKey];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [self.collectionTableView reloadData];
                         self.playAllSongsItem.enabled = YES;
@@ -89,19 +89,19 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
         // 请求收藏歌曲顺序播放列表信息
         [PTWebUtils requestFavSongListWithPage:weakSelf.currentPage andPerPage:weakSelf.perpage completionHandler:^(id object) {
             NSDictionary *dict = object;
-            weakSelf.songID = dict[@"songID"];
-            [PTWebUtils requestRadioPlayListWithRadio_id:weakSelf.songID andPage:0 andPerpage:0 completionHandler:^(id object) {
+            weakSelf.songIDs = dict[MoeCallbackDictSongIDKey];
+            [PTWebUtils requestPlaylistWithSongIDs:weakSelf.songIDs CompletionHandler:^(id object) {
                 NSDictionary *dict = object;
-                weakSelf.radioPlaylist = dict[@"songs"];
+                weakSelf.radioPlaylist = dict[MoeCallbackDictSongKey];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakSelf.collectionTableView reloadData];
                     [weakSelf.collectionTableView.mj_header endRefreshing];
                 });
+
             } errorHandler:^(id error) {
                 [weakSelf.collectionTableView.mj_header endRefreshing];
                 NSLog(@"%@", error);
             }];
-            
         } errorHandler:^(id error) {
             [weakSelf.collectionTableView.mj_header endRefreshing];
             NSLog(@"%@", error);
@@ -125,10 +125,10 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
         // 请求电台播放列表信息
         [PTWebUtils requestFavSongListWithPage:weakSelf.currentPage andPerPage:weakSelf.perpage completionHandler:^(id object) {
             NSDictionary *dict = object;
-            weakSelf.songID = dict[@"songID"];
-            [PTWebUtils requestRadioPlayListWithRadio_id:weakSelf.songID andPage:weakSelf.currentPage andPerpage:weakSelf.perpage completionHandler:^(id object) {
+            weakSelf.songIDs = dict[MoeCallbackDictSongIDKey];
+            [PTWebUtils requestPlaylistWithSongIDs:weakSelf.songIDs CompletionHandler:^(id object) {
                 NSDictionary *dict = object;
-                [weakSelf.radioPlaylist addObjectsFromArray:dict[@"songs"]];
+                [weakSelf.radioPlaylist addObjectsFromArray:dict[MoeCallbackDictSongKey]];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakSelf.collectionTableView reloadData];
                     // 结束刷新
@@ -152,13 +152,13 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
 #pragma mark - actions
 - (IBAction)playSingleFavouriteSongAction:(UIButton *)sender {
     CollectionSongsCell *cell = (CollectionSongsCell *)sender.superview.superview;
-    [[PTPlayerManager sharedPlayerManager] playSingleSong:cell.radioPlaySong andRadioID:@"ordered_fav"];
+    [[PTPlayerManager sharedPlayerManager] changeToPlayList:@[cell.radioPlaySong] andPlayType:MoeSingleSong andSongCount:0];
 }
 
 - (IBAction)playAllSongsAction:(UIBarButtonItem *)sender {
-    [[PTPlayerManager sharedPlayerManager] changeToPlayList:self.radioPlaylist andRadioWikiID:@"ordered_fav"];// 需要在manager添加处理顺序播放的逻辑
+    [[PTPlayerManager sharedPlayerManager] changeToPlayList:self.radioPlaylist andPlayType:MoeOrderedFavList andSongCount:self.songCount];
     sender.enabled = NO;
-    sleep(3);
+    sleep(5);
     sender.enabled = YES;
 }
 

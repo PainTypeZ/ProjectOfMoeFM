@@ -50,7 +50,7 @@
     // 利用runtime修改button响应事件
     self.favouriteButton.pt_acceptEventInterval = 3;
     self.dislikeButton.pt_acceptEventInterval = 3;
-    self.playButton.pt_acceptEventInterval = 1;
+    self.playButton.pt_acceptEventInterval = 0.5;
     self.nextButton.pt_acceptEventInterval = 2;
     
     self.playButton.selected = NO;

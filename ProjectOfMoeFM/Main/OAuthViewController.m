@@ -58,7 +58,7 @@ NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_t
             //得到的accessToken和Secret已保存存到偏好设置
             // 此处可以返回主线程添加提示信息等效果
             if ([PTPlayerManager sharedPlayerManager].currentSong) {
-                [[PTPlayerManager sharedPlayerManager] updateFavInfo];
+                [[PTPlayerManager sharedPlayerManager] updateFavInfoWhileLoginOAuth];
             }            
             dispatch_async(dispatch_get_main_queue(), ^{
                 // 更新当前播放列表的歌曲信息                
@@ -83,15 +83,5 @@ NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_t
 - (void)dealloc {
     NSLog(@"授权界面被销毁了");
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

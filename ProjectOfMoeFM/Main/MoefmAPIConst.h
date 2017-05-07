@@ -16,7 +16,7 @@ extern NSString * const MoePageKey;
 extern NSString * const MoePerPageKey;
 extern NSString * const MoeWikiIdKey;
 extern NSString * const MoeObjTypeKey;
-extern NSString * const MoeAPIKey;
+extern NSString * const MoeAPIKey;// api = json, 不是consumer key
 extern NSString * const MoeRadioPlayListKey;
 
 /* MoeFM API value */
@@ -29,9 +29,9 @@ extern NSString * const MoeAPIValue;// 本工程全部使用JSON
 /*  MoeFM API URL */
 extern NSString * const MoeRadioListURL;// 电台列表
 
-extern NSString * const MoeHotRadios;// 热门电台，参数api=json，hot_radios=1; api_key(未授权OAuth的时候启用)
+extern NSString * const MoeHotRadiosURL;// 热门电台，参数api=json，hot_radios=1; api_key(未授权OAuth的时候启用)
 
-extern NSString * const MoeRadioSongsURL;// 电台的歌曲列表, 主要是拿电台专辑的歌曲总数，似乎不能用，很多wiki_id查询结果是null
+extern NSString * const MoeRadioSongCountURL;// 电台的歌曲列表, 主要是拿电台专辑的歌曲总数，似乎不能用，很多wiki_id查询结果是null
 
 extern NSString * const MoeRadioPlayURL;// 电台播放列表，可以作为标准电台播放列表使用，需要添加参数api=json;添加电台专辑wiki_id可以返回指定的电台专辑;同时也是随机收藏列表的接口
 
@@ -50,5 +50,17 @@ extern NSString * const MoeDefaultPictureURL;
 extern NSString * const MoePictureSizeSquareKey;
 extern NSString * const MoePictureSizeMediumKey;
 extern NSString * const MoePictureSizeLargeKey;
+
+/* callbackDictkey */
+extern NSString * const MoeCallbackDictRadioKey; // 电台
+extern NSString * const MoeCallbackDictSongKey; // 歌曲
+extern NSString * const MoeCallbackDictSongIDKey; // 歌曲ID
+extern NSString * const MoeCallbackDictCountKey; // 条目总数
+
+/* playType */
+extern NSString * const MoeSingleSong;
+extern NSString * const MoeRandomList;
+extern NSString * const MoeFavRandomList;
+extern NSString * const MoeOrderedFavList;
 
 @end

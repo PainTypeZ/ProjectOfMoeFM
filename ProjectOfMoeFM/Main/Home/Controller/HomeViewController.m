@@ -7,8 +7,6 @@
 //
 
 
-
-#define kTestRadioID @"11138"
 /* collectionViewConstants */
 #define kMainScreenWidth [UIScreen mainScreen].bounds.size.width
 #define kNumberOfItemsPerRow 3
@@ -46,7 +44,7 @@
 @property (strong, nonatomic) NSMutableArray *hotRadios;// 保存热门电台列表信息
 @property (strong, nonatomic) NSMutableDictionary *radiosInformations;// 用于保存电台歌曲总数信息
 @property (assign, nonatomic) NSUInteger radioCount;// 电台总数，热门电台不用考虑边界，因为只有五个结果
-@property (strong, nonatomic) NSMutableArray *radiosRandomPlayList;
+//@property (strong, nonatomic) NSMutableArray *radiosRandomPlayList;
 
 @property (assign, nonatomic) NSUInteger currentPage;
 @property (assign, nonatomic) NSUInteger perpage;
@@ -138,7 +136,9 @@ static NSString * const reuseIdentifier = @"radioCell";
 
         if (weakSelf.radiosSegmentedControl.selectedSegmentIndex == 0) {
             [PTWebUtils requestHotRadiosWithCompletionHandler:^(id object) {
-                weakSelf.hotRadios = object;
+                NSDictionary *dict = object;
+                weakSelf.hotRadios = dict[MoeCallbackDictRadioKey];
+                
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakSelf.radioCollectionView reloadData];
                     [weakSelf.radioCollectionView.mj_header endRefreshing];
@@ -152,8 +152,8 @@ static NSString * const reuseIdentifier = @"radioCell";
             // perpage=0时会发送默认值为20的请求
             [PTWebUtils requestRadioListInfoWithPage:self.currentPage andPerPage:0 completionHandler:^(id object) {
                 NSDictionary *dict = object;
-                NSNumber *count = dict[@"count"];
-                weakSelf.allRadios = dict[@"radios"];
+                NSNumber *count = dict[MoeCallbackDictCountKey];
+                weakSelf.allRadios = dict[MoeCallbackDictRadioKey];
                 weakSelf.radioCount = count.integerValue;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakSelf.radioCollectionView reloadData];
@@ -190,8 +190,8 @@ static NSString * const reuseIdentifier = @"radioCell";
             // 增加数据
             [PTWebUtils requestRadioListInfoWithPage:weakSelf.currentPage andPerPage:0 completionHandler:^(id object) {
                 NSDictionary *dict = object;
-                NSNumber *count = dict[@"count"];
-                NSArray *moreRadiosArray = dict[@"radios"];
+                NSNumber *count = dict[MoeCallbackDictCountKey];
+                NSArray *moreRadiosArray = dict[MoeCallbackDictRadioKey];
                 weakSelf.radioCount = count.integerValue;
                 [weakSelf.allRadios addObjectsFromArray:moreRadiosArray];
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -220,7 +220,7 @@ static NSString * const reuseIdentifier = @"radioCell";
     self.hotRadios = [NSMutableArray array];
     self.allRadios = [NSMutableArray array];
     self.radiosInformations = [NSMutableDictionary dictionary];
-    self.radiosRandomPlayList = [NSMutableArray array];
+//    self.radiosRandomPlayList = [NSMutableArray array];
 }
 
 - (void)sendAllRadioListRequest {
@@ -229,8 +229,8 @@ static NSString * const reuseIdentifier = @"radioCell";
         [SVProgressHUD showWithStatus:@"加载数据中，请稍后"];
         [PTWebUtils requestRadioListInfoWithPage:self.currentPage andPerPage:self.perpage completionHandler:^(id object) {
             NSDictionary *dict = object;
-            NSNumber *count = dict[@"count"];
-            self.allRadios = dict[@"radios"];
+            NSNumber *count = dict[MoeCallbackDictCountKey];
+            self.allRadios = dict[MoeCallbackDictRadioKey];
             self.radioCount = count.integerValue;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.radioCollectionView reloadData];
@@ -246,26 +246,19 @@ static NSString * const reuseIdentifier = @"radioCell";
 - (void)sendHotRadiosRequest {
     if (self.hotRadios.count == 0) {
         [PTWebUtils requestHotRadiosWithCompletionHandler:^(id object) {
-            self.hotRadios = object;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.radioCollectionView reloadData];
-            });
+            NSDictionary *dict = object;
+            if (dict[MoeCallbackDictRadioKey]) {
+                self.hotRadios = dict[MoeCallbackDictRadioKey];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.radioCollectionView reloadData];
+                });
+            } else {
+                NSLog(@"热门电台获取失败");
+            }
         } errorHandler:^(id error) {
             NSLog(@"%@", error);
         }];
     }
-}
-
-// 测试用
-- (void)sendPlayListRequest {
-    // 用单例构造方法初始化playerManager实例
-    PTPlayerManager *playerManager = [PTPlayerManager sharedPlayerManager];
-    // 启动时默认开始播放，测试用
-    [PTWebUtils requestRadioPlayListWithRadio_id:kTestRadioID andPage:1 andPerpage:9 completionHandler:^(id object) {
-        [playerManager changeToPlayList:object andRadioWikiID:kTestRadioID];
-    } errorHandler:^(id error) {
-        NSLog(@"%@", error);
-    }];
 }
 
 #pragma mark - UI action and others
@@ -328,12 +321,16 @@ static NSString * const reuseIdentifier = @"radioCell";
 }
 
 - (IBAction)randomPlayAction:(UIButton *)sender {
-    [PTWebUtils requestRadioPlayListWithRadio_id:@"random" andPage:0 andPerpage:0 completionHandler:^(id object) {
+    sender.enabled = NO;
+    [PTWebUtils requestRandomPlaylistWithCompletionHandler:^(id object) {
         NSDictionary *dict = object;
-        [[PTPlayerManager sharedPlayerManager] changeToPlayList:dict[@"songs"] andRadioWikiID:@"random"];
+        NSArray <RadioPlaySong *> *playlist = dict[MoeCallbackDictSongKey];
+        [[PTPlayerManager sharedPlayerManager] changeToPlayList:playlist andPlayType:MoeRandomList andSongCount:0];
     } errorHandler:^(id error) {
         NSLog(@"%@", error);
     }];
+    sleep(3);
+    sender.enabled = YES;
 }
 
 - (IBAction)myFavouriteAction:(UIButton *)sender {
@@ -403,14 +400,35 @@ static NSString * const reuseIdentifier = @"radioCell";
 #pragma mark - UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    self.view.userInteractionEnabled = NO;
     RadioWiki *radioWiki = [[RadioWiki alloc] init];
     if (self.radiosSegmentedControl.selectedSegmentIndex == 0) {
         radioWiki = self.hotRadios[indexPath.item];
     }else{
         radioWiki = self.allRadios[indexPath.item];
     }
-    [self performSegueWithIdentifier:@"pushRadioPlayListViewController" sender:radioWiki];
-
+    [SVProgressHUD showWithStatus:@"查询中...请稍后..."];
+    [PTWebUtils requestRadioSongCountWithRadioId:radioWiki.wiki_id completionHandler:^(id object) {
+        NSDictionary *dict = object;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.view.userInteractionEnabled = YES;
+            [SVProgressHUD dismiss];
+            NSNumber *countNum = dict[MoeCallbackDictCountKey];
+            NSUInteger count = countNum.integerValue;
+            if (count != 0) {
+                NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+                [dict setObject:@(count) forKey:@"count"];
+                [dict setObject:radioWiki forKey:@"radioWiki"];
+                [self performSegueWithIdentifier:@"pushRadioPlayListViewController" sender:dict];
+            } else {
+                [SVProgressHUD showInfoWithStatus:@"该电台暂无歌曲"];
+                [SVProgressHUD dismissWithDelay:1.5];
+            }
+            
+        });
+    } errorHandler:^(id error) {
+        NSLog(@"%@", error);
+    }];
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -435,7 +453,10 @@ static NSString * const reuseIdentifier = @"radioCell";
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"pushRadioPlayListViewController"]) {
         RadioPlayListViewController *radioPlayListViewContoller = segue.destinationViewController;
-        radioPlayListViewContoller.radioWiki = sender;
+        RadioWiki *radioWiki = sender[@"radioWiki"];
+        radioPlayListViewContoller.radioWiki = radioWiki;
+        NSNumber *count = sender[@"count"];
+        radioPlayListViewContoller.songCount = count.integerValue;
     }
 }
 

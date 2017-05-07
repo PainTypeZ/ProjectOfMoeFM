@@ -8,8 +8,9 @@
 
 // 回调
 typedef void(^callback)(id object);
-// 异常处理
+// 错误信息
 typedef void(^error)(id error);
+
 #import <Foundation/Foundation.h>
 
 @interface PTWebUtils : NSObject
@@ -18,17 +19,28 @@ typedef void(^error)(id error);
 + (void)requestRadioListInfoWithPage:(NSUInteger)currentPage andPerPage:(NSUInteger)perpageNumber completionHandler:(callback)callback errorHandler:(error)errorHandler;
 // 请求热门电台列表
 + (void)requestHotRadiosWithCompletionHandler:(callback)callback errorHandler:(error)errorHandler;
-// 请求某个电台专辑的歌曲列表信息，除了获取歌曲总数外，大概是没其他用的接口。。。
-+ (void)requestRadioSongsInfoWithWiki_id:(NSString *)wiki_id completionHandler:(callback)callback errorHandler:(error)errorHandler;
-// 请求电台播放列表，需要radio = wiki_id参数, 若填写参数为nil，则返回随机列表,只返回第1页，9首歌曲
-//+ (void)requestRadioPlayListWithRadio_id:(NSString *)radio_id CompletionHandler:(callback)callback errorHandler:(error)errorHandler;
+
+// 请求电台条目信息,就是为了拿电台songcount。。。
++ (void)requestRadioSongCountWithRadioId:(NSString *)radioId completionHandler:(callback)callback errorHandler:(error)errorHandler;
 
 // 请求电台播放列表，需要radio = wiki_id参数，第几页page，每页多少歌曲数量perpage，注意最后一页返回的结果可能不够perpage数量;此请求也可以返回随机的收藏歌曲播放列表
-+ (void)requestRadioPlayListWithRadio_id:(NSString *)radio_id andPage:(NSUInteger)currentPage andPerpage:(NSUInteger)perpageNumber completionHandler:(callback)callback errorHandler:(error)errorHandler;
-// 请求收藏歌曲列表（obj_type = song),要把up_load转换为RadioPlaySong;OAuth限定
-+ (void)requestFavSongListWithPage:(NSUInteger)currentPage andPerPage:(NSUInteger)perpageNumber completionHandler:(callback)callback errorHandler:(error)errorHandler;
++ (void)requestPlaylistWithRadioId:(NSString *)RadioId andPage:(NSUInteger)page andPerpage:(NSUInteger)perpage completionHandler:(callback)callback errorHandler:(error)errorHandler;
+
+// 以SongIDs请求播放列表，收藏曲目的顺序播放列表和单曲必须使用的方法
++ (void)requestPlaylistWithSongIDs:(NSArray <NSString *> *)SongIDs CompletionHandler:(callback)callback errorHandler:(error)errorHandler;
+
+// 请求默认随机播放列表
++ (void)requestRandomPlaylistWithCompletionHandler:(callback)callback errorHandler:(error)errorHandler;
+
+// 请求收藏曲目的随机播放列表
++ (void)requestFavRandomPlaylistWithCompletionHandler:(callback)callback errorHandler:(error)errorHandler;
+
+// 请求收藏歌曲列表（obj_type = song), 只能拿到收藏曲目的wiki_id数组, 其结果用于请求收藏曲目顺序播放列表和完整的收藏曲目信息;OAuth限定
++ (void)requestFavSongListWithPage:(NSUInteger)page andPerPage:(NSUInteger)perpage completionHandler:(callback)callback errorHandler:(error)errorHandler;
+
 // 添加或者删除收藏
 + (void)requestUpdateToAddOrDelete:(NSString *)addOrDelete andObjectType:(NSString *)fav_obj_type andObjectID:(NSString *)fav_obj_id completionHandler:(callback)callback errorHandler:(error)errorHandler;
+
 // 获取OAuth登录的用户信息，也是用来检查登录状态的方法
 + (void)requestUserInfoWithCompletionHandler:(callback)callback errorHandler:(error)errorHandler;
 

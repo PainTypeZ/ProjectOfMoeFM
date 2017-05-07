@@ -103,7 +103,7 @@ static NSString *mimeType;
     [loadingRequest.dataRequest respondWithData:[PTFileHandle readTempFileDataWithOffset:requestedOffset andLength:respondLength]];
     // 如果完全响应了所需要的数据，则完成缓冲
     NSUInteger currentOffset = requestedOffset + readableLength;
-    NSUInteger expectOffset = requestedOffset + loadingRequest.dataRequest.requestedLength;
+    NSUInteger expectOffset = loadingRequest.dataRequest.requestedOffset + loadingRequest.dataRequest.requestedLength;
     if (currentOffset >= expectOffset) {
         [loadingRequest finishLoading];
         return YES;
@@ -143,6 +143,10 @@ static NSString *mimeType;
 
 - (void)requestTaskDidFailWithError:(NSError *)error {
     // 处理数据加载错误
+}
+
+- (void)dealloc {
+    NSLog(@"loader被销毁了");
 }
 
 @end

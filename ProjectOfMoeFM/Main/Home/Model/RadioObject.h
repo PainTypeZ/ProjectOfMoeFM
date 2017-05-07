@@ -16,7 +16,7 @@
 @property (copy, nonatomic) NSString *sub_title_encode;
 @property (copy, nonatomic) NSString *sub_type;
 @property (copy, nonatomic) NSString *sub_order;
-@property (copy, nonatomic) NSString <Optional> *sub_meta;
+@property (strong, nonatomic) NSDictionary <Optional> *sub_meta;
 @property (copy, nonatomic) NSString <Optional> *sub_about;
 @property (copy, nonatomic) NSString *sub_comment_count;
 @property (copy, nonatomic) NSString <Optional> *sub_data;

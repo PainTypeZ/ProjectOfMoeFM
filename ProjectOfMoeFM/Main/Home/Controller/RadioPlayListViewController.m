@@ -19,18 +19,21 @@
 
 #import "PTPlayerManager.h"
 
+#import "MoefmAPIConst.h"
+
 @interface RadioPlayListViewController ()<UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching>
 
 @property (weak, nonatomic) IBOutlet UITableView *radioPlayListTableView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *playAllSongsItem;
 
 @property (strong, nonatomic) NSMutableArray *radioPlaylist;// 保存电台播放列表信息
-@property (assign, nonatomic) NSUInteger songCount;// 现在的api没有这个功能，只有favSongID有
-@property (assign, nonatomic) BOOL isLast;// 标记是否最后一页
 @property (weak, nonatomic) IBOutlet UILabel *titeLabel;
 
 @property (assign, nonatomic) NSUInteger currentPage;
 @property (assign, nonatomic) NSUInteger perpage;
+
+//@property (strong, nonatomic) NSDictionary *requestedList; //用来标记是否需要重新请求列表信息, 暂时不做缓存
+
 @end
 
 @implementation RadioPlayListViewController
@@ -58,13 +61,6 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
     return _perpage;
 }
 
-- (BOOL)isLast {
-    if (!_isLast) {
-        _isLast = NO;
-    }
-    return _isLast;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:72.0/255 green:170.0/255 blue:245.0/255 alpha:1.0];
@@ -78,19 +74,15 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
     // 下拉刷新
     self.radioPlayListTableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         // 加载数据
-        self.isLast = NO;// 重置最后一页标记;
         weakSelf.currentPage = 1;
         // 请求电台播放列表信息
-        [PTWebUtils requestRadioPlayListWithRadio_id:weakSelf.radioWiki.wiki_id andPage:weakSelf.currentPage andPerpage:0 completionHandler:^(id object) {
+        [PTWebUtils requestPlaylistWithRadioId:weakSelf.radioWiki.wiki_id andPage:weakSelf.currentPage andPerpage:0 completionHandler:^(id object) {
             NSDictionary *dict = object;
-            NSNumber *count = dict[@"count"];
-            weakSelf.songCount = count.integerValue;
-            weakSelf.radioPlaylist = dict[@"songs"];
+            weakSelf.radioPlaylist = dict[MoeCallbackDictSongKey];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.radioPlayListTableView reloadData];
                 [weakSelf.radioPlayListTableView.mj_header endRefreshing];
             });
-            
         } errorHandler:^(id error) {
             [weakSelf.radioPlayListTableView.mj_header endRefreshing];
             NSLog(@"%@", error);
@@ -102,8 +94,7 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
     
     // 上拉刷新
     self.radioPlayListTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-//        if (weakSelf.radioPlaylist.count >= weakSelf.songCount)// 现在的api没有歌曲总数
-        if (weakSelf.isLast == YES) {
+       if (weakSelf.radioPlaylist.count >= weakSelf.songCount) {
             [SVProgressHUD showInfoWithStatus:@"已经是最后一页了"];
             [SVProgressHUD dismissWithDelay:1.5];
             // 结束刷新
@@ -113,22 +104,15 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
         // 加载数据
         weakSelf.currentPage++;
         // 请求电台播放列表信息
-        weakSelf.currentPage++;
-        [PTWebUtils requestRadioPlayListWithRadio_id:weakSelf.radioWiki.wiki_id andPage:weakSelf.currentPage andPerpage:0 completionHandler:^(id object) {
+        [PTWebUtils requestPlaylistWithRadioId:weakSelf.radioWiki.wiki_id andPage:weakSelf.currentPage andPerpage:0 completionHandler:^(id object) {
             NSDictionary *dict = object;
-            NSNumber *count = dict[@"count"];
-            weakSelf.songCount = count.integerValue;
-            NSArray *moreSongsArray = dict[@"songs"];
-            if (moreSongsArray.count < 9) {
-                weakSelf.isLast = YES;
-            }
+            NSArray *moreSongsArray = dict[MoeCallbackDictSongKey];
             [weakSelf.radioPlaylist addObjectsFromArray:moreSongsArray];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.radioPlayListTableView reloadData];
                 // 结束刷新
                 [weakSelf.radioPlayListTableView.mj_footer endRefreshing];
             });
-            
         } errorHandler:^(id error) {
             // 结束刷新
             [weakSelf.radioPlayListTableView.mj_footer endRefreshing];
@@ -143,11 +127,9 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
         self.titeLabel.text = self.radioWiki.wiki_title;
         // 请求电台播放列表信息
         [SVProgressHUD showWithStatus:@"加载数据中，请稍后"];
-        [PTWebUtils requestRadioPlayListWithRadio_id:self.radioWiki.wiki_id andPage:self.currentPage andPerpage:0 completionHandler:^(id object) {
+        [PTWebUtils requestPlaylistWithRadioId:self.radioWiki.wiki_id andPage:self.currentPage andPerpage:0 completionHandler:^(id object) {
             NSDictionary *dict = object;
-            NSNumber *count = dict[@"count"];
-            self.songCount = count.integerValue;
-            self.radioPlaylist = dict[@"songs"];
+            self.radioPlaylist = dict[MoeCallbackDictSongKey];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.radioPlayListTableView reloadData];
@@ -157,15 +139,14 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
         } errorHandler:^(id error) {
             NSLog(@"%@", error);
         }];
-
     }
 }
 - (IBAction)playSingleSongAction:(UIButton *)sender {
     RadioPlayListCell *cell = (RadioPlayListCell *)sender.superview.superview;
-    [[PTPlayerManager sharedPlayerManager] playSingleSong:cell.radioPlaySong andRadioID:@"random"];
+    [[PTPlayerManager sharedPlayerManager] changeToPlayList:@[cell.radioPlaySong] andPlayType:MoeSingleSong andSongCount:0];
 }
 - (IBAction)playAllSongsAction:(UIBarButtonItem *)sender {
-    [[PTPlayerManager sharedPlayerManager] changeToPlayList:self.radioPlaylist andRadioWikiID:self.radioWiki.wiki_id];
+    [[PTPlayerManager sharedPlayerManager] changeToPlayList:self.radioPlaylist andPlayType:self.radioWiki.wiki_id andSongCount:self.songCount];
     sender.enabled = NO;
     sleep(3);
     sender.enabled = YES;
@@ -183,7 +164,6 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     RadioPlayListCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
     
     RadioPlaySong *radioPlaySong = self.radioPlaylist[indexPath.row];
     cell.radioPlaySong = radioPlaySong;
