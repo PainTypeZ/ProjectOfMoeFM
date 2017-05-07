@@ -13,28 +13,24 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
-#import "PTResourceLoader.h"
-#import "PTFileHandle.h"
-#import "NSURL+PTLoader.h"
 
 #define kStatus @"status"
 #define kLoadedTimeRanges @"loadedTimeRanges"
 #define kPlaybackBufferEmpty @"playbackBufferEmpty"
 #define kPlaybackLikelyToKeepUp @"playbackLikelyToKeepUp"
 
-@interface PTPlayerManager()<PTResourceLoaderDelegate>
+@interface PTPlayerManager()
 
-@property (copy, nonatomic) NSString *currentRadioID;
+@property (copy, nonatomic) NSString *playType;
 @property (assign, nonatomic) NSUInteger playIndex;
-@property (assign, nonatomic) NSUInteger currentPage;
-@property (assign, nonatomic) NSUInteger perpage;
 @property (strong, nonatomic) NSMutableArray <RadioPlaySong *>* playList;
-@property (assign, nonatomic) NSUInteger count;
+
 @property (strong, nonatomic) AVPlayer *player;
+
+@property (strong, nonatomic) NSArray *songIDs;
 
 @property (strong, nonatomic) PlayerData *playerData;
 
-@property (strong, nonatomic) PTResourceLoader *loader;
 
 @property (assign, nonatomic) BOOL isPlay;
 @property (assign, nonatomic) BOOL isUIEnable;
@@ -58,8 +54,8 @@
     if (self) {
         _playList = [NSMutableArray array];
         _playIndex = 0;
-        _currentPage = 1;
-        _perpage = 9;
+//        _currentPage = 1;
+//        _perpage = 9;
         
         _playerData = [[PlayerData alloc] init];// 不能省略，因为后面的playerData赋值是用的weakself，如果没有进行初始化，则weakself.playerData会被释放掉，传值结果全是nil
         _isPlay = NO;
@@ -89,6 +85,7 @@
     }
 }
 #pragma mark - 重写setter方法发送播放状态和歌曲信息代理消息
+
 - (void)setCurrentSong:(RadioPlaySong *)currentSong {
     _currentSong = currentSong;
     [self.delegate sendCurrentSongInfo:_currentSong];
@@ -113,7 +110,7 @@
                 NSLog(@"start to play");
                 [self setupNowPlayingInfoCenterWithPlayTime:CMTimeGetSeconds(self.player.currentItem.currentTime)];// 后台播放所需的信息,开始播放时间是0.0
                 self.isPlay = YES;
-                self.isUIEnable =YES;
+//                self.isUIEnable =YES;
         }else if(status == AVPlayerStatusUnknown){
             NSLog(@"AVPlayerStatusUnknown");
         }else if (status == AVPlayerStatusFailed){
@@ -149,87 +146,62 @@
 
 // 歌曲结束时的处理
 - (void)playDidEnd {
-    [self.loader stopLoading];
-
     
     self.isPlay = NO;// 改变播放状态
-//    self.isUIEnable = NO;// 改变用户交互状态
+    self.isUIEnable = NO;// 改变用户交互状态
     // 如果是单曲就循环播放
-    if ([self.currentRadioID isEqualToString:MoeSingleSong]) {
+    if ([self.playType isEqualToString:MoeSingleSongPlay
+         
+         ]) {
         [self.player seekToTime:kCMTimeZero];
         [self.player play];
         self.isPlay = YES;
         return;
     }
-    
-    if (self.playIndex == self.playList.count - 1) {
-        // 判断是不是顺序播放的收藏歌曲
-        BOOL isLogin = [[NSUserDefaults standardUserDefaults] objectForKey:@"isLogin"];// 判断登录状态
-        if ([self.currentRadioID isEqualToString:MoeOrderedFavList] && isLogin) {
-            if (self.playIndex >= self.count - 1) {
-                self.playIndex = 0;
-                self.currentPage = 1;
-                self.playList = [NSMutableArray array]; //重置播放列表
-            } else {
-                self.playIndex++;
-                self.currentPage++;
-            }
-            
-//            __weak PTPlayerManager *weakSelf = self;
-            [PTWebUtils requestFavSongListWithPage:self.currentPage andPerPage:0 completionHandler:^(id object) {
+//    NSLog(@"%lu------%lu------%lu", self.playIndex, self.playList.count, self.songIDs.count);
+    if (self.playIndex >= self.playList.count - 1) {
+        // 判断是不是顺序播放的歌曲
+        if ([self.playType isEqualToString:MoeRandomPlay]) {
+            self.playIndex = 0;
+            [PTWebUtils requestRandomPlaylistWithCompletionHandler:^(id object) {
                 NSDictionary *dict = object;
-                NSNumber *count = dict[MoeCallbackDictCountKey];
-                NSArray *songIDs = dict[MoeCallbackDictSongIDKey];
-                self.count = count.integerValue;
-                [PTWebUtils requestPlaylistWithSongIDs:songIDs CompletionHandler:^(id object) {
-                    NSDictionary *dict = object;
-                    NSArray *songs = dict[MoeCallbackDictSongKey];
-                    [self.playList addObjectsFromArray:songs];
-                    [self readyToPlayNewSong:self.playList[self.playIndex]];
-                } errorHandler:^(id error) {
-                    NSLog(@"%@", error);
-                }];
+                NSArray *songs = dict[MoeCallbackDictSongKey];
+                self.playList = [NSMutableArray arrayWithArray:songs];
+                [self readyToPlayNewSong:self.playList[self.playIndex]];
+            } errorHandler:^(id error) {
+                NSLog(@"%@", error);
+            }];
+        } else if ([self.playType isEqualToString:MoeFavRandomPlay]) {
+            self.playIndex = 0;
+            [PTWebUtils requestFavRandomPlaylistWithCompletionHandler:^(id object) {
+                NSDictionary *dict = object;
+                NSArray *songs = dict[MoeCallbackDictSongKey];
+                self.playList = [NSMutableArray arrayWithArray:songs];
+                [self readyToPlayNewSong:self.playList[self.playIndex]];
             } errorHandler:^(id error) {
                 NSLog(@"%@", error);
             }];
         } else {
-            if ([self.currentRadioID isEqualToString:MoeRandomList]) {
+            if (self.playIndex >= self.songIDs.count - 1) {
                 self.playIndex = 0;
-                [PTWebUtils requestRandomPlaylistWithCompletionHandler:^(id object) {
-                    NSDictionary *dict = object;
-                    NSArray *songs = dict[MoeCallbackDictSongKey];
-                    self.playList = [NSMutableArray arrayWithArray:songs];
-                    [self readyToPlayNewSong:self.playList[self.playIndex]];
-                } errorHandler:^(id error) {
-                    NSLog(@"%@", error);
-                }];
-            } else if ([self.currentRadioID isEqualToString:MoeFavRandomList]) {
-                self.playIndex = 0;
-                [PTWebUtils requestFavRandomPlaylistWithCompletionHandler:^(id object) {
-                    NSDictionary *dict = object;
-                    NSArray *songs = dict[MoeCallbackDictSongKey];
-                    self.playList = [NSMutableArray arrayWithArray:songs];
-                    [self readyToPlayNewSong:self.playList[self.playIndex]];
-                } errorHandler:^(id error) {
-                    NSLog(@"%@", error);
-                }];
+                self.playList = [NSMutableArray array]; //重置播放列表
             } else {
-                if (self.playIndex >= self.count - 1) {
-                    self.playIndex = 0;
-                    self.currentPage = 1;
-                    self.playList = [NSMutableArray array]; //重置播放列表
-                } else {
-                    self.playIndex++;
-                    self.currentPage++;
-                }
-                [PTWebUtils requestPlaylistWithRadioId:self.currentRadioID andPage:self.currentPage andPerpage:0 completionHandler:^(id object) {
-                    NSDictionary *dict = object;
-                    NSArray *songs = dict[MoeCallbackDictSongKey];
-                    [self.playList addObjectsFromArray:songs];
-                } errorHandler:^(id error) {
-                    NSLog(@"%@", error);
-                }];
+                self.playIndex++;
             }
+            
+            NSUInteger length = 9;// 一次只请求最多9首歌
+            if (self.playIndex + length > self.songIDs.count) {
+                length = self.songIDs.count - self.playIndex;
+            }
+            NSArray *array = [self.songIDs objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(self.playIndex, length)]];
+            [PTWebUtils requestPlaylistWithSongIDs:array CompletionHandler:^(id object) {
+                NSDictionary *dict = object;
+                NSArray *songs = dict[MoeCallbackDictSongKey];
+                [self.playList addObjectsFromArray:songs];
+                [self readyToPlayNewSong:self.playList[self.playIndex]];
+            } errorHandler:^(id error) {
+                NSLog(@"%@", error);
+            }];
         }
     }else{
         self.playIndex++;// 播放序号+1
@@ -241,23 +213,7 @@
 // 处理换歌,包括对resourceLoader的设置
 - (void)readyToPlayNewSong:(RadioPlaySong *)radioPlaySong {
     self.currentSong = radioPlaySong;
-    //    AVPlayerItem *item = [AVPlayerItem playerItemWithURL:[NSURL URLWithString:self.currentSong.url]];
-    // 检查缓存文件
-    NSString *cacheFilePath = [PTFileHandle cacheFileExistsWithURL:[NSURL URLWithString:self.currentSong.url]];
-    AVPlayerItem *item;
-    if (cacheFilePath) {
-        NSURL *url = [NSURL fileURLWithPath:cacheFilePath];
-        item = [AVPlayerItem playerItemWithURL:url];
-        NSLog(@"有缓存，播放已缓存的文件");
-    }else{
-        self.loader = [[PTResourceLoader alloc] init];
-        self.loader.delegate = self;
-        NSURL *url = [[NSURL URLWithString:self.currentSong.url] customSchemeURL];
-        AVURLAsset *asset = [AVURLAsset URLAssetWithURL:url options:nil];
-        [asset.resourceLoader setDelegate:self.loader queue:dispatch_get_main_queue()];
-        item = [AVPlayerItem playerItemWithAsset:asset];
-        NSLog(@"无缓存，请求网络");
-    }
+    AVPlayerItem *item = [AVPlayerItem playerItemWithURL:[NSURL URLWithString:self.currentSong.url]];
     // 判断是否正在播放item
     if (self.player.currentItem) {
         [self removeOldOberserverFromPlayerItem:self.player.currentItem];// 移除旧观察者
@@ -283,9 +239,12 @@
 - (void)handlePlayTimeAndPlayProgressAndBufferProgressWithWeakSelf:(__weak PTPlayerManager *)weakSelf andWeakAVPlayer:(AVPlayer *)weakAVPlayer {
     // 播放进度
     CGFloat currentTime = CMTimeGetSeconds(weakAVPlayer.currentItem.currentTime);
+    if (currentTime >= 1) {
+        self.isUIEnable = YES;
+    }
     CMTime duration = weakAVPlayer.currentItem.duration;
     CGFloat totalDuration = CMTimeGetSeconds(duration);
-   
+    
     // 播放时间
     NSInteger reducePlayerTime = totalDuration - currentTime;// 倒计时时间
     NSString *playTimeText = [NSString stringWithFormat:@"-%02ld:%02ld", reducePlayerTime / 60, reducePlayerTime % 60];// 播放时间
@@ -377,6 +336,10 @@
     
     [PTWebUtils requestUpdateToAddOrDelete:acitonType andObjectType:objectType andObjectID:objectID completionHandler:^(id object) {
         NSLog(@"%@", object);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [SVProgressHUD showInfoWithStatus:object];
+            [SVProgressHUD dismissWithDelay:1.5];
+        });
     } errorHandler:^(id error) {
         NSLog(@"%@", error);
     }];
@@ -385,6 +348,7 @@
 // 登录或退出登录是调用，更新收藏状态信息,还没实现保存歌曲播放状态，如播放时间等
 - (void)updateFavInfoWhileLoginOAuth {
     if (self.player.currentItem) {
+        [self pause];
         NSMutableArray <NSString *> *songIDs = [NSMutableArray array];
         for (RadioPlaySong *song in self.playList) {
             [songIDs addObject:song.wiki_id];
@@ -393,6 +357,7 @@
             NSDictionary *dict = object;
             self.playList = dict[MoeCallbackDictSongKey];
             self.currentSong = self.playList[self.playIndex]; // setter发送代理消息
+            [self play];
         } errorHandler:^(id error) {
             NSLog(@"%@", error);
         }];
@@ -400,40 +365,33 @@
 }
 
 // 改变播放列表
-- (void)changeToPlayList:(NSArray<RadioPlaySong *> *)playList andPlayType:(NSString *)playType andSongCount:(NSUInteger)songCount {
-    if ([playType isEqualToString:MoeSingleSong]) {
-        self.currentRadioID = MoeSingleSong;
-    } else if ([playType isEqualToString:MoeRandomList]) {
-        self.currentRadioID = MoeRandomList;
-        self.count = 9;
-    } else if ([playType isEqualToString:MoeFavRandomList]) {
-        self.currentRadioID = MoeFavRandomList;
-        self.count = 9;
-    } else if ([playType isEqualToString:MoeOrderedFavList]) {
-        self.currentRadioID = MoeOrderedFavList;
-        self.count = songCount;
+- (void)changeToPlayList:(NSArray<RadioPlaySong *> *)playList andPlayType:(NSString *)playType andSongIDs:(NSArray *)songIDs {
+    
+    if ([playType isEqualToString:MoeSingleSongPlay]) {
+        self.playType = MoeSingleSongPlay;
+    } else if ([playType isEqualToString:MoeRandomPlay]) {
+        self.playType = MoeRandomPlay;
+    } else if ([playType isEqualToString:MoeFavRandomPlay]) {
+        self.playType = MoeFavRandomPlay;
     } else {
-        self.currentRadioID = playType;
-        self.count = songCount;
+        self.playType = nil;
+        self.songIDs = songIDs;
     }
     
     if (playList.count == 0) {
         NSLog(@"无效的播放列表");
         return;
+    } else if (playList.count > 9) {
+        NSMutableArray *array = [NSMutableArray arrayWithArray:[playList objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 9)]]];
+        self.playList = array;
+    } else {
+        self.playList = [NSMutableArray arrayWithArray:playList];
     }
-    self.playList = [playList mutableCopy];
+    
     self.playIndex = 0;// 播放序号归0
     [self readyToPlayNewSong:self.playList[self.playIndex]];
 }
 
-#pragma mark - PTResourceLoaderDelegate
-- (void)loader:(PTResourceLoader *)loader cacheProgress:(CGFloat)progress {
-    NSLog(@"%f", progress);
-}
-
-- (void)loader:(PTResourceLoader *)loader failLoadingWithError:(NSError *)error {
-    NSLog(@"%@", error);
-}
 #pragma mark - background controller center
 
 // 后台播放和锁屏时在控制中心显示播放信息

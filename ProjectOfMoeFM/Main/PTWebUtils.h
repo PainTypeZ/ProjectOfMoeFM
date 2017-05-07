@@ -20,7 +20,7 @@ typedef void(^error)(id error);
 // 请求热门电台列表
 + (void)requestHotRadiosWithCompletionHandler:(callback)callback errorHandler:(error)errorHandler;
 
-// 请求电台条目信息,就是为了拿电台songcount。。。
+// 请求电台条目信息,可以拿到电台songcount。。。
 + (void)requestRadioSongCountWithRadioId:(NSString *)radioId completionHandler:(callback)callback errorHandler:(error)errorHandler;
 
 // 请求电台播放列表，需要radio = wiki_id参数，第几页page，每页多少歌曲数量perpage，注意最后一页返回的结果可能不够perpage数量;此请求也可以返回随机的收藏歌曲播放列表

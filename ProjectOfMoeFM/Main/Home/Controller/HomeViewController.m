@@ -325,7 +325,7 @@ static NSString * const reuseIdentifier = @"radioCell";
     [PTWebUtils requestRandomPlaylistWithCompletionHandler:^(id object) {
         NSDictionary *dict = object;
         NSArray <RadioPlaySong *> *playlist = dict[MoeCallbackDictSongKey];
-        [[PTPlayerManager sharedPlayerManager] changeToPlayList:playlist andPlayType:MoeRandomList andSongCount:0];
+        [[PTPlayerManager sharedPlayerManager] changeToPlayList:playlist andPlayType:MoeRandomPlay andSongIDs:nil];
     } errorHandler:^(id error) {
         NSLog(@"%@", error);
     }];
@@ -409,15 +409,13 @@ static NSString * const reuseIdentifier = @"radioCell";
     }
     [SVProgressHUD showWithStatus:@"查询中...请稍后..."];
     [PTWebUtils requestRadioSongCountWithRadioId:radioWiki.wiki_id completionHandler:^(id object) {
-        NSDictionary *dict = object;
+        NSMutableDictionary *dict = object;
         dispatch_async(dispatch_get_main_queue(), ^{
             self.view.userInteractionEnabled = YES;
             [SVProgressHUD dismiss];
             NSNumber *countNum = dict[MoeCallbackDictCountKey];
             NSUInteger count = countNum.integerValue;
             if (count != 0) {
-                NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-                [dict setObject:@(count) forKey:@"count"];
                 [dict setObject:radioWiki forKey:@"radioWiki"];
                 [self performSegueWithIdentifier:@"pushRadioPlayListViewController" sender:dict];
             } else {
@@ -453,10 +451,7 @@ static NSString * const reuseIdentifier = @"radioCell";
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"pushRadioPlayListViewController"]) {
         RadioPlayListViewController *radioPlayListViewContoller = segue.destinationViewController;
-        RadioWiki *radioWiki = sender[@"radioWiki"];
-        radioPlayListViewContoller.radioWiki = radioWiki;
-        NSNumber *count = sender[@"count"];
-        radioPlayListViewContoller.songCount = count.integerValue;
+        radioPlayListViewContoller.relationshipsDict = sender;
     }
 }
 

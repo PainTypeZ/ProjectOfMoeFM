@@ -114,10 +114,11 @@
     [task resume];
 }
 
-// 请求电台条目信息,就是为了拿电台songcount。。。
+// 请求电台条目信息,可以拿到电台的songcount。。。
 + (void)requestRadioSongCountWithRadioId:(NSString *)radioId completionHandler:(callback)callback errorHandler:(error)errorHandler {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:radioId forKey:MoeWikiIdKey];
+    [params setObject:MoeObjTypeValue forKey:MoeObjTypeKey];
     NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoeRadioSongCountURL andParams:params];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -142,6 +143,9 @@
                     [callbackDict setObject:radioResponse.information.count forKey:MoeCallbackDictCountKey];
                 } else {
                     [callbackDict setObject:@"0" forKey:MoeCallbackDictCountKey];
+                }
+                if (radioResponse.relationships) {
+                    [callbackDict setObject:radioResponse.relationships forKey:MoeCallbackDictRelationshipsKey];
                 }
                 
                 callback(callbackDict);
@@ -201,7 +205,8 @@
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     NSURLSession *session = [NSURLSession sharedSession];
-    NSURLSessionTask *task = [PTWebUtils handlePlayListTaskWithRequest:request andSession:session andCallback:callback andErrorHandler:errorHandler];    [task resume];
+    NSURLSessionTask *task = [PTWebUtils handlePlayListTaskWithRequest:request andSession:session andCallback:callback andErrorHandler:errorHandler];
+    [task resume];
     
 }
 

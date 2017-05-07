@@ -48,7 +48,7 @@ typedef void(^callbackBOOL)(BOOL isSuccess);
 - (void)deleteFromFavourite;
 
 // 改变播放列表
-- (void)changeToPlayList:(NSArray<RadioPlaySong *> *)playList andPlayType:(NSString *)playType andSongCount:(NSUInteger)songCount;
+- (void)changeToPlayList:(NSArray<RadioPlaySong *> *)playList andPlayType:(NSString *_Nullable)playType andSongIDs:(NSArray *_Nullable)songIDs;
 
 // 登录时调用，更新收藏状态信息，登出时不需要
 - (void)updateFavInfoWhileLoginOAuth;

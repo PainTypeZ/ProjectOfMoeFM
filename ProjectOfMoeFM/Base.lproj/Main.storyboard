@@ -49,8 +49,55 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                                 <color key="backgroundColor" red="0.2819526792" green="0.6659956574" blue="0.96032720800000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ah6-UU-jrl">
+                                <rect key="frame" x="0.0" y="64" width="375" height="40"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cbH-re-Hcs">
+                                        <rect key="frame" x="2" y="5" width="183" height="33"/>
+                                        <fontDescription key="fontDescription" type="system" weight="black" pointSize="16"/>
+                                        <state key="normal" title="随机播放所有收藏">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="randomPlayAllAction:" destination="pDW-XP-EpL" eventType="touchUpInside" id="uJo-ou-R2y"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ayg-H0-vaM">
+                                        <rect key="frame" x="190" y="5" width="183" height="33"/>
+                                        <fontDescription key="fontDescription" type="system" weight="black" pointSize="16"/>
+                                        <state key="normal" title="播放已浏览的收藏">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="playCurrentListAction:" destination="pDW-XP-EpL" eventType="touchUpInside" id="gwE-wu-M8D"/>
+                                        </connections>
+                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JR1-8G-h8I">
+                                        <rect key="frame" x="187" y="5" width="1" height="30"/>
+                                        <color key="backgroundColor" red="1" green="0.47399553570000003" blue="0.28261718749999998" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="1" id="e2a-uA-Pdj"/>
+                                            <constraint firstAttribute="height" constant="30" id="nmo-fB-J9S"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="cbH-re-Hcs" secondAttribute="bottom" constant="2" id="6dE-H0-bZw"/>
+                                    <constraint firstAttribute="height" constant="40" id="EAD-rf-qMy"/>
+                                    <constraint firstItem="JR1-8G-h8I" firstAttribute="centerY" secondItem="Ah6-UU-jrl" secondAttribute="centerY" id="K1a-gV-Q0j"/>
+                                    <constraint firstAttribute="trailing" secondItem="ayg-H0-vaM" secondAttribute="trailing" constant="2" id="Kgz-lx-obn"/>
+                                    <constraint firstItem="ayg-H0-vaM" firstAttribute="width" secondItem="cbH-re-Hcs" secondAttribute="width" id="PWb-xu-pEO"/>
+                                    <constraint firstAttribute="bottom" secondItem="ayg-H0-vaM" secondAttribute="bottom" constant="2" id="UIF-Wf-o1F"/>
+                                    <constraint firstItem="JR1-8G-h8I" firstAttribute="leading" secondItem="cbH-re-Hcs" secondAttribute="trailing" constant="2" id="fcw-mE-FNh"/>
+                                    <constraint firstItem="ayg-H0-vaM" firstAttribute="top" secondItem="Ah6-UU-jrl" secondAttribute="top" constant="5" id="jiN-7S-FTS"/>
+                                    <constraint firstItem="cbH-re-Hcs" firstAttribute="top" secondItem="Ah6-UU-jrl" secondAttribute="top" constant="5" id="slA-P7-nta"/>
+                                    <constraint firstItem="cbH-re-Hcs" firstAttribute="leading" secondItem="Ah6-UU-jrl" secondAttribute="leading" constant="2" id="vjY-HO-Oo3"/>
+                                    <constraint firstItem="JR1-8G-h8I" firstAttribute="centerX" secondItem="Ah6-UU-jrl" secondAttribute="centerX" id="z7K-kI-GlE"/>
+                                </constraints>
+                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="120" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xuh-OA-2mg">
-                                <rect key="frame" x="0.0" y="64" width="375" height="494"/>
+                                <rect key="frame" x="0.0" y="104" width="375" height="454"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -92,7 +139,7 @@
                                                     <rect key="frame" x="120" y="93" width="50" height="27"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <inset key="titleEdgeInsets" minX="0.0" minY="5" maxX="0.0" maxY="0.0"/>
-                                                    <state key="normal" title="立即播放">
+                                                    <state key="normal" title="单曲循环">
                                                         <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
                                                     <connections>
@@ -161,16 +208,19 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="fOp-4p-DTj" firstAttribute="top" secondItem="zZP-jv-X9y" secondAttribute="bottom" id="0YI-Sh-HNh"/>
+                            <constraint firstItem="xuh-OA-2mg" firstAttribute="leading" secondItem="ukg-0M-K4O" secondAttribute="leading" id="1G7-kR-aUd"/>
                             <constraint firstItem="zZP-jv-X9y" firstAttribute="leading" secondItem="ukg-0M-K4O" secondAttribute="leading" id="2PI-Hu-oUq"/>
-                            <constraint firstAttribute="trailing" secondItem="xuh-OA-2mg" secondAttribute="trailing" id="62d-nb-TRH"/>
-                            <constraint firstItem="xuh-OA-2mg" firstAttribute="top" secondItem="ukg-0M-K4O" secondAttribute="top" constant="64" id="7Fc-G0-wDZ"/>
+                            <constraint firstAttribute="trailing" secondItem="xuh-OA-2mg" secondAttribute="trailing" id="3kD-mf-3RK"/>
+                            <constraint firstItem="xuh-OA-2mg" firstAttribute="top" secondItem="Ah6-UU-jrl" secondAttribute="bottom" id="AcX-64-Caj"/>
+                            <constraint firstAttribute="trailing" secondItem="Ah6-UU-jrl" secondAttribute="trailing" id="Bf6-dZ-ezQ"/>
+                            <constraint firstItem="fOp-4p-DTj" firstAttribute="top" secondItem="xuh-OA-2mg" secondAttribute="bottom" constant="60" id="FUS-Tf-IlH"/>
+                            <constraint firstItem="Ah6-UU-jrl" firstAttribute="leading" secondItem="ukg-0M-K4O" secondAttribute="leading" id="Fsg-xi-129"/>
                             <constraint firstItem="fOp-4p-DTj" firstAttribute="top" secondItem="ejS-cy-1WV" secondAttribute="bottom" id="TK9-Ln-6rt"/>
                             <constraint firstItem="zZP-jv-X9y" firstAttribute="top" secondItem="tc8-PD-I9F" secondAttribute="bottom" id="VLj-HX-PVD"/>
                             <constraint firstAttribute="trailing" secondItem="ejS-cy-1WV" secondAttribute="trailing" id="ZFd-FI-mWA"/>
                             <constraint firstItem="ejS-cy-1WV" firstAttribute="leading" secondItem="ukg-0M-K4O" secondAttribute="leading" id="cJJ-Ls-ofm"/>
-                            <constraint firstItem="xuh-OA-2mg" firstAttribute="leading" secondItem="ukg-0M-K4O" secondAttribute="leading" id="iQm-Uv-zv3"/>
+                            <constraint firstItem="Ah6-UU-jrl" firstAttribute="top" secondItem="tc8-PD-I9F" secondAttribute="bottom" id="cOV-8T-jdq"/>
                             <constraint firstItem="ejS-cy-1WV" firstAttribute="top" secondItem="tc8-PD-I9F" secondAttribute="bottom" id="ql5-0n-Xgr"/>
-                            <constraint firstItem="fOp-4p-DTj" firstAttribute="top" secondItem="xuh-OA-2mg" secondAttribute="bottom" constant="60" id="wE5-T9-eE4"/>
                             <constraint firstAttribute="trailing" secondItem="zZP-jv-X9y" secondAttribute="trailing" id="wM1-cp-zUB"/>
                         </constraints>
                     </view>
@@ -181,16 +231,11 @@
                                 <action selector="backToHomeAction:" destination="pDW-XP-EpL" id="xEq-CG-mms"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="播放全部" id="dTi-eG-Ljl">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <connections>
-                                <action selector="playAllSongsAction:" destination="pDW-XP-EpL" id="bai-OX-DFW"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="collectionTableView" destination="xuh-OA-2mg" id="bZ6-gK-hK8"/>
-                        <outlet property="playAllSongsItem" destination="dTi-eG-Ljl" id="oRQ-Ve-efi"/>
+                        <outlet property="playCurrentListButton" destination="ayg-H0-vaM" id="DBt-Pu-iRU"/>
+                        <outlet property="randomPlayAllButton" destination="cbH-re-Hcs" id="fB1-7V-7U0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Kg-gi-DGi" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -781,7 +826,7 @@
                                                     <rect key="frame" x="113" y="84" width="50" height="27"/>
                                                     <fontDescription key="fontDescription" type="system" weight="black" pointSize="12"/>
                                                     <inset key="titleEdgeInsets" minX="0.0" minY="5" maxX="0.0" maxY="0.0"/>
-                                                    <state key="normal" title="立即播放">
+                                                    <state key="normal" title="单曲循环">
                                                         <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
                                                     <connections>

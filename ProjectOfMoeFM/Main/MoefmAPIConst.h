@@ -56,11 +56,11 @@ extern NSString * const MoeCallbackDictRadioKey; // 电台
 extern NSString * const MoeCallbackDictSongKey; // 歌曲
 extern NSString * const MoeCallbackDictSongIDKey; // 歌曲ID
 extern NSString * const MoeCallbackDictCountKey; // 条目总数
-
+extern NSString * const MoeCallbackDictRelationshipsKey; //电台歌曲条目信息
 /* playType */
-extern NSString * const MoeSingleSong;
-extern NSString * const MoeRandomList;
-extern NSString * const MoeFavRandomList;
-extern NSString * const MoeOrderedFavList;
+extern NSString * const MoeSingleSongPlay;
+extern NSString * const MoeRandomPlay;
+extern NSString * const MoeFavRandomPlay;
+//extern NSString * const MoeOrderedFavList;
 
 @end

@@ -14,6 +14,8 @@
 #import <SVProgressHUD.h>
 
 #import "RadioPlaySong.h"
+#import "RadioRelationships.h"
+#import "RadioSubUpload.h"
 
 #import "PTWebUtils.h"
 
@@ -31,6 +33,9 @@
 
 @property (assign, nonatomic) NSUInteger currentPage;
 @property (assign, nonatomic) NSUInteger perpage;
+@property (assign, nonatomic) NSUInteger songCount;
+@property (strong, nonatomic) NSMutableArray *songIDs;
+@property (strong, nonatomic) RadioWiki *radioWiki;
 
 //@property (strong, nonatomic) NSDictionary *requestedList; //用来标记是否需要重新请求列表信息, 暂时不做缓存
 
@@ -123,8 +128,17 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
+    self.radioWiki = self.relationshipsDict[@"radioWiki"];
+    NSNumber *count = self.relationshipsDict[MoeCallbackDictCountKey];
+    self.songCount = count.integerValue;
+    NSArray *relationships = self.relationshipsDict[MoeCallbackDictRelationshipsKey];
+    self.songIDs = [NSMutableArray array];
+    for (RadioRelationships *relationship in relationships) {
+        [self.songIDs addObject:relationship.obj.sub_id];
+    }
+    
     if (self.playAllSongsItem.enabled == NO) {
-        self.titeLabel.text = self.radioWiki.wiki_title;
+        self.titeLabel.text = [NSString stringWithFormat:@"%@\n(共%lu首)", self.radioWiki.wiki_title, self.songCount];
         // 请求电台播放列表信息
         [SVProgressHUD showWithStatus:@"加载数据中，请稍后"];
         [PTWebUtils requestPlaylistWithRadioId:self.radioWiki.wiki_id andPage:self.currentPage andPerpage:0 completionHandler:^(id object) {
@@ -143,10 +157,10 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
 }
 - (IBAction)playSingleSongAction:(UIButton *)sender {
     RadioPlayListCell *cell = (RadioPlayListCell *)sender.superview.superview;
-    [[PTPlayerManager sharedPlayerManager] changeToPlayList:@[cell.radioPlaySong] andPlayType:MoeSingleSong andSongCount:0];
+    [[PTPlayerManager sharedPlayerManager] changeToPlayList:@[cell.radioPlaySong] andPlayType:MoeSingleSongPlay andSongIDs:@[]];
 }
 - (IBAction)playAllSongsAction:(UIBarButtonItem *)sender {
-    [[PTPlayerManager sharedPlayerManager] changeToPlayList:self.radioPlaylist andPlayType:self.radioWiki.wiki_id andSongCount:self.songCount];
+    [[PTPlayerManager sharedPlayerManager] changeToPlayList:self.radioPlaylist andPlayType:@"" andSongIDs:self.songIDs];
     sender.enabled = NO;
     sleep(3);
     sender.enabled = YES;

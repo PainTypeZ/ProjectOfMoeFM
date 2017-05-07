@@ -13,11 +13,13 @@
 #import "CollectionSongsCell.h"
 #import <SVProgressHUD.h>
 #import "PTPlayerManager.h"
+#import "UIControl+PTFixMultiClick.h"
 
 @interface CollectionViewController ()<UITableViewDataSource, UITableViewDataSourcePrefetching, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *collectionTableView;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *playAllSongsItem;
+@property (weak, nonatomic) IBOutlet UIButton *randomPlayAllButton;
+@property (weak, nonatomic) IBOutlet UIButton *playCurrentListButton;
 
 @property (strong, nonatomic) NSMutableArray <RadioPlaySong *> *radioPlaylist;// 保存电台播放列表信息
 @property (strong, nonatomic) NSArray *songIDs;// 保存songID的数组，用于请求播放列表信息
@@ -44,6 +46,9 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:72.0/255 green:170.0/255 blue:245.0/255 alpha:1.0];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
     
+    self.randomPlayAllButton.pt_acceptEventInterval = 3;
+    self.playCurrentListButton.pt_acceptEventInterval = 3;
+    
     self.currentPage = 1;
     self.perpage = 9;
     [self addTableViewRefresh];
@@ -52,30 +57,27 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
-    if (self.playAllSongsItem.enabled == NO) {
-        if (self.radioPlaylist.count == 0) {
-            [SVProgressHUD showWithStatus:@"加载数据中，请稍后"];
-            [PTWebUtils requestFavSongListWithPage:self.currentPage andPerPage:self.perpage completionHandler:^(id object) {
+    if (self.radioPlaylist.count == 0) {
+        [SVProgressHUD showWithStatus:@"加载数据中，请稍后"];
+        [PTWebUtils requestFavSongListWithPage:self.currentPage andPerPage:self.perpage completionHandler:^(id object) {
+            NSDictionary *dict = object;
+            self.songIDs = dict[MoeCallbackDictSongIDKey];
+            NSNumber *count = dict[MoeCallbackDictCountKey];
+            self.songCount = count.integerValue;
+            [PTWebUtils requestPlaylistWithSongIDs:self.songIDs CompletionHandler:^(id object) {
                 NSDictionary *dict = object;
-                self.songIDs = dict[MoeCallbackDictSongIDKey];
-                NSNumber *count = dict[MoeCallbackDictCountKey];
-                self.songCount = count.integerValue;
-                [PTWebUtils requestPlaylistWithSongIDs:self.songIDs CompletionHandler:^(id object) {
-                    NSDictionary *dict = object;
-                    self.radioPlaylist = dict[MoeCallbackDictSongKey];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.collectionTableView reloadData];
-                        self.playAllSongsItem.enabled = YES;
-                        [SVProgressHUD dismiss];
-                    });
-                } errorHandler:^(id error) {
-                    NSLog(@"%@", error);
-                }];
-                
+                self.radioPlaylist = dict[MoeCallbackDictSongKey];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.collectionTableView reloadData];
+                    [SVProgressHUD dismiss];
+                });
             } errorHandler:^(id error) {
                 NSLog(@"%@", error);
-            }];            
-        }
+            }];
+            
+        } errorHandler:^(id error) {
+            NSLog(@"%@", error);
+        }];
     }
 }
 
@@ -90,6 +92,8 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
         [PTWebUtils requestFavSongListWithPage:weakSelf.currentPage andPerPage:weakSelf.perpage completionHandler:^(id object) {
             NSDictionary *dict = object;
             weakSelf.songIDs = dict[MoeCallbackDictSongIDKey];
+            NSNumber *count = dict[MoeCallbackDictCountKey];
+            weakSelf.songCount = count.integerValue;
             [PTWebUtils requestPlaylistWithSongIDs:weakSelf.songIDs CompletionHandler:^(id object) {
                 NSDictionary *dict = object;
                 weakSelf.radioPlaylist = dict[MoeCallbackDictSongKey];
@@ -152,14 +156,35 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
 #pragma mark - actions
 - (IBAction)playSingleFavouriteSongAction:(UIButton *)sender {
     CollectionSongsCell *cell = (CollectionSongsCell *)sender.superview.superview;
-    [[PTPlayerManager sharedPlayerManager] changeToPlayList:@[cell.radioPlaySong] andPlayType:MoeSingleSong andSongCount:0];
+    [[PTPlayerManager sharedPlayerManager] changeToPlayList:@[cell.radioPlaySong] andPlayType:MoeSingleSongPlay andSongIDs:nil];
+}
+- (IBAction)randomPlayAllAction:(UIButton *)sender {
+    if (self.radioPlaylist.count == 0) {
+        [SVProgressHUD showInfoWithStatus:@"还没有收藏歌曲"];
+        [SVProgressHUD dismissWithDelay:1.5];
+        return;
+    }
+    [PTWebUtils requestFavRandomPlaylistWithCompletionHandler:^(id object) {
+        NSDictionary *dict = object;
+        NSArray *playlist = dict[MoeCallbackDictSongKey];
+        NSMutableArray <RadioPlaySong *> *array = [NSMutableArray arrayWithArray:playlist];
+        [[PTPlayerManager sharedPlayerManager] changeToPlayList:array andPlayType:MoeFavRandomPlay andSongIDs:nil];
+    } errorHandler:^(id error) {
+        NSLog(@"%@", error);
+    }];
 }
 
-- (IBAction)playAllSongsAction:(UIBarButtonItem *)sender {
-    [[PTPlayerManager sharedPlayerManager] changeToPlayList:self.radioPlaylist andPlayType:MoeOrderedFavList andSongCount:self.songCount];
-    sender.enabled = NO;
-    sleep(5);
-    sender.enabled = YES;
+- (IBAction)playCurrentListAction:(UIButton *)sender {
+    if (self.radioPlaylist.count == 0) {
+        [SVProgressHUD showInfoWithStatus:@"还没有收藏歌曲"];
+        [SVProgressHUD dismissWithDelay:1.5];
+        return;
+    }
+    NSMutableArray *array = [NSMutableArray array];
+    for (RadioPlaySong *song in self.radioPlaylist) {
+        [array addObject:song.sub_id];
+    }
+    [[PTPlayerManager sharedPlayerManager] changeToPlayList:self.radioPlaylist andPlayType:nil andSongIDs:array];
 }
 
 - (IBAction)backToHomeAction:(UIBarButtonItem *)sender {
@@ -204,7 +229,7 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
     view.backgroundColor = [UIColor colorWithRed:72.0/255 green:170.0/255 blue:245.0/255 alpha:1.0];
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, view.bounds.size.width, view.bounds.size.height)];
-    label.text = @"我收藏的歌曲";
+    label.text = [NSString stringWithFormat:@"我收藏的歌曲 (共%lu首)", self.songCount];
     label.textColor = [UIColor whiteColor];
     [view addSubview:label];
     return view;

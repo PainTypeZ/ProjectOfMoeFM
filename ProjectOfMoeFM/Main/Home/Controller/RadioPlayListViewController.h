@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "RadioWiki.h"
 @interface RadioPlayListViewController : UIViewController
-@property (strong, nonatomic) RadioWiki *radioWiki;
-@property (assign, nonatomic) NSUInteger songCount;
+@property (strong, nonatomic) NSDictionary *relationshipsDict;
 
 @end

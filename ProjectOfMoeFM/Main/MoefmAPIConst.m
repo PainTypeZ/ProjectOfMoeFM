@@ -52,11 +52,11 @@ NSString * const MoeCallbackDictRadioKey = @"radios"; // 电台
 NSString * const MoeCallbackDictSongKey = @"songs"; // 歌曲
 NSString * const MoeCallbackDictSongIDKey = @"songIDs"; // 歌曲ID
 NSString * const MoeCallbackDictCountKey = @"count"; // 条目总数
-
+NSString * const MoeCallbackDictRelationshipsKey = @"relationships"; // 电台歌曲条目
 /* playType */
-NSString * const MoeSingleSong = @"singleSong";
-NSString * const MoeRandomList = @"random";
-NSString * const MoeFavRandomList = @"favRandom";
-NSString * const MoeOrderedFavList = @"favOrdered";
+NSString * const MoeSingleSongPlay = @"singleSong";
+NSString * const MoeRandomPlay = @"random";
+NSString * const MoeFavRandomPlay = @"favRandom";
+//NSString * const MoeOrderedFavList = @"favOrdered";
 
 @end
