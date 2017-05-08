@@ -262,13 +262,12 @@
     
     // 用此方法处理换歌时的错误显示
     if (weakAVPlayer.currentItem.status == AVPlayerItemStatusUnknown) {
-        
-        weakSelf.playerData.playTimeValue = 0.0;
+//        weakSelf.playerData.playTimeProgress = 0.0;
         weakSelf.playerData.playProgress = 0.0;
         weakSelf.playerData.playTime = @"-00:00";
         weakSelf.playerData.bufferProgress = 0.0;
     }else{
-        weakSelf.playerData.playTimeValue = currentTime;
+//        weakSelf.playerData.playTimeProgress = currentTime;
         weakSelf.playerData.playProgress = currenPlayTimeProgress;
         weakSelf.playerData.playTime = playTimeText;
         weakSelf.playerData.bufferProgress = totalBufferProgress;
@@ -345,19 +344,19 @@
     }];
 }
 
-// 登录或退出登录是调用，更新收藏状态信息,还没实现保存歌曲播放状态，如播放时间等
+// 登录时调用，更新收藏状态信息,还没实现保存歌曲播放状态，如播放时间等
 - (void)updateFavInfoWhileLoginOAuth {
     if (self.player.currentItem) {
-        [self pause];
+//        [self pause];
         NSMutableArray <NSString *> *songIDs = [NSMutableArray array];
         for (RadioPlaySong *song in self.playList) {
-            [songIDs addObject:song.wiki_id];
+            [songIDs addObject:song.sub_id];
         }
         [PTWebUtils requestPlaylistWithSongIDs:songIDs CompletionHandler:^(id object) {
             NSDictionary *dict = object;
             self.playList = dict[MoeCallbackDictSongKey];
             self.currentSong = self.playList[self.playIndex]; // setter发送代理消息
-            [self play];
+//            [self play];
         } errorHandler:^(id error) {
             NSLog(@"%@", error);
         }];

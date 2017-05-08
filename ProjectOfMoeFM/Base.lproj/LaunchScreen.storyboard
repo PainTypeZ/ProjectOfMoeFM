@@ -21,23 +21,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_background_image.png" translatesAutoresizingMaskIntoConstraints="NO" id="kbC-4S-chy">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_background_image.png" translatesAutoresizingMaskIntoConstraints="NO" id="P1p-NK-VgP">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.2819526792" green="0.6659956574" blue="0.96032720800000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="kbC-4S-chy" secondAttribute="trailing" id="8jR-1A-sRz"/>
-                            <constraint firstItem="kbC-4S-chy" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" id="B9b-XN-XAR"/>
-                            <constraint firstItem="kbC-4S-chy" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="HTh-6j-1z8"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="kbC-4S-chy" secondAttribute="bottom" id="hlR-5V-yrD"/>
+                            <constraint firstItem="P1p-NK-VgP" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="6md-jm-I7z"/>
+                            <constraint firstItem="P1p-NK-VgP" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" id="GrU-ch-PNs"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="P1p-NK-VgP" secondAttribute="bottom" id="MR7-32-wjK"/>
+                            <constraint firstAttribute="trailing" secondItem="P1p-NK-VgP" secondAttribute="trailing" id="udK-ke-FXc"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <nil key="simulatedStatusBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52" y="374.66266866566718"/>
         </scene>
     </scenes>
     <resources>

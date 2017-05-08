@@ -26,7 +26,7 @@
                     <color key="progressTintColor" red="0.9891067147" green="0.56147354839999997" blue="0.27547004819999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </progressView>
-                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="300" translatesAutoresizingMaskIntoConstraints="NO" id="p6V-ZV-NR5">
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="p6V-ZV-NR5">
                     <rect key="frame" x="43" y="-15" width="349" height="31"/>
                     <color key="minimumTrackTintColor" red="0.9891067147" green="0.56147354839999997" blue="0.27547004819999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <color key="maximumTrackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

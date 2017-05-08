@@ -100,7 +100,7 @@
     self.playerData = playerData;// 不重写setter方法更新数据
     // 需要返回主线程改变UI显示
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.playSliderView.value = self.playerData.playTimeValue;
+        self.playSliderView.value = self.playerData.playProgress;
         self.bufferProgressView.progress = self.playerData.bufferProgress;
         self.radioSongPlayTimeLabel.text = self.playerData.playTime;
     });
@@ -113,10 +113,6 @@
         // 显示歌曲标题
         self.radioSongTitleLabel.text = self.playingSong.sub_title;
         
-        // 显示歌曲总时间
-        if (self.playingSong.stream_length.floatValue) {
-            self.playSliderView.maximumValue = self.playingSong.stream_length.floatValue  / self.playSliderView.bounds.size.width * (self.playSliderView.bounds.size.width - 30);
-        }
         // 显示歌曲收藏信息
         if ([self.playingSong.fav_sub.fav_type isEqualToString:@"1"]) {
             self.favouriteButton.selected = self.playingSong.fav_sub.fav_type.boolValue;

@@ -611,7 +611,7 @@
 				TargetAttributes = {
 					07FEF30D1E99018A00F6AC3B = {
 						CreatedOnToolsVersion = 8.3.1;
-						DevelopmentTeam = 4P3Y6F2LC5;
+						DevelopmentTeam = ZH9AQ2F24G;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -883,7 +883,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer: pengpingjun1989@qq.com (6S2P2LFKYG)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 4P3Y6F2LC5;
+				DEVELOPMENT_TEAM = ZH9AQ2F24G;
 				INFOPLIST_FILE = ProjectOfMoeFM/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -900,7 +900,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer: pengpingjun1989@qq.com (6S2P2LFKYG)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 4P3Y6F2LC5;
+				DEVELOPMENT_TEAM = ZH9AQ2F24G;
 				INFOPLIST_FILE = ProjectOfMoeFM/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

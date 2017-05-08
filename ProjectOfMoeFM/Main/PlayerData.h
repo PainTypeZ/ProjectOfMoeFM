@@ -10,8 +10,8 @@
 #import "RadioPlaySong.h"
 @interface PlayerData : NSObject
 @property (copy, nonatomic) NSString *playTime;
-@property (assign, nonatomic) float playTimeValue;
 @property (assign, nonatomic) float playProgress;
 @property (assign, nonatomic) float bufferProgress;
+
 
 @end

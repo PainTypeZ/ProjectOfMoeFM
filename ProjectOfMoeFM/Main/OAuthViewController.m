@@ -33,11 +33,12 @@ NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_t
     // OAuth授权第一步
     PTOAuthModel *oauthModel = [[PTOAuthModel alloc] init];
     oauthModel.oauthURL = kRequestTokenURL;
+    __weak OAuthViewController *weakSelf = self;
     [PTOAuthTool requestOAuthTokenWithURL:kRequestTokenURL completionHandler:^{
         // OAuth授权第二步
         NSURL *requestURL = [PTOAuthTool getAuthorizeURLWithURL:kRequestAuthorizeURL];
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
-        [self.authorizeWebView loadRequest:request];
+        [weakSelf.authorizeWebView loadRequest:request];
     }];
 }
 // 点击cancel跳转回home
@@ -53,25 +54,22 @@ NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_t
     if ([path containsString:@"verifier="]) {
         NSString *subString = [[path componentsSeparatedByString:@"&"] firstObject];
         NSString *verifier = [[subString componentsSeparatedByString:@"="] lastObject];
+        
+        __weak OAuthViewController *weakSelf = self;
         // OAuth授权第三步
         [PTOAuthTool requestAccessOAuthTokenAndSecretWithURL:kRequestAccessTokenURL andVerifier:verifier completionHandler:^{
             //得到的accessToken和Secret已保存存到偏好设置
             // 此处可以返回主线程添加提示信息等效果
-            if ([PTPlayerManager sharedPlayerManager].currentSong) {
-                [[PTPlayerManager sharedPlayerManager] updateFavInfoWhileLoginOAuth];
-            }            
             dispatch_async(dispatch_get_main_queue(), ^{
-                // 更新当前播放列表的歌曲信息                
-                [SVProgressHUD showSuccessWithStatus:@"登录OAuth授权成功"];
+                if ([PTPlayerManager sharedPlayerManager].currentSong) {
+                    [[PTPlayerManager sharedPlayerManager] updateFavInfoWhileLoginOAuth];
+                }
+                // 更新当前播放列表的歌曲信息
+                weakSelf.view.userInteractionEnabled = NO;
+                [SVProgressHUD showSuccessWithStatus:@"登录OAuth授权成功,即将自动跳转回主页"];
                 [SVProgressHUD dismissWithDelay:2 completion:^{
-                    UIAlertController *alretController = [UIAlertController alertControllerWithTitle:@"登录成功" message:@"现在可以使用收藏功能了" preferredStyle:UIAlertControllerStyleAlert];
-                    UIAlertAction *actionConfirm = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                        [alretController dismissViewControllerAnimated:YES completion:nil];
-                        // 跳转回home
-                        [self dismissViewControllerAnimated:YES completion:nil];
-                    }];
-                    [alretController addAction:actionConfirm];
-                    [self presentViewController:alretController animated:YES completion:nil];
+                    weakSelf.view.userInteractionEnabled = YES;
+                    [weakSelf dismissViewControllerAnimated:YES completion:nil];
                 }];
             });
         }];
