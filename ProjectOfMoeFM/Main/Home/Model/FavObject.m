@@ -7,7 +7,12 @@
 //
 
 #import "FavObject.h"
+#import "GTMNSString+HTML.h"
 
 @implementation FavObject
+
+- (NSString *)sub_title {
+    return [_sub_title gtm_stringByUnescapingFromHTML];
+}
 
 @end

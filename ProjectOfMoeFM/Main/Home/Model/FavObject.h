@@ -13,6 +13,7 @@
 @interface FavObject : JSONModel
 
 @property (copy, nonatomic) NSString *sub_id;
+@property (copy, nonatomic) NSString *sub_title;
 @property (copy, nonatomic) NSString *sub_view_title;
 @property (strong, nonatomic) RadioWiki *wiki;
 @property (strong, nonatomic) NSArray <SubUpload> *sub_upload;

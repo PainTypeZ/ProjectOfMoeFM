@@ -53,6 +53,7 @@ NSString * const MoeCallbackDictSongKey = @"songs"; // 歌曲
 NSString * const MoeCallbackDictSongIDKey = @"songIDs"; // 歌曲ID
 NSString * const MoeCallbackDictCountKey = @"count"; // 条目总数
 NSString * const MoeCallbackDictRelationshipsKey = @"relationships"; // 电台歌曲条目
+NSString * const MoeCallbackDictFavsKey = @"favs";// 收藏的条目数组
 /* playType */
 NSString * const MoeSingleSongPlay = @"singleSong";
 NSString * const MoeRandomPlay = @"random";

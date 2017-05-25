@@ -46,9 +46,12 @@
 		0768B4701EBA1A3A00C8105D /* UIControl+PTFixMultiClick.m in Sources */ = {isa = PBXBuildFile; fileRef = 0768B46F1EBA1A3A00C8105D /* UIControl+PTFixMultiClick.m */; };
 		0769F0B31EAF74EE005EE315 /* RadioUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0769F0B21EAF74EE005EE315 /* RadioUser.m */; };
 		0769F0B61EAF769C005EE315 /* MineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0769F0B51EAF769C005EE315 /* MineViewController.m */; };
+		07AF8A2F1EC0E6D2008BD1B6 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 07AF8A2E1EC0E6D2008BD1B6 /* GTMNSString+HTML.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		07AF8A321EC0EFB2008BD1B6 /* MineTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 07AF8A311EC0EFB2008BD1B6 /* MineTableViewCell.m */; };
 		07B8EE251EB798E100162868 /* CollectionSongsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B8EE241EB798E100162868 /* CollectionSongsCell.m */; };
 		07BAD4501E99FCF8009B6691 /* PTWebUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BAD44F1E99FCF8009B6691 /* PTWebUtils.m */; };
 		07BAD4621E9BC423009B6691 /* OAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BAD4611E9BC423009B6691 /* OAuthViewController.m */; };
+		07DFD5681ED4BD3F003B6A93 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DFD5671ED4BD3F003B6A93 /* RegisterViewController.m */; };
 		07E7B61A1E9D0C27004C9CF1 /* NSString+PTCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E7B6151E9D0C27004C9CF1 /* NSString+PTCollection.m */; };
 		07E7B61B1E9D0C27004C9CF1 /* PTOAuthModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E7B6171E9D0C27004C9CF1 /* PTOAuthModel.m */; };
 		07E7B61C1E9D0C27004C9CF1 /* PTOAuthTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E7B6191E9D0C27004C9CF1 /* PTOAuthTool.m */; };
@@ -127,12 +130,19 @@
 		0769F0B21EAF74EE005EE315 /* RadioUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadioUser.m; sourceTree = "<group>"; };
 		0769F0B41EAF769C005EE315 /* MineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MineViewController.h; sourceTree = "<group>"; };
 		0769F0B51EAF769C005EE315 /* MineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MineViewController.m; sourceTree = "<group>"; };
+		07AF8A2C1EC0E6BB008BD1B6 /* GTMDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GTMDefines.h; sourceTree = "<group>"; };
+		07AF8A2D1EC0E6D2008BD1B6 /* GTMNSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+HTML.h"; sourceTree = "<group>"; };
+		07AF8A2E1EC0E6D2008BD1B6 /* GTMNSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTML.m"; sourceTree = "<group>"; };
+		07AF8A301EC0EFB2008BD1B6 /* MineTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MineTableViewCell.h; path = ProjectOfMoeFM/Main/Home/Model/MineTableViewCell.h; sourceTree = SOURCE_ROOT; };
+		07AF8A311EC0EFB2008BD1B6 /* MineTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MineTableViewCell.m; path = ProjectOfMoeFM/Main/Home/Model/MineTableViewCell.m; sourceTree = SOURCE_ROOT; };
 		07B8EE231EB798E100162868 /* CollectionSongsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionSongsCell.h; sourceTree = "<group>"; };
 		07B8EE241EB798E100162868 /* CollectionSongsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionSongsCell.m; sourceTree = "<group>"; };
 		07BAD44E1E99FCF8009B6691 /* PTWebUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PTWebUtils.h; path = Main/PTWebUtils.h; sourceTree = "<group>"; };
 		07BAD44F1E99FCF8009B6691 /* PTWebUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PTWebUtils.m; path = Main/PTWebUtils.m; sourceTree = "<group>"; };
 		07BAD4601E9BC423009B6691 /* OAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OAuthViewController.h; path = Main/OAuthViewController.h; sourceTree = "<group>"; };
 		07BAD4611E9BC423009B6691 /* OAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OAuthViewController.m; path = Main/OAuthViewController.m; sourceTree = "<group>"; };
+		07DFD5661ED4BD3F003B6A93 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
+		07DFD5671ED4BD3F003B6A93 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
 		07E7B6141E9D0C27004C9CF1 /* NSString+PTCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+PTCollection.h"; sourceTree = "<group>"; };
 		07E7B6151E9D0C27004C9CF1 /* NSString+PTCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+PTCollection.m"; sourceTree = "<group>"; };
 		07E7B6161E9D0C27004C9CF1 /* PTOAuthModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTOAuthModel.h; sourceTree = "<group>"; };
@@ -199,6 +209,8 @@
 				07FEF3671E990F8500F6AC3B /* AppDelegate.m */,
 				07BAD4601E9BC423009B6691 /* OAuthViewController.h */,
 				07BAD4611E9BC423009B6691 /* OAuthViewController.m */,
+				07DFD5661ED4BD3F003B6A93 /* RegisterViewController.h */,
+				07DFD5671ED4BD3F003B6A93 /* RegisterViewController.m */,
 				074CCB0C1EAA42BB00BE2B83 /* PTPlayerManager.h */,
 				074CCB0D1EAA42BB00BE2B83 /* PTPlayerManager.m */,
 			);
@@ -339,6 +351,8 @@
 		0769F0AF1EAF74B4005EE315 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				07AF8A301EC0EFB2008BD1B6 /* MineTableViewCell.h */,
+				07AF8A311EC0EFB2008BD1B6 /* MineTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -346,6 +360,9 @@
 		07B8EE631EB91F3B00162868 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				07AF8A2C1EC0E6BB008BD1B6 /* GTMDefines.h */,
+				07AF8A2D1EC0E6D2008BD1B6 /* GTMNSString+HTML.h */,
+				07AF8A2E1EC0E6D2008BD1B6 /* GTMNSString+HTML.m */,
 				0768B46E1EBA1A3A00C8105D /* UIControl+PTFixMultiClick.h */,
 				0768B46F1EBA1A3A00C8105D /* UIControl+PTFixMultiClick.m */,
 				07670EFD1E9F8ED40027E3EA /* MoefmAPIConst.h */,
@@ -612,7 +629,7 @@
 					07FEF30D1E99018A00F6AC3B = {
 						CreatedOnToolsVersion = 8.3.1;
 						DevelopmentTeam = ZH9AQ2F24G;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -725,6 +742,7 @@
 			files = (
 				07670F111EA05A030027E3EA /* PTMusicPlayerBottomView.m in Sources */,
 				0769F0B31EAF74EE005EE315 /* RadioUser.m in Sources */,
+				07DFD5681ED4BD3F003B6A93 /* RegisterViewController.m in Sources */,
 				07670EF11E9F7D3D0027E3EA /* RadioPlayListViewController.m in Sources */,
 				07670EC31E9E637F0027E3EA /* RadioParameters.m in Sources */,
 				07E7B61B1E9D0C27004C9CF1 /* PTOAuthModel.m in Sources */,
@@ -733,6 +751,7 @@
 				0768B4701EBA1A3A00C8105D /* UIControl+PTFixMultiClick.m in Sources */,
 				07FEF3601E99099600F6AC3B /* CollectionViewController.m in Sources */,
 				07BAD4501E99FCF8009B6691 /* PTWebUtils.m in Sources */,
+				07AF8A321EC0EFB2008BD1B6 /* MineTableViewCell.m in Sources */,
 				071C0A601EA5058A0022C709 /* SongFavSub.m in Sources */,
 				07FEF35E1E99099600F6AC3B /* AlbumViewController.m in Sources */,
 				07BAD4621E9BC423009B6691 /* OAuthViewController.m in Sources */,
@@ -750,6 +769,7 @@
 				07670EE21E9F3DD40027E3EA /* RadioInformation.m in Sources */,
 				07670EDF1E9F380E0027E3EA /* RadioPlaySong.m in Sources */,
 				07B8EE251EB798E100162868 /* CollectionSongsCell.m in Sources */,
+				07AF8A2F1EC0E6D2008BD1B6 /* GTMNSString+HTML.m in Sources */,
 				071C0A6E1EA593290022C709 /* Favourite.m in Sources */,
 				0769F0B61EAF769C005EE315 /* MineViewController.m in Sources */,
 				07FEF3681E990F8500F6AC3B /* AppDelegate.m in Sources */,
@@ -804,8 +824,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: pengpingjun1989@qq.com (6S2P2LFKYG)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: pengpingjun1989@qq.com (6S2P2LFKYG)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Pingjun Peng (ZH9AQ2F24G)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Pingjun Peng (ZH9AQ2F24G)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -854,8 +874,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: pengpingjun1989@qq.com (6S2P2LFKYG)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: pengpingjun1989@qq.com (6S2P2LFKYG)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Pingjun Peng (ZH9AQ2F24G)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Pingjun Peng (ZH9AQ2F24G)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -881,15 +901,16 @@
 			baseConfigurationReference = 14B1279463BEC9D4A4938733 /* Pods-ProjectOfMoeFM.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: pengpingjun1989@qq.com (6S2P2LFKYG)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Pingjun Peng (ZH9AQ2F24G)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Pingjun Peng (ZH9AQ2F24G)";
 				DEVELOPMENT_TEAM = ZH9AQ2F24G;
 				INFOPLIST_FILE = ProjectOfMoeFM/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.pengpingjun.ProjectOfMoeFM;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pengpingjun1989.ProjectOfMoeFM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "16d4a371-9511-462e-9963-56e309f9cc6d";
+				PROVISIONING_PROFILE_SPECIFIER = ProjectOfMoeFM20170508;
 			};
 			name = Debug;
 		};
@@ -898,15 +919,16 @@
 			baseConfigurationReference = 14F721D7A992BC45F496DDD3 /* Pods-ProjectOfMoeFM.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: pengpingjun1989@qq.com (6S2P2LFKYG)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Pingjun Peng (ZH9AQ2F24G)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Pingjun Peng (ZH9AQ2F24G)";
 				DEVELOPMENT_TEAM = ZH9AQ2F24G;
 				INFOPLIST_FILE = ProjectOfMoeFM/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.pengpingjun.ProjectOfMoeFM;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pengpingjun1989.ProjectOfMoeFM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "16d4a371-9511-462e-9963-56e309f9cc6d";
+				PROVISIONING_PROFILE_SPECIFIER = ProjectOfMoeFM20170508;
 			};
 			name = Release;
 		};

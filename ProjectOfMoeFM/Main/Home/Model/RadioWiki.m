@@ -7,7 +7,12 @@
 //
 
 #import "RadioWiki.h"
+#import "GTMNSString+HTML.h"
 
 @implementation RadioWiki
+
+- (NSString *)wiki_title {
+    return [_wiki_title gtm_stringByUnescapingFromHTML];
+}
 
 @end

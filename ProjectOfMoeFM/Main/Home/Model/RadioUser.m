@@ -7,7 +7,12 @@
 //
 
 #import "RadioUser.h"
+#import "GTMNSString+HTML.h"
 
 @implementation RadioUser
+
+- (NSString<Optional> *)about {
+    return [_about gtm_stringByUnescapingFromHTML];
+}
 
 @end

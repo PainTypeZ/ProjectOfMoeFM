@@ -279,6 +279,11 @@
                 }
                 
                 NSMutableDictionary *callbackDict = [NSMutableDictionary dictionary];
+                
+                if (radioResponse.favs) {
+                    [callbackDict setObject:radioResponse.favs forKey:MoeCallbackDictFavsKey];
+                }                
+                
                 if (songIDs.count > 0) {
                     [callbackDict setObject:songIDs forKey:MoeCallbackDictSongIDKey];
                 }

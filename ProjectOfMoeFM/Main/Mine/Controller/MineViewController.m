@@ -11,7 +11,9 @@
 #import "MoefmAPIConst.h"
 #import "RadioUser.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-@interface MineViewController ()
+#import "MineTableViewCell.h"
+
+@interface MineViewController ()<UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching>
 @property (weak, nonatomic) IBOutlet UIImageView *userAvatarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *userNickNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
@@ -22,12 +24,14 @@
 @property (weak, nonatomic) IBOutlet UILabel *userRegisterLabel;
 @property (weak, nonatomic) IBOutlet UILabel *userUIDLabel;
 
+@property (weak, nonatomic) IBOutlet UITableView *mineTableView;
+@property (strong, nonatomic) NSMutableArray *recentFavList;
 @property (strong, nonatomic) RadioUser *userInfo;
 
 @end
 
 @implementation MineViewController
-
+static NSString *reuseIdentifier = @"MineTableViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:72.0/255 green:170.0/255 blue:245.0/255 alpha:1.0];
@@ -36,12 +40,21 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
-    if (!self.userInfo) {
-        [self loadUserInfo];
-    }
+    [self loadUserInfo];
 }
 
 - (void)loadUserInfo {
+    [PTWebUtils requestFavSongListWithPage:0 andPerPage:0 completionHandler:^(id object) {
+        NSDictionary *dict = object;
+        NSArray *array = dict[MoeCallbackDictFavsKey];
+        self.recentFavList = [NSMutableArray arrayWithArray:array];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.mineTableView reloadData];
+        });
+    } errorHandler:^(id error) {
+        NSLog(@"%@", error);
+    }];
+    
     [PTWebUtils requestUserInfoWithCompletionHandler:^(id object) {
         NSDictionary *dict = object;
         self.userInfo = dict[@"user"];
@@ -85,6 +98,49 @@
     self.tabBarController.selectedIndex = 0;
 }
 
+#pragma mark - UITableViewDataSource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.recentFavList.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    MineTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
+    cell.fav = self.recentFavList[indexPath.row];
+    return cell;
+}
+
+#pragma mark - UITableViewDataSourcePrefetching
+- (void)tableView:(UITableView *)tableView prefetchRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
+    
+}
+
+#pragma mark - UITableViewDelegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    // 未实现
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 50;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)];
+    view.backgroundColor = [UIColor colorWithRed:72.0/255 green:170.0/255 blue:245.0/255 alpha:1.0];
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, view.bounds.size.width, view.bounds.size.height)];
+    label.text = [NSString stringWithFormat:@"最近收藏的歌曲 (%lu首)", self.recentFavList.count];
+    label.textColor = [UIColor whiteColor];
+    [view addSubview:label];
+    return view;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section  {
+    return 30;
+}
 
 /*
 #pragma mark - Navigation

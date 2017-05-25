@@ -155,11 +155,16 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
 
 #pragma mark - actions
 - (IBAction)playSingleFavouriteSongAction:(UIButton *)sender {
+    if (self.songCount == 0) {
+        [SVProgressHUD showInfoWithStatus:@"还没有收藏歌曲"];
+        [SVProgressHUD dismissWithDelay:1.5];
+        return;
+    }
     CollectionSongsCell *cell = (CollectionSongsCell *)sender.superview.superview;
     [[PTPlayerManager sharedPlayerManager] changeToPlayList:@[cell.radioPlaySong] andPlayType:MoeSingleSongPlay andSongIDs:nil];
 }
 - (IBAction)randomPlayAllAction:(UIButton *)sender {
-    if (self.radioPlaylist.count == 0) {
+    if (self.songCount == 0) {
         [SVProgressHUD showInfoWithStatus:@"还没有收藏歌曲"];
         [SVProgressHUD dismissWithDelay:1.5];
         return;
@@ -175,7 +180,7 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
 }
 
 - (IBAction)playCurrentListAction:(UIButton *)sender {
-    if (self.radioPlaylist.count == 0) {
+    if (self.songCount == 0) {
         [SVProgressHUD showInfoWithStatus:@"还没有收藏歌曲"];
         [SVProgressHUD dismissWithDelay:1.5];
         return;
@@ -197,6 +202,9 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (self.songCount == 0) {
+        return 0;
+    }
     return self.radioPlaylist.count;
 }
 

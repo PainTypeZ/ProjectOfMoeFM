@@ -140,6 +140,10 @@ static NSString * const reuseIdentifier = @"radioCell";
                 weakSelf.hotRadios = dict[MoeCallbackDictRadioKey];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    if (!weakSelf.hotRadios) {
+                        [SVProgressHUD showInfoWithStatus:@"暂无热门电台信息"];
+                        [SVProgressHUD dismissWithDelay:1.5];
+                    }
                     [weakSelf.radioCollectionView reloadData];
                     [weakSelf.radioCollectionView.mj_header endRefreshing];
                 });
@@ -245,14 +249,21 @@ static NSString * const reuseIdentifier = @"radioCell";
 
 - (void)sendHotRadiosRequest {
     if (self.hotRadios.count == 0) {
+        [SVProgressHUD showWithStatus:@"加载数据中，请稍后"];
         [PTWebUtils requestHotRadiosWithCompletionHandler:^(id object) {
             NSDictionary *dict = object;
             if (dict[MoeCallbackDictRadioKey]) {
                 self.hotRadios = dict[MoeCallbackDictRadioKey];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.radioCollectionView reloadData];
+                    [SVProgressHUD dismiss];
                 });
             } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [SVProgressHUD showInfoWithStatus:@"暂无热门电台信息"];
+                    [SVProgressHUD dismissWithDelay:1.5];
+                    [self.radioCollectionView reloadData];
+                });
                 NSLog(@"热门电台获取失败");
             }
         } errorHandler:^(id error) {
@@ -282,9 +293,9 @@ static NSString * const reuseIdentifier = @"radioCell";
 - (void)oauthLoginOut {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     
-    UIAlertController *alretController = [UIAlertController alertControllerWithTitle:@"退出登录" message:@"退出登录后将无法使用收藏功能，确定退出吗？" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"退出登录" message:@"退出登录后将无法使用收藏功能，确定退出吗？" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *actionConfirm = [UIAlertAction actionWithTitle:@"确定退出" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        [alretController dismissViewControllerAnimated:YES completion:nil];
+        [alertController dismissViewControllerAnimated:YES completion:nil];
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults removeObjectForKey:@"oauth_token"];
         [userDefaults removeObjectForKey:@"oauth_token_secret"];
@@ -294,18 +305,16 @@ static NSString * const reuseIdentifier = @"radioCell";
 //        [[PTPlayerManager sharedPlayerManager] updateFavInfo];
         app.playerBottomView.favouriteButton.enabled = NO;
     }];
-    UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [alretController dismissViewControllerAnimated:YES completion:nil];
-    }];
-    [alretController addAction:actionCancel];
-    [alretController addAction:actionConfirm];
-    [self presentViewController:alretController animated:YES completion:nil];
+    UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil];
+    [alertController addAction:actionCancel];
+    [alertController addAction:actionConfirm];
+    [self presentViewController:alertController animated:YES completion:nil];
     
 }
 
 - (IBAction)radiosSegmentedAction:(UISegmentedControl *)sender {
     if (sender.selectedSegmentIndex == 0) {
-        if (self.hotRadios.count == 0) {
+        if (!self.hotRadios || self.hotRadios.count == 0) {
             [self sendHotRadiosRequest];
         }else{
             [self.radioCollectionView reloadData];
@@ -358,8 +367,21 @@ static NSString * const reuseIdentifier = @"radioCell";
 
     if ([sender.title isEqualToString:@"退出登录"]) {
         [self oauthLoginOut];
-    }else {
-        [self.tabBarController performSegueWithIdentifier:@"OAuth" sender:nil];
+    }else{
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"登录或注册" message:@"已有账号请选择登录，无账号请选择注册,取消则返回主页" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *actionLogin = [UIAlertAction actionWithTitle:@"登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//            [alertController dismissViewControllerAnimated:YES completion:nil];
+            [self.tabBarController performSegueWithIdentifier:@"OAuth" sender:nil];
+        }];
+        UIAlertAction *actionRegister = [UIAlertAction actionWithTitle:@"注册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//            [alertController dismissViewControllerAnimated:YES completion:nil];
+            [self.tabBarController performSegueWithIdentifier:@"Register" sender:nil];
+        }];
+        UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+        [alertController addAction:actionLogin];
+        [alertController addAction:actionRegister];
+        [alertController addAction:actionCancel];
+        [self presentViewController:alertController animated:YES completion:nil];
     }
 }
 
@@ -371,6 +393,9 @@ static NSString * const reuseIdentifier = @"radioCell";
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     if (self.radiosSegmentedControl.selectedSegmentIndex == 0) {
+        if (!self.hotRadios) {
+            return 0;
+        }
         return self.hotRadios.count;
     }else{
         return self.allRadios.count;
