@@ -11,6 +11,7 @@
 #import <SVProgressHUD.h>
 #import "PTPlayerManager.h"
 #import "AppDelegate.h"
+#import <UMMobClick/MobClick.h>
 NSString * const kRequestTokenURL = @"http://api.moefou.org/oauth/request_token";
 NSString * const kRequestAuthorizeURL = @"http://api.moefou.org/oauth/authorize";
 NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_token";
@@ -58,7 +59,7 @@ NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_t
         __weak OAuthViewController *weakSelf = self;
         // OAuth授权第三步
         [PTOAuthTool requestAccessOAuthTokenAndSecretWithURL:kRequestAccessTokenURL andVerifier:verifier completionHandler:^{
-            //得到的accessToken和Secret已保存存到偏好设置
+            // 得到的accessToken和Secret已保存存到偏好设置
             // 此处可以返回主线程添加提示信息等效果
             dispatch_async(dispatch_get_main_queue(), ^{
                 if ([PTPlayerManager sharedPlayerManager].currentSong) {
@@ -67,6 +68,7 @@ NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_t
                 // 更新当前播放列表的歌曲信息
                 weakSelf.view.userInteractionEnabled = NO;
                 [SVProgressHUD showSuccessWithStatus:@"登录OAuth授权成功,即将自动跳转回主页"];
+                [MobClick profileSignInWithPUID:@"我不会拿用户账号信息的" provider:@"萌否账号"];
                 [SVProgressHUD dismissWithDelay:2 completion:^{
                     weakSelf.view.userInteractionEnabled = YES;
                     [weakSelf dismissViewControllerAnimated:YES completion:nil];

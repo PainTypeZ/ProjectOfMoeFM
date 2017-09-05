@@ -24,20 +24,20 @@
     self.tabBar.tintColor = [UIColor whiteColor];
     self.tabBar.barTintColor = [UIColor colorWithRed:72.0/255 green:170.0/255 blue:245.0/255 alpha:1.0];
     // 暂时隐藏
-    self.tabBar.hidden = YES;
-    
+    self.tabBar.hidden = YES;   
+    self.selectedIndex = 3;
     // 创建底部播放条,换到window下了
 //    [self initPlayerBottomView];
     
 }
 
 // 创建底部播放条
-- (void)initPlayerBottomView {
-    self.playerBottomView = [[[NSBundle mainBundle] loadNibNamed:@"PTMusicPlayerBottomView" owner:self options:nil] lastObject];
-    self.playerBottomView.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height - kPTMusicPlayerBottomViewHeight, [UIScreen mainScreen].bounds.size.width, kPTMusicPlayerBottomViewHeight);
-    [self.view addSubview:self.playerBottomView];
-    [self.view bringSubviewToFront:self.playerBottomView];
-}
+//- (void)initPlayerBottomView {
+//    self.playerBottomView = [[[NSBundle mainBundle] loadNibNamed:@"PTMusicPlayerBottomView" owner:self options:nil] lastObject];
+//    self.playerBottomView.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height - kPTMusicPlayerBottomViewHeight, [UIScreen mainScreen].bounds.size.width, kPTMusicPlayerBottomViewHeight);
+//    [self.view addSubview:self.playerBottomView];
+//    [self.view bringSubviewToFront:self.playerBottomView];
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

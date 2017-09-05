@@ -56,9 +56,12 @@ static NSString * const reuseIdentifier = @"radioCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+// 测试用代码    
+//    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isDoneWithWelcomeView"];
+//    [[NSUserDefaults standardUserDefaults] synchronize];
     
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:72.0/255 green:170.0/255 blue:245.0/255 alpha:1.0];
-    self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+//    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:72.0/255 green:170.0/255 blue:245.0/255 alpha:1.0];
+//    self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [app.window bringSubviewToFront:app.playerBottomView];
     [self initSubObjects];

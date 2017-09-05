@@ -19,6 +19,14 @@
 		071C0AA21EA5AAAC0022C709 /* icon_60X60.png in Resources */ = {isa = PBXBuildFile; fileRef = 071C0A9B1EA5AAAC0022C709 /* icon_60X60.png */; };
 		071C0AA31EA5AAAC0022C709 /* icon_80X80.png in Resources */ = {isa = PBXBuildFile; fileRef = 071C0A9C1EA5AAAC0022C709 /* icon_80X80.png */; };
 		071C0AA41EA5AAAC0022C709 /* icon_87X87.png in Resources */ = {isa = PBXBuildFile; fileRef = 071C0A9D1EA5AAAC0022C709 /* icon_87X87.png */; };
+		07419C701F5D45F5007779C0 /* welcomeBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 07419C6F1F5D45F5007779C0 /* welcomeBackground.png */; };
+		07419C731F5D4647007779C0 /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07419C721F5D4647007779C0 /* WelcomeViewController.m */; };
+		07419C751F5D59B4007779C0 /* Welcome.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07419C741F5D59B4007779C0 /* Welcome.storyboard */; };
+		07419C771F5DB45F007779C0 /* launch_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 07419C761F5DB45F007779C0 /* launch_image.png */; };
+		074CAACD1F5E9B3400AE1A81 /* flower.png in Resources */ = {isa = PBXBuildFile; fileRef = 074CAACA1F5E9B3400AE1A81 /* flower.png */; };
+		074CAACE1F5E9B3400AE1A81 /* kotenbu_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 074CAACB1F5E9B3400AE1A81 /* kotenbu_logo.png */; };
+		074CAACF1F5E9B3400AE1A81 /* moefm_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 074CAACC1F5E9B3400AE1A81 /* moefm_logo.png */; };
+		074CAAD11F5E9C5F00AE1A81 /* moefm_description.png in Resources */ = {isa = PBXBuildFile; fileRef = 074CAAD01F5E9C5F00AE1A81 /* moefm_description.png */; };
 		074CCB0E1EAA42BB00BE2B83 /* PTPlayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 074CCB0D1EAA42BB00BE2B83 /* PTPlayerManager.m */; };
 		07670EA21E9E3DB50027E3EA /* RadioCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 07670EA11E9E3DB50027E3EA /* RadioCollectionViewCell.m */; };
 		07670EAE1E9E49BD0027E3EA /* RadioResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 07670EAD1E9E49BD0027E3EA /* RadioResponse.m */; };
@@ -86,6 +94,15 @@
 		071C0A9B1EA5AAAC0022C709 /* icon_60X60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_60X60.png; sourceTree = "<group>"; };
 		071C0A9C1EA5AAAC0022C709 /* icon_80X80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_80X80.png; sourceTree = "<group>"; };
 		071C0A9D1EA5AAAC0022C709 /* icon_87X87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_87X87.png; sourceTree = "<group>"; };
+		07419C6F1F5D45F5007779C0 /* welcomeBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = welcomeBackground.png; sourceTree = "<group>"; };
+		07419C711F5D4647007779C0 /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
+		07419C721F5D4647007779C0 /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewController.m; sourceTree = "<group>"; };
+		07419C741F5D59B4007779C0 /* Welcome.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Welcome.storyboard; sourceTree = "<group>"; };
+		07419C761F5DB45F007779C0 /* launch_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch_image.png; sourceTree = "<group>"; };
+		074CAACA1F5E9B3400AE1A81 /* flower.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flower.png; sourceTree = "<group>"; };
+		074CAACB1F5E9B3400AE1A81 /* kotenbu_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kotenbu_logo.png; sourceTree = "<group>"; };
+		074CAACC1F5E9B3400AE1A81 /* moefm_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = moefm_logo.png; sourceTree = "<group>"; };
+		074CAAD01F5E9C5F00AE1A81 /* moefm_description.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = moefm_description.png; sourceTree = "<group>"; };
 		074CCB0C1EAA42BB00BE2B83 /* PTPlayerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTPlayerManager.h; sourceTree = "<group>"; };
 		074CCB0D1EAA42BB00BE2B83 /* PTPlayerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTPlayerManager.m; sourceTree = "<group>"; };
 		07670EA01E9E3DB50027E3EA /* RadioCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioCollectionViewCell.h; sourceTree = "<group>"; };
@@ -213,6 +230,8 @@
 				07DFD5671ED4BD3F003B6A93 /* RegisterViewController.m */,
 				074CCB0C1EAA42BB00BE2B83 /* PTPlayerManager.h */,
 				074CCB0D1EAA42BB00BE2B83 /* PTPlayerManager.m */,
+				07419C711F5D4647007779C0 /* WelcomeViewController.h */,
+				07419C721F5D4647007779C0 /* WelcomeViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -244,6 +263,17 @@
 			path = moefmicon;
 			sourceTree = "<group>";
 		};
+		074CAAC91F5E9B3400AE1A81 /* moefm_home */ = {
+			isa = PBXGroup;
+			children = (
+				074CAACA1F5E9B3400AE1A81 /* flower.png */,
+				074CAACB1F5E9B3400AE1A81 /* kotenbu_logo.png */,
+				074CAACC1F5E9B3400AE1A81 /* moefm_logo.png */,
+				074CAAD01F5E9C5F00AE1A81 /* moefm_description.png */,
+			);
+			path = moefm_home;
+			sourceTree = "<group>";
+		};
 		07670EC71E9E8B780027E3EA /* Resource */ = {
 			isa = PBXGroup;
 			children = (
@@ -256,7 +286,9 @@
 			isa = PBXGroup;
 			children = (
 				071C0A961EA5AAAC0022C709 /* moefmicon */,
+				074CAAC91F5E9B3400AE1A81 /* moefm_home */,
 				07670EC91E9E8B780027E3EA /* cover_default_image.png */,
+				07419C761F5DB45F007779C0 /* launch_image.png */,
 				07670ECB1E9E916C0027E3EA /* home_background_image.png */,
 				07670F141EA06D080027E3EA /* fav_no@2x.png */,
 				07670F151EA06D080027E3EA /* fav_yes@2x.png */,
@@ -265,6 +297,7 @@
 				07670F181EA06D080027E3EA /* play@2x.png */,
 				07670F1E1EA06DE60027E3EA /* dislike_no@2x.png */,
 				07670F1F1EA06DE60027E3EA /* dislike_yes@2x.png */,
+				07419C6F1F5D45F5007779C0 /* welcomeBackground.png */,
 			);
 			path = Pictures;
 			sourceTree = "<group>";
@@ -441,6 +474,7 @@
 				07E7B6131E9D0C27004C9CF1 /* PTOAuthTool */,
 				07670EC71E9E8B780027E3EA /* Resource */,
 				07FEF31A1E99018A00F6AC3B /* Main.storyboard */,
+				07419C741F5D59B4007779C0 /* Welcome.storyboard */,
 				07FEF31D1E99018A00F6AC3B /* Assets.xcassets */,
 				07FEF31F1E99018A00F6AC3B /* LaunchScreen.storyboard */,
 				07FEF3221E99018A00F6AC3B /* Info.plist */,
@@ -629,7 +663,7 @@
 					07FEF30D1E99018A00F6AC3B = {
 						CreatedOnToolsVersion = 8.3.1;
 						DevelopmentTeam = ZH9AQ2F24G;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -661,8 +695,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07419C771F5DB45F007779C0 /* launch_image.png in Resources */,
+				07419C701F5D45F5007779C0 /* welcomeBackground.png in Resources */,
 				071C0AA31EA5AAAC0022C709 /* icon_80X80.png in Resources */,
+				074CAACF1F5E9B3400AE1A81 /* moefm_logo.png in Resources */,
+				074CAACD1F5E9B3400AE1A81 /* flower.png in Resources */,
 				07670ECC1E9E916C0027E3EA /* home_background_image.png in Resources */,
+				074CAACE1F5E9B3400AE1A81 /* kotenbu_logo.png in Resources */,
+				074CAAD11F5E9C5F00AE1A81 /* moefm_description.png in Resources */,
+				07419C751F5D59B4007779C0 /* Welcome.storyboard in Resources */,
 				071C0AA21EA5AAAC0022C709 /* icon_60X60.png in Resources */,
 				071C0AA01EA5AAAC0022C709 /* icon_40X40.png in Resources */,
 				07FEF3211E99018A00F6AC3B /* LaunchScreen.storyboard in Resources */,
@@ -763,6 +804,7 @@
 				07FEF3621E99099600F6AC3B /* MainTabBarController.m in Sources */,
 				07670EB71E9E52930027E3EA /* RadioWiki.m in Sources */,
 				07FEF3131E99018A00F6AC3B /* main.m in Sources */,
+				07419C731F5D4647007779C0 /* WelcomeViewController.m in Sources */,
 				07FEF3611E99099600F6AC3B /* HomeViewController.m in Sources */,
 				071C0A771EA595B60022C709 /* SubUpload.m in Sources */,
 				071C0A541EA394650022C709 /* PlayerData.m in Sources */,
@@ -902,15 +944,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Pingjun Peng (ZH9AQ2F24G)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Pingjun Peng (ZH9AQ2F24G)";
-				DEVELOPMENT_TEAM = ZH9AQ2F24G;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ProjectOfMoeFM/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pengpingjun1989.ProjectOfMoeFM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "16d4a371-9511-462e-9963-56e309f9cc6d";
-				PROVISIONING_PROFILE_SPECIFIER = ProjectOfMoeFM20170508;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -920,15 +962,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Pingjun Peng (ZH9AQ2F24G)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Pingjun Peng (ZH9AQ2F24G)";
-				DEVELOPMENT_TEAM = ZH9AQ2F24G;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ProjectOfMoeFM/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pengpingjun1989.ProjectOfMoeFM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "16d4a371-9511-462e-9963-56e309f9cc6d";
-				PROVISIONING_PROFILE_SPECIFIER = ProjectOfMoeFM20170508;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};

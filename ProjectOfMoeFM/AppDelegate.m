@@ -13,9 +13,11 @@
 #import "PTOAuthTool.h"
 #import "MoefmAPIConst.h"
 #import "PTPlayerManager.h"
+#import <UMMobClick/MobClick.h>
 
 NSString * const kConsumerKey = @"2a964c3a6cf90dcb31fccd75703bafbc058e8e3ba";
 NSString * const kConsumerSecret = @"8af19f17b8f7494853b8e2a3ea5f4669";
+NSString * const kUMMobClickKey = @"59acc8c975ca352eb80009ec";
 
 @interface AppDelegate ()
 @property (assign, nonatomic) UIBackgroundTaskIdentifier bgTaskId;
@@ -39,11 +41,35 @@ NSString * const kConsumerSecret = @"8af19f17b8f7494853b8e2a3ea5f4669";
         [userDefaults synchronize];
     }
     
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];// 手动初始化window
+    
     // 创建bottomView，可以选择懒加载
     self.playerBottomView = [[[NSBundle mainBundle] loadNibNamed:@"PTMusicPlayerBottomView" owner:self options:nil] lastObject];
     self.playerBottomView.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height - kPTMusicPlayerBottomViewHeight, [UIScreen mainScreen].bounds.size.width, kPTMusicPlayerBottomViewHeight);
     [self.window addSubview:_playerBottomView];
     [self.window bringSubviewToFront:_playerBottomView];
+    
+    // 友盟sdk配置
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [MobClick setAppVersion:version];
+    
+    UMConfigInstance.appKey = kUMMobClickKey;
+    UMConfigInstance.channelId = @"App Store";
+    [MobClick startWithConfigure:UMConfigInstance];//配置以上参数后调用此方法初始化SDK！
+    
+    UIStoryboard *welcomeStoryBoard = [UIStoryboard storyboardWithName:@"Welcome" bundle:[NSBundle mainBundle]];
+    UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    BOOL isDoneWithWelcomeView = [[NSUserDefaults standardUserDefaults] boolForKey:@"isDoneWithWelcomeView"];
+    if (isDoneWithWelcomeView) {
+        UITabBarController *mainTabBarController = [mainStoryBoard instantiateViewControllerWithIdentifier:@"MainTabBarController"];
+//        [mainStoryBoard instantiateInitialViewController];
+        self.window.rootViewController = mainTabBarController;
+    } else {
+        UIViewController *welcomeViewController = [welcomeStoryBoard instantiateViewControllerWithIdentifier:@"Welcome"];
+//        [welcomeStoryBoard instantiateInitialViewController];
+        self.window.rootViewController = welcomeViewController;
+    }
+    [self.window makeKeyAndVisible];
     
     return YES;
 }
