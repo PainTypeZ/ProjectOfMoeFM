@@ -19,19 +19,19 @@
 
 #pragma mark - public methods
 // 请求电台列表信息
-+ (void)requestRadioListInfoWithPage:(NSUInteger)page andPerPage:(NSUInteger)perpage completionHandler:(callback)callback errorHandler:(error)errorHandler {
-    NSString *pageStr = [NSString stringWithFormat:@"%lu", page];
++ (void)requestRadioListInfoWithPage:(NSUInteger)currentPage perpage:(NSUInteger)perpageNumber completionHandler:(callback)callback errorHandler:(error)errorHandler {
+    NSString *pageStr = [NSString stringWithFormat:@"%lu", currentPage];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:MoeWikiTypeValue forKey:MoeWikiTypeKey];
+    [params setObject:MoeWikiTypeRaioValue forKey:MoeWikiTypeKey];
     [params setObject:pageStr forKey:MoePageKey];
-    if (perpage != 0) {
-        NSString *perpageStr = [NSString stringWithFormat:@"%lu", perpage];
+    if (perpageNumber != 0) {
+        NSString *perpageStr = [NSString stringWithFormat:@"%lu", perpageNumber];
         [params setObject:perpageStr forKey:MoePerPageKey];
     }
     
     
-    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoeRadioListURL andParams:params];
+    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoeWikisListURL params:params];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     NSURLSession *session = [NSURLSession sharedSession];
@@ -76,7 +76,7 @@
     [params setObject:@"json" forKey:@"api"];
     [params setObject:@"1" forKey:@"hot_radios"];
     
-    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoeHotRadiosURL andParams:params];
+    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoeExploreURL params:params];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     NSURLSession *session = [NSURLSession sharedSession];
@@ -119,7 +119,7 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:radioId forKey:MoeWikiIdKey];
     [params setObject:MoeObjTypeValue forKey:MoeObjTypeKey];
-    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoeRadioSongCountURL andParams:params];
+    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoeRadioSongCountURL params:params];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     NSURLSession *session = [NSURLSession sharedSession];
@@ -160,7 +160,7 @@
 }
 
 // 请求电台播放列表，需要radio = wiki_id参数，第几页page，每页多少歌曲数量perpage，注意最后一页返回的结果可能不够perpage数量;此请求也可以返回随机的收藏歌曲播放列表
-+ (void)requestPlaylistWithRadioId:(NSString *)RadioId andPage:(NSUInteger)page andPerpage:(NSUInteger)perpage completionHandler:(callback)callback errorHandler:(error)errorHandler {
++ (void)requestPlaylistWithRadioId:(NSString *)RadioId page:(NSUInteger)page perpage:(NSUInteger)perpage completionHandler:(callback)callback errorHandler:(error)errorHandler {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:MoeAPIValue forKey:MoeAPIKey];
     
@@ -176,16 +176,81 @@
         [params setObject:perpageStr forKey:MoePerPageKey];
     }
     
-    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoeRadioPlayURL andParams:params];
+    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoePlayListURL params:params];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     NSURLSession *session = [NSURLSession sharedSession];
-    NSURLSessionTask *task = [PTWebUtils handlePlayListTaskWithRequest:request andSession:session andCallback:callback andErrorHandler:errorHandler];
+    NSURLSessionTask *task = [PTWebUtils handlePlayListTaskWithRequest:request session:session callback:callback errorHandler:errorHandler];
+    [task resume];
+}
+/* 以下4个方法可以跟电台对应的方法合并，牵涉的改动较多，赶时间，下一版本再改 */
+// 请求专辑列表
++ (void)requestAlbumListInfoWithPage:(NSUInteger)currentPage perpage:(NSUInteger)perpageNumber completionHandler:(callback)callback errorHandler:(error)errorHandler {
+    NSString *pageStr = [NSString stringWithFormat:@"%lu", currentPage];
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:MoeWikiTypeAlbumValue forKey:MoeWikiTypeKey];
+    [params setObject:pageStr forKey:MoePageKey];
+    if (perpageNumber != 0) {
+        NSString *perpageStr = [NSString stringWithFormat:@"%lu", perpageNumber];
+        [params setObject:perpageStr forKey:MoePerPageKey];
+    }
+    
+    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoeWikisListURL params:params];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            NSString *errorString = [NSString stringWithFormat:@"%@", error];
+            NSLog(@"%@", errorString);
+            errorHandler(errorString);
+        }else{
+            if (data) {
+                NSError *jsonModelError;
+                
+                NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                
+                RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
+                if (jsonModelError) {
+                    NSLog(@"%@", jsonModelError);
+                }
+                NSMutableDictionary *callbackDict = [NSMutableDictionary dictionary];
+                if (radioResponse.wikis) {
+                    [callbackDict setObject:[radioResponse.wikis mutableCopy] forKey:MoeCallbackDictRadioKey] ;
+                }
+                if (radioResponse.information.count) {
+                    [callbackDict setObject:radioResponse.information.count forKey:MoeCallbackDictCountKey];
+                }
+                
+                callback(callbackDict);
+            }else{
+                NSString *errorString = @"request data is nil";
+                //                NSLog(@"%@", errorString);
+                errorHandler(errorString);
+            }
+        }
+    }];
     [task resume];
 }
 
+// 请求最新专辑
++ (void)requestNewAlbumWithCompletionHandler:(callback)callback errorHandler:(error)errorHandler {
+    
+}
+
+// 请求专辑条目信息（歌曲总数，是否有资源）
++ (void)requestAlbumSongCountWithAlbumID:(NSString *)albumID completionHandler:(callback)callback errorHandler:(error)errorHandler {
+    
+}
+
+// 请求专辑播放列表
++ (void)requestPlaylistWithAlbumID:(NSString *)albumID page:(NSUInteger)page perpage:(NSUInteger)perpage completionHandler:(callback)callback errorHandler:(error)errorHandler {
+    
+}
+
 // 以SongIDs请求播放列表，收藏曲目的顺序播放列表和单曲必须使用的方法
-+ (void)requestPlaylistWithSongIDs:(NSArray <NSString *> *)songIDs CompletionHandler:(callback)callback errorHandler:(error)errorHandler {
++ (void)requestPlaylistWithSongIDs:(NSArray <NSString *> *)songIDs completionHandler:(callback)callback errorHandler:(error)errorHandler {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:MoeAPIValue forKey:MoeAPIKey];
     NSString *songIDsStr = @"";
@@ -201,11 +266,11 @@
     
     [params setObject:songIDsStr forKey:@"song"];
     
-    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoeRadioPlayURL andParams:params];
+    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoePlayListURL params:params];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     NSURLSession *session = [NSURLSession sharedSession];
-    NSURLSessionTask *task = [PTWebUtils handlePlayListTaskWithRequest:request andSession:session andCallback:callback andErrorHandler:errorHandler];
+    NSURLSessionTask *task = [PTWebUtils handlePlayListTaskWithRequest:request session:session callback:callback errorHandler:errorHandler];
     [task resume];
     
 }
@@ -215,11 +280,11 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:MoeAPIValue forKey:MoeAPIKey];
     
-    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoeRadioPlayURL andParams:params];
+    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoePlayListURL params:params];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     NSURLSession *session = [NSURLSession sharedSession];
-    NSURLSessionTask *task = [PTWebUtils handlePlayListTaskWithRequest:request andSession:session andCallback:callback andErrorHandler:errorHandler];
+    NSURLSessionTask *task = [PTWebUtils handlePlayListTaskWithRequest:request session:session callback:callback errorHandler:errorHandler];
     [task resume];
 }
 
@@ -229,16 +294,16 @@
     [params setObject:MoeAPIValue forKey:MoeAPIKey];
     [params setObject:@"song" forKey:@"fav"];
     
-    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoeRadioPlayURL andParams:params];
+    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoePlayListURL params:params];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     NSURLSession *session = [NSURLSession sharedSession];
-    NSURLSessionTask *task = [PTWebUtils handlePlayListTaskWithRequest:request andSession:session andCallback:callback andErrorHandler:errorHandler];
+    NSURLSessionTask *task = [PTWebUtils handlePlayListTaskWithRequest:request session:session callback:callback errorHandler:errorHandler];
     [task resume];
 }
 
 // 请求收藏歌曲列表（obj_type = song), 只能拿到收藏曲目的wiki_id数组, 其结果用于请求收藏曲目顺序播放列表和完整的收藏曲目信息;OAuth限定
-+ (void)requestFavSongListWithPage:(NSUInteger)page andPerPage:(NSUInteger)perpage completionHandler:(callback)callback errorHandler:(error)errorHandler {
++ (void)requestFavSongListWithPage:(NSUInteger)page perpage:(NSUInteger)perpage completionHandler:(callback)callback errorHandler:(error)errorHandler {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:@"song" forKey:@"obj_type"];
     if (page != 0) {
@@ -251,7 +316,7 @@
         [params setObject:perpageStr forKey:MoePerPageKey];
     }
     
-    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoeFavSongsURL andParams:params];
+    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoeFavSongsURL params:params];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     NSURLSession *session = [NSURLSession sharedSession];
@@ -304,7 +369,7 @@
 }
 
 // 添加或者删除收藏
-+ (void)requestUpdateToAddOrDelete:(NSString *)addOrDelete andObjectType:(NSString *)fav_obj_type andObjectID:(NSString *)fav_obj_id completionHandler:(callback)callback errorHandler:(error)errorHandler {
++ (void)requestUpdateToAddOrDelete:(NSString *)addOrDelete objectType:(NSString *)fav_obj_type objectID:(NSString *)fav_obj_id completionHandler:(callback)callback errorHandler:(error)errorHandler {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:fav_obj_type forKey:@"fav_obj_type"];
     [params setObject:fav_obj_id forKey:@"fav_obj_id"];
@@ -316,7 +381,7 @@
         urlString = MoeDeleteFavURL;
     }
     
-    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:urlString andParams:params];
+    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:urlString params:params];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     NSURLSession *session = [NSURLSession sharedSession];
@@ -362,7 +427,7 @@
 + (void)requestUserInfoWithCompletionHandler:(callback)callback errorHandler:(error)errorHandler {
     
     
-    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoeUserInfoURL andParams:nil];
+    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoeUserInfoURL params:nil];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     NSURLSession *session = [NSURLSession sharedSession];
@@ -402,7 +467,7 @@
 
 #pragma mark - private methods
 // 获取API Key请求的完整URL
-+ (NSURL *)getCompletedRequestURLWithURLString:(NSString *)url andParams:(NSDictionary *)params {
++ (NSURL *)getCompletedRequestURLWithURLString:(NSString *)url params:(NSDictionary *)params {
     
     NSURL *completedGETURL;
     // 判断登录状态，选择正确的url构造方法
@@ -430,7 +495,7 @@
 }
 
 // 播放列表task处理
-+ (NSURLSessionTask *)handlePlayListTaskWithRequest:(NSMutableURLRequest *)request andSession:(NSURLSession *)session andCallback:(callback)callback andErrorHandler:(error)errorHandler {
++ (NSURLSessionTask *)handlePlayListTaskWithRequest:(NSMutableURLRequest *)request session:(NSURLSession *)session callback:(callback)callback errorHandler:(error)errorHandler {
     NSURLSessionTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error) {
             NSString *errorString = [NSString stringWithFormat:@"%@", error];

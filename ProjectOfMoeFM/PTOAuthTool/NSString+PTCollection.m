@@ -54,4 +54,17 @@
     return paramsString;
 }
 
+// 临时文件路径
++ (NSString *)tempFilePath {
+    return [[NSHomeDirectory() stringByAppendingPathComponent:@"tmp"] stringByAppendingPathComponent:@"MusicTemp.mp3"];
+}
+// 缓存文件夹路径
++ (NSString *)cacheFolderPath {
+    return [[NSHomeDirectory() stringByAppendingPathComponent:@"Library"] stringByAppendingPathComponent:@"MusicCaches"];
+}
+// 获取网址中的文件名
++ (NSString *)fileNameWithURL:(NSURL *)url {
+    return [[url.path componentsSeparatedByString:@"/"] lastObject];
+}
+
 @end

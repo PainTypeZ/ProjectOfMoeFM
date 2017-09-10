@@ -81,7 +81,7 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
         // 加载数据
         weakSelf.currentPage = 1;
         // 请求电台播放列表信息
-        [PTWebUtils requestPlaylistWithRadioId:weakSelf.radioWiki.wiki_id andPage:weakSelf.currentPage andPerpage:0 completionHandler:^(id object) {
+        [PTWebUtils requestPlaylistWithRadioId:weakSelf.radioWiki.wiki_id page:weakSelf.currentPage perpage:0 completionHandler:^(id object) {
             NSDictionary *dict = object;
             weakSelf.radioPlaylist = dict[MoeCallbackDictSongKey];
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -109,7 +109,7 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
         // 加载数据
         weakSelf.currentPage++;
         // 请求电台播放列表信息
-        [PTWebUtils requestPlaylistWithRadioId:weakSelf.radioWiki.wiki_id andPage:weakSelf.currentPage andPerpage:0 completionHandler:^(id object) {
+        [PTWebUtils requestPlaylistWithRadioId:weakSelf.radioWiki.wiki_id page:weakSelf.currentPage perpage:0 completionHandler:^(id object) {
             NSDictionary *dict = object;
             NSArray *moreSongsArray = dict[MoeCallbackDictSongKey];
             [weakSelf.radioPlaylist addObjectsFromArray:moreSongsArray];
@@ -141,7 +141,7 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
         self.titeLabel.text = [NSString stringWithFormat:@"%@\n(共%lu首)", self.radioWiki.wiki_title, self.songCount];
         // 请求电台播放列表信息
         [SVProgressHUD showWithStatus:@"加载数据中，请稍后"];
-        [PTWebUtils requestPlaylistWithRadioId:self.radioWiki.wiki_id andPage:self.currentPage andPerpage:0 completionHandler:^(id object) {
+        [PTWebUtils requestPlaylistWithRadioId:self.radioWiki.wiki_id page:self.currentPage perpage:0 completionHandler:^(id object) {
             NSDictionary *dict = object;
             self.radioPlaylist = dict[MoeCallbackDictSongKey];
             

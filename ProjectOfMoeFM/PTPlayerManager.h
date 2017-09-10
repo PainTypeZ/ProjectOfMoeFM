@@ -53,6 +53,9 @@ typedef void(^callbackBOOL)(BOOL isSuccess);
 // 登录时调用，更新收藏状态信息，登出时不需要
 - (void)updateFavInfoWhileLoginOAuth;
 
+// 清理缓存文件
+- (BOOL)cleanCaches;
+
 // 单例构造方法
 + (instancetype)sharedPlayerManager;
 

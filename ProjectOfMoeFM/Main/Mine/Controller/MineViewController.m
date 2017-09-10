@@ -44,7 +44,7 @@ static NSString *reuseIdentifier = @"MineTableViewCell";
 }
 
 - (void)loadUserInfo {
-    [PTWebUtils requestFavSongListWithPage:0 andPerPage:0 completionHandler:^(id object) {
+    [PTWebUtils requestFavSongListWithPage:0 perpage:0 completionHandler:^(id object) {
         NSDictionary *dict = object;
         NSArray *array = dict[MoeCallbackDictFavsKey];
         self.recentFavList = [NSMutableArray arrayWithArray:array];

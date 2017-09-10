@@ -60,8 +60,8 @@ static NSString * const reuseIdentifier = @"radioCell";
 //    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isDoneWithWelcomeView"];
 //    [[NSUserDefaults standardUserDefaults] synchronize];
     
-//    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:72.0/255 green:170.0/255 blue:245.0/255 alpha:1.0];
-//    self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:72.0/255 green:170.0/255 blue:245.0/255 alpha:1.0];
+    self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [app.window bringSubviewToFront:app.playerBottomView];
     [self initSubObjects];
@@ -157,7 +157,7 @@ static NSString * const reuseIdentifier = @"radioCell";
         }else{
             weakSelf.currentPage = 1;
             // perpage=0时会发送默认值为20的请求
-            [PTWebUtils requestRadioListInfoWithPage:self.currentPage andPerPage:0 completionHandler:^(id object) {
+            [PTWebUtils requestRadioListInfoWithPage:self.currentPage perpage:0 completionHandler:^(id object) {
                 NSDictionary *dict = object;
                 NSNumber *count = dict[MoeCallbackDictCountKey];
                 weakSelf.allRadios = dict[MoeCallbackDictRadioKey];
@@ -195,7 +195,7 @@ static NSString * const reuseIdentifier = @"radioCell";
             }
             weakSelf.currentPage++;
             // 增加数据
-            [PTWebUtils requestRadioListInfoWithPage:weakSelf.currentPage andPerPage:0 completionHandler:^(id object) {
+            [PTWebUtils requestRadioListInfoWithPage:weakSelf.currentPage perpage:0 completionHandler:^(id object) {
                 NSDictionary *dict = object;
                 NSNumber *count = dict[MoeCallbackDictCountKey];
                 NSArray *moreRadiosArray = dict[MoeCallbackDictRadioKey];
@@ -234,7 +234,7 @@ static NSString * const reuseIdentifier = @"radioCell";
     if (self.allRadios.count == 0) {
         // 请求电台列表信息
         [SVProgressHUD showWithStatus:@"加载数据中，请稍后"];
-        [PTWebUtils requestRadioListInfoWithPage:self.currentPage andPerPage:self.perpage completionHandler:^(id object) {
+        [PTWebUtils requestRadioListInfoWithPage:self.currentPage perpage:self.perpage completionHandler:^(id object) {
             NSDictionary *dict = object;
             NSNumber *count = dict[MoeCallbackDictCountKey];
             self.allRadios = dict[MoeCallbackDictRadioKey];

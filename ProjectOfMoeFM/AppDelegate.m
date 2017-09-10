@@ -15,11 +15,20 @@
 #import "PTPlayerManager.h"
 #import <UMMobClick/MobClick.h>
 
+#ifdef NSFoundationVersionNumber_iOS_9_x_Max
+#import <UserNotifications/UserNotifications.h>
+#endif
+
+#define IOS10_OR_LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 10.0)
+#define IOS9_OR_LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0)
+#define IOS8_OR_LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+#define IOS7_OR_LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
+
 NSString * const kConsumerKey = @"2a964c3a6cf90dcb31fccd75703bafbc058e8e3ba";
 NSString * const kConsumerSecret = @"8af19f17b8f7494853b8e2a3ea5f4669";
 NSString * const kUMMobClickKey = @"59acc8c975ca352eb80009ec";
 
-@interface AppDelegate ()
+@interface AppDelegate ()<UNUserNotificationCenterDelegate>
 @property (assign, nonatomic) UIBackgroundTaskIdentifier bgTaskId;
 @end
 
@@ -40,6 +49,8 @@ NSString * const kUMMobClickKey = @"59acc8c975ca352eb80009ec";
         [userDefaults setBool:NO forKey:@"isLogin"];
         [userDefaults synchronize];
     }
+    
+    [self replyPushNotificationAuthorization:application];// 注册APNs
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];// 手动初始化window
     
@@ -73,8 +84,161 @@ NSString * const kUMMobClickKey = @"59acc8c975ca352eb80009ec";
     
     return YES;
 }
+#pragma mark - APNs申请通知权限
+// 申请通知权限
+- (void)replyPushNotificationAuthorization:(UIApplication *)application{
+    
+    if (IOS10_OR_LATER) {
+        //iOS 10 later
+        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+        //必须写代理，不然无法监听通知的接收与点击事件
+        center.delegate = self;
+        [center requestAuthorizationWithOptions:(UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert) completionHandler:^(BOOL granted, NSError * _Nullable error) {
+            if (!error && granted) {
+                //用户点击允许
+                NSLog(@"注册成功");
+            }else{
+                //用户点击不允许
+                NSLog(@"注册失败");
+            }
+        }];
+        
+        // 可以通过 getNotificationSettingsWithCompletionHandler 获取权限设置
+        //之前注册推送服务，用户点击了同意还是不同意，以及用户之后又做了怎样的更改我们都无从得知，现在 apple 开放了这个 API，我们可以直接获取到用户的设定信息了。注意UNNotificationSettings是只读对象哦，不能直接修改！
+        [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+            NSLog(@"========%@",settings);
+        }];
+    }else if (IOS8_OR_LATER){
+        //iOS 8 - iOS 10系统
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound categories:nil];
+        [application registerUserNotificationSettings:settings];
+    }else{
+        //iOS 8.0系统以下
+        [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound];
+    }
+    
+    //注册远端消息通知获取device token
+    [application registerForRemoteNotifications];
+}
 
+// 将得到的deviceToken传给SDK
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
+    
+    NSString *deviceString = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    deviceString = [deviceString stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    NSLog(@"deviceToken : %@",deviceString);
+    // 需要发往自己的服务器
+    
+}
 
+// 注册deviceToken失败
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
+    
+    NSLog(@"deviceToken error : %@",error.description);
+    
+}
+
+#pragma mark - iOS 10 收到通知（本地和远端） UNUserNotificationCenterDelegate
+//App处于前台接收通知时
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
+    
+    //收到推送的请求
+    UNNotificationRequest *request = notification.request;
+    
+    //收到推送的内容
+    UNNotificationContent *content = request.content;
+    
+    //收到用户的基本信息
+    NSDictionary *userInfo = content.userInfo;
+    
+    //收到推送消息的角标
+    NSNumber *badge = content.badge;
+    
+    //收到推送消息body
+    NSString *body = content.body;
+    
+    //推送消息的声音
+    UNNotificationSound *sound = content.sound;
+    
+    // 推送消息的副标题
+    NSString *subtitle = content.subtitle;
+    
+    // 推送消息的标题
+    NSString *title = content.title;
+    
+    if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+        //此处省略一万行需求代码。。。。。。
+        NSLog(@"iOS10 收到远程通知:%@",userInfo);
+        
+    }else {
+        // 判断为本地通知
+        //此处省略一万行需求代码。。。。。。
+        NSLog(@"iOS10 收到本地通知:{\\\\nbody:%@，\\\\ntitle:%@,\\\\nsubtitle:%@,\\\\nbadge：%@，\\\\nsound：%@，\\\\nuserInfo：%@\\\\n}",body,title,subtitle,badge,sound,userInfo);
+    }
+    
+    
+    // 需要执行这个方法，选择是否提醒用户，有Badge、Sound、Alert三种类型可以设置
+    completionHandler(UNNotificationPresentationOptionBadge|
+                      UNNotificationPresentationOptionSound|
+                      UNNotificationPresentationOptionAlert);
+    
+}
+
+//App通知的点击事件
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler{
+    //收到推送的请求
+    UNNotificationRequest *request = response.notification.request;
+    
+    //收到推送的内容
+    UNNotificationContent *content = request.content;
+    
+    //收到用户的基本信息
+    NSDictionary *userInfo = content.userInfo;
+    
+    //收到推送消息的角标
+    NSNumber *badge = content.badge;
+    
+    //收到推送消息body
+    NSString *body = content.body;
+    
+    //推送消息的声音
+    UNNotificationSound *sound = content.sound;
+    
+    // 推送消息的副标题
+    NSString *subtitle = content.subtitle;
+    
+    // 推送消息的标题
+    NSString *title = content.title;
+    
+    if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+        NSLog(@"iOS10 收到远程通知:%@",userInfo);
+        //此处省略一万行需求代码。。。。。。
+        
+    }else {
+        // 判断为本地通知
+        //此处省略一万行需求代码。。。。。。
+        NSLog(@"iOS10 收到本地通知:{\\\\nbody:%@，\\\\ntitle:%@,\\\\nsubtitle:%@,\\\\nbadge：%@，\\\\nsound：%@，\\\\nuserInfo：%@\\\\n}",body,title,subtitle,badge,sound,userInfo);
+    }
+    
+    //2016-09-27 14:42:16.353978 UserNotificationsDemo[1765:800117] Warning: UNUserNotificationCenter delegate received call to -userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler: but the completion handler was never called.
+    completionHandler(); // 系统要求执行这个方法
+}
+
+#pragma mark - iOS 10之前收到通知
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    NSLog(@"iOS6及以下系统，收到通知:%@", userInfo);
+    //此处省略一万行需求代码。。。。。。
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    NSLog(@"iOS7及以上系统，收到通知:%@", userInfo);
+    completionHandler(UIBackgroundFetchResultNewData);
+    //此处省略一万行需求代码。。。。。。
+}
+
+#pragma mark - 后台播放处理
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.

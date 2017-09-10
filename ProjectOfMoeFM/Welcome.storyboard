@@ -24,32 +24,32 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcomeBackground.png" translatesAutoresizingMaskIntoConstraints="NO" id="AYA-EJ-bCh">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.2版本来了~" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XGd-Oi-uYk">
+                                <rect key="frame" x="16" y="8" width="343" height="36"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                <color key="textColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fRM-Pj-ywS">
-                                <rect key="frame" x="213" y="611" width="82" height="36"/>
-                                <color key="backgroundColor" red="0.65115368370000004" green="0.50233000520000004" blue="0.2632769942" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" weight="black" pointSize="20"/>
-                                <state key="normal" title="开始体验">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="126" y="599" width="122" height="48"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" weight="black" pointSize="30"/>
+                                <state key="normal" title="开始食用">
+                                    <color key="titleColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="jumpToHomeAction:" destination="Vdf-yA-nGI" eventType="touchUpInside" id="pFa-Mv-fHn"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999998807907104" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.2版本改动的主要内容：重新设计了UI，感谢大家支持~" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XGd-Oi-uYk">
-                                <rect key="frame" x="16" y="8" width="343" height="53"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
-                                <color key="textColor" red="0.65115368370000004" green="0.50233000520000004" blue="0.2632769942" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="AYA-EJ-bCh" firstAttribute="leading" secondItem="l6K-g8-sdN" secondAttribute="leading" id="02M-tD-b3S"/>
+                            <constraint firstItem="fRM-Pj-ywS" firstAttribute="centerX" secondItem="l6K-g8-sdN" secondAttribute="centerX" id="7EZ-qm-TQh"/>
                             <constraint firstItem="AYA-EJ-bCh" firstAttribute="top" secondItem="l6K-g8-sdN" secondAttribute="top" id="7qq-Wh-8zm"/>
                             <constraint firstItem="XGd-Oi-uYk" firstAttribute="leading" secondItem="l6K-g8-sdN" secondAttribute="leadingMargin" id="fTd-c1-K0T"/>
                             <constraint firstAttribute="trailing" secondItem="AYA-EJ-bCh" secondAttribute="trailing" id="gPw-Mo-O4a"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="fRM-Pj-ywS" secondAttribute="trailing" constant="64" id="hvZ-dP-MzK"/>
                             <constraint firstItem="1Sf-t5-zHg" firstAttribute="top" secondItem="AYA-EJ-bCh" secondAttribute="bottom" id="oh6-tg-Md0"/>
                             <constraint firstItem="XGd-Oi-uYk" firstAttribute="trailing" secondItem="l6K-g8-sdN" secondAttribute="trailingMargin" id="rRW-1f-U9Y"/>
                             <constraint firstItem="1Sf-t5-zHg" firstAttribute="top" secondItem="fRM-Pj-ywS" secondAttribute="bottom" constant="20" id="v3a-k2-eYN"/>

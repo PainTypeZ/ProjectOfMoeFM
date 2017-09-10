@@ -59,12 +59,12 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
     [super viewWillAppear:YES];
     if (self.radioPlaylist.count == 0) {
         [SVProgressHUD showWithStatus:@"加载数据中，请稍后"];
-        [PTWebUtils requestFavSongListWithPage:self.currentPage andPerPage:self.perpage completionHandler:^(id object) {
+        [PTWebUtils requestFavSongListWithPage:self.currentPage perpage:self.perpage completionHandler:^(id object) {
             NSDictionary *dict = object;
             self.songIDs = dict[MoeCallbackDictSongIDKey];
             NSNumber *count = dict[MoeCallbackDictCountKey];
             self.songCount = count.integerValue;
-            [PTWebUtils requestPlaylistWithSongIDs:self.songIDs CompletionHandler:^(id object) {
+            [PTWebUtils requestPlaylistWithSongIDs:self.songIDs completionHandler:^(id object) {
                 NSDictionary *dict = object;
                 self.radioPlaylist = dict[MoeCallbackDictSongKey];
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -89,12 +89,12 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
         // 加载数据
         weakSelf.currentPage = 1;
         // 请求收藏歌曲顺序播放列表信息
-        [PTWebUtils requestFavSongListWithPage:weakSelf.currentPage andPerPage:weakSelf.perpage completionHandler:^(id object) {
+        [PTWebUtils requestFavSongListWithPage:weakSelf.currentPage perpage:weakSelf.perpage completionHandler:^(id object) {
             NSDictionary *dict = object;
             weakSelf.songIDs = dict[MoeCallbackDictSongIDKey];
             NSNumber *count = dict[MoeCallbackDictCountKey];
             weakSelf.songCount = count.integerValue;
-            [PTWebUtils requestPlaylistWithSongIDs:weakSelf.songIDs CompletionHandler:^(id object) {
+            [PTWebUtils requestPlaylistWithSongIDs:weakSelf.songIDs completionHandler:^(id object) {
                 NSDictionary *dict = object;
                 weakSelf.radioPlaylist = dict[MoeCallbackDictSongKey];
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -127,10 +127,10 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
         // 加载数据
         weakSelf.currentPage++;
         // 请求电台播放列表信息
-        [PTWebUtils requestFavSongListWithPage:weakSelf.currentPage andPerPage:weakSelf.perpage completionHandler:^(id object) {
+        [PTWebUtils requestFavSongListWithPage:weakSelf.currentPage perpage:weakSelf.perpage completionHandler:^(id object) {
             NSDictionary *dict = object;
             weakSelf.songIDs = dict[MoeCallbackDictSongIDKey];
-            [PTWebUtils requestPlaylistWithSongIDs:weakSelf.songIDs CompletionHandler:^(id object) {
+            [PTWebUtils requestPlaylistWithSongIDs:weakSelf.songIDs completionHandler:^(id object) {
                 NSDictionary *dict = object;
                 [weakSelf.radioPlaylist addObjectsFromArray:dict[MoeCallbackDictSongKey]];
                 dispatch_async(dispatch_get_main_queue(), ^{
