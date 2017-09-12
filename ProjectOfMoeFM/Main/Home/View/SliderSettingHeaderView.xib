@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SliderSettingHeaderView">
+            <rect key="frame" x="0.0" y="0.0" width="426" height="193"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.5" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sliderHeader.png" translatesAutoresizingMaskIntoConstraints="NO" id="aw1-Ff-zcN">
+                    <rect key="frame" x="0.0" y="0.0" width="426" height="193"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="moefm_logo_home.png" translatesAutoresizingMaskIntoConstraints="NO" id="Bgk-qx-vuJ">
+                    <rect key="frame" x="8" y="8" width="201" height="177"/>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Bgk-qx-vuJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="6nO-SH-RN8"/>
+                <constraint firstItem="Bgk-qx-vuJ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="9RZ-cz-edr"/>
+                <constraint firstAttribute="bottom" secondItem="aw1-Ff-zcN" secondAttribute="bottom" id="C7o-u3-rZO"/>
+                <constraint firstItem="aw1-Ff-zcN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="bo6-qN-UaT"/>
+                <constraint firstAttribute="trailing" secondItem="Bgk-qx-vuJ" secondAttribute="trailing" multiplier="2" constant="8" id="cTj-3i-0ky"/>
+                <constraint firstAttribute="bottom" secondItem="Bgk-qx-vuJ" secondAttribute="bottom" constant="8" id="dlP-DP-s6U"/>
+                <constraint firstAttribute="trailing" secondItem="aw1-Ff-zcN" secondAttribute="trailing" id="tGN-vO-Z8m"/>
+                <constraint firstItem="aw1-Ff-zcN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="vTD-Lm-8ED"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="150" y="-150.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="moefm_logo_home.png" width="162" height="175"/>
+        <image name="sliderHeader.png" width="375" height="235"/>
+    </resources>
+</document>

@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RadioPlaySong.h"
+#import "MoefmSong.h"
 @interface RadioPlayListCell : UITableViewCell
 
-@property (strong, nonatomic) RadioPlaySong *radioPlaySong;
+@property (strong, nonatomic) MoefmSong *radioPlaySong;
 
 @property (weak, nonatomic) IBOutlet UIImageView *radioSongCoverImageView;
 @property (weak, nonatomic) IBOutlet UILabel *radioSongTitleLabel;

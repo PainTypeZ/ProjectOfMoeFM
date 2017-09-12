@@ -21,9 +21,9 @@
 #import <MJRefresh.h>
 
 #import "RadioCollectionViewCell.h"
-#import "RadioWiki.h"
-#import "RadioResponse.h"
-#import "RadioRelationships.h"
+#import "MoefmWiki.h"
+#import "MoefmResponse.h"
+#import "MoefmRelationships.h"
 
 #import "PTOAuthTool.h"
 #import "PTWebUtils.h"
@@ -39,7 +39,6 @@
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *radioCollectionViewFlowLayout;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *loginButton;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *radiosSegmentedControl;
 @property (strong, nonatomic) NSMutableArray *allRadios;// 保存所有电台列表信息
 @property (strong, nonatomic) NSMutableArray *hotRadios;// 保存热门电台列表信息
 @property (strong, nonatomic) NSMutableDictionary *radiosInformations;// 用于保存电台歌曲总数信息
@@ -90,15 +89,9 @@ static NSString * const reuseIdentifier = @"radioCell";
                     [self sendHotRadiosRequest];
 //                    [self sendPlayListRequest];// 测试用
                     // 请求电台数据
-                    if (self.radiosSegmentedControl.selectedSegmentIndex == 0) {
-                        if (self.hotRadios.count == 0) {
-                            [self sendHotRadiosRequest];
-                        }
-                    }else{
                         if (self.allRadios.count == 0) {
                             [self sendAllRadioListRequest];
                         }
-                    }
                 });
                 NSLog(@"OAuthToken已失效");
             }else{
@@ -111,15 +104,10 @@ static NSString * const reuseIdentifier = @"radioCell";
                     [self sendHotRadiosRequest];
 //                    [self sendPlayListRequest];// 测试用
                     // 请求电台数据
-                    if (self.radiosSegmentedControl.selectedSegmentIndex == 0) {
-                        if (self.hotRadios.count == 0) {
-                            [self sendHotRadiosRequest];
-                        }
-                    }else{
+
                         if (self.allRadios.count == 0) {
                             [self sendAllRadioListRequest];
                         }
-                    }
                 });
             }
             [SVProgressHUD dismiss];
@@ -136,25 +124,22 @@ static NSString * const reuseIdentifier = @"radioCell";
     // 下拉刷新
     self.radioCollectionView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         // 更新数据
-
-        if (weakSelf.radiosSegmentedControl.selectedSegmentIndex == 0) {
-            [PTWebUtils requestHotRadiosWithCompletionHandler:^(id object) {
-                NSDictionary *dict = object;
-                weakSelf.hotRadios = dict[MoeCallbackDictRadioKey];
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (!weakSelf.hotRadios) {
-                        [SVProgressHUD showInfoWithStatus:@"暂无热门电台信息"];
-                        [SVProgressHUD dismissWithDelay:1.5];
-                    }
-                    [weakSelf.radioCollectionView reloadData];
-                    [weakSelf.radioCollectionView.mj_header endRefreshing];
-                });
-            } errorHandler:^(id error) {
-                [weakSelf.radioCollectionView.mj_header endRefreshing];
-                NSLog(@"%@", error);
-            }];
-        }else{
+//            [PTWebUtils requestHotRadiosWithCompletionHandler:^(id object) {
+//                NSDictionary *dict = object;
+//                weakSelf.hotRadios = dict[MoeCallbackDictRadioKey];
+//                
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    if (!weakSelf.hotRadios) {
+//                        [SVProgressHUD showInfoWithStatus:@"暂无热门电台信息"];
+//                        [SVProgressHUD dismissWithDelay:1.5];
+//                    }
+//                    [weakSelf.radioCollectionView reloadData];
+//                    [weakSelf.radioCollectionView.mj_header endRefreshing];
+//                });
+//            } errorHandler:^(id error) {
+//                [weakSelf.radioCollectionView.mj_header endRefreshing];
+//                NSLog(@"%@", error);
+//            }];
             weakSelf.currentPage = 1;
             // perpage=0时会发送默认值为20的请求
             [PTWebUtils requestRadioListInfoWithPage:self.currentPage perpage:0 completionHandler:^(id object) {
@@ -173,19 +158,15 @@ static NSString * const reuseIdentifier = @"radioCell";
                 NSLog(@"%@", error);
                 
             }];
-
-        }
     }];
     [self.radioCollectionView.mj_header beginRefreshing];
     
     // 上拉刷新
     self.radioCollectionView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-        if (weakSelf.radiosSegmentedControl.selectedSegmentIndex == 0) {
-            [SVProgressHUD showInfoWithStatus:@"没有更多的结果了"];
-            [SVProgressHUD dismissWithDelay:1.5];
-            // 结束刷新
-            [weakSelf.radioCollectionView.mj_footer endRefreshing];
-        }else{
+//            [SVProgressHUD showInfoWithStatus:@"没有更多的结果了"];
+//            [SVProgressHUD dismissWithDelay:1.5];
+//            // 结束刷新
+//            [weakSelf.radioCollectionView.mj_footer endRefreshing];
             if (weakSelf.allRadios.count >= weakSelf.radioCount) {
                 [SVProgressHUD showWithStatus:@"已经是最后一页了"];
                 [SVProgressHUD dismissWithDelay:1.5];
@@ -211,7 +192,6 @@ static NSString * const reuseIdentifier = @"radioCell";
                 // 结束刷新
                 [weakSelf.radioCollectionView.mj_footer endRefreshing];
             }];
-        }
     }];
     // 默认先隐藏footer
 //    self.radioCollectionView.mj_footer.hidden = YES;
@@ -336,7 +316,7 @@ static NSString * const reuseIdentifier = @"radioCell";
     sender.enabled = NO;
     [PTWebUtils requestRandomPlaylistWithCompletionHandler:^(id object) {
         NSDictionary *dict = object;
-        NSArray <RadioPlaySong *> *playlist = dict[MoeCallbackDictSongKey];
+        NSArray <MoefmSong *> *playlist = dict[MoeCallbackDictSongKey];
         [[PTPlayerManager sharedPlayerManager] changeToPlayList:playlist andPlayType:MoeRandomPlay andSongIDs:nil];
     } errorHandler:^(id error) {
         NSLog(@"%@", error);
@@ -395,25 +375,15 @@ static NSString * const reuseIdentifier = @"radioCell";
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    if (self.radiosSegmentedControl.selectedSegmentIndex == 0) {
-        if (!self.hotRadios) {
-            return 0;
-        }
-        return self.hotRadios.count;
-    }else{
         return self.allRadios.count;
-    }
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     RadioCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    RadioWiki *radioWiki = [[RadioWiki alloc] init];
-    if (self.radiosSegmentedControl.selectedSegmentIndex == 0) {
-        radioWiki = self.hotRadios[indexPath.item];
-    }else{
-        radioWiki = self.allRadios[indexPath.item];
-    }
+    MoefmWiki *radioWiki = [[MoefmWiki alloc] init];
+    radioWiki = self.allRadios[indexPath.item];
+
     cell.radioWiki = radioWiki;
    
     return cell;
@@ -429,12 +399,9 @@ static NSString * const reuseIdentifier = @"radioCell";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     self.view.userInteractionEnabled = NO;
-    RadioWiki *radioWiki = [[RadioWiki alloc] init];
-    if (self.radiosSegmentedControl.selectedSegmentIndex == 0) {
-        radioWiki = self.hotRadios[indexPath.item];
-    }else{
-        radioWiki = self.allRadios[indexPath.item];
-    }
+    MoefmWiki *radioWiki = [[MoefmWiki alloc] init];
+    radioWiki = self.allRadios[indexPath.item];
+
     [SVProgressHUD showWithStatus:@"查询中...请稍后..."];
     [PTWebUtils requestRadioSongCountWithRadioId:radioWiki.wiki_id completionHandler:^(id object) {
         NSMutableDictionary *dict = object;
@@ -484,7 +451,7 @@ static NSString * const reuseIdentifier = @"radioCell";
 }
 
 - (void)dealloc {
-    NSLog(@"home被销毁了");
+    NSLog(@"RadioList被销毁了");
 }
 
 @end

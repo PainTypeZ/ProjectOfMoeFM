@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RadioPlaySong.h"
+#import "MoefmSong.h"
 @interface PlayerData : NSObject
 @property (copy, nonatomic) NSString *playTime;
 @property (assign, nonatomic) float playProgress;

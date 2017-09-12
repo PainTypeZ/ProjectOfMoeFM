@@ -31,7 +31,7 @@
     // Configure the view for the selected state
 }
 
-- (void)setRadioPlaySong:(RadioPlaySong *)radioPlaySong {
+- (void)setRadioPlaySong:(MoefmSong *)radioPlaySong {
     _radioPlaySong = radioPlaySong;
     
     // 重设默认图片，防止cell复用时错误显示图片

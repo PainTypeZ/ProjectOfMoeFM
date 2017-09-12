@@ -13,9 +13,9 @@
 #import <MJRefresh.h>
 #import <SVProgressHUD.h>
 
-#import "RadioPlaySong.h"
-#import "RadioRelationships.h"
-#import "RadioSubUpload.h"
+#import "MoefmSong.h"
+#import "MoefmRelationships.h"
+#import "MoefmSubUpload.h"
 
 #import "PTWebUtils.h"
 
@@ -35,7 +35,7 @@
 @property (assign, nonatomic) NSUInteger perpage;
 @property (assign, nonatomic) NSUInteger songCount;
 @property (strong, nonatomic) NSMutableArray *songIDs;
-@property (strong, nonatomic) RadioWiki *radioWiki;
+@property (strong, nonatomic) MoefmWiki *radioWiki;
 
 //@property (strong, nonatomic) NSDictionary *requestedList; //用来标记是否需要重新请求列表信息, 暂时不做缓存
 
@@ -133,7 +133,7 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
     self.songCount = count.integerValue;
     NSArray *relationships = self.relationshipsDict[MoeCallbackDictRelationshipsKey];
     self.songIDs = [NSMutableArray array];
-    for (RadioRelationships *relationship in relationships) {
+    for (MoefmRelationships *relationship in relationships) {
         [self.songIDs addObject:relationship.obj.sub_id];
     }
     
@@ -179,7 +179,7 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     RadioPlayListCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
     
-    RadioPlaySong *radioPlaySong = self.radioPlaylist[indexPath.row];
+    MoefmSong *radioPlaySong = self.radioPlaylist[indexPath.row];
     cell.radioPlaySong = radioPlaySong;
     
     return cell;

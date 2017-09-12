@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RadioWiki.h"
+#import "MoefmWiki.h"
 
 @interface RadioCollectionViewCell : UICollectionViewCell
-@property (strong, nonatomic) RadioWiki *radioWiki;
+@property (strong, nonatomic) MoefmWiki *radioWiki;
 //@property (strong, nonatomic) RadioInformation *radioInformation;
 @property (weak, nonatomic) IBOutlet UIImageView *radioCoverImageView;
 @property (weak, nonatomic) IBOutlet UILabel *radioTitleLabel;

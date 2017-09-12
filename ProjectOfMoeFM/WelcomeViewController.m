@@ -24,12 +24,12 @@
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isDoneWithWelcomeView"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-    UITabBarController *mainTabbarController = [mainStoryboard instantiateViewControllerWithIdentifier:@"MainTabBarController"];
+    UINavigationController *homeNavigationController = [mainStoryboard instantiateViewControllerWithIdentifier:@"HomeNavigation"];
 //    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication];
 //    appDelegate.window.rootViewController = mainTabbarController;
 //    [self presentViewController:mainTabbarController animated:YES completion:nil];
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    app.window.rootViewController = mainTabbarController;
+    app.window.rootViewController = homeNavigationController;
 }
 
 - (void)didReceiveMemoryWarning {

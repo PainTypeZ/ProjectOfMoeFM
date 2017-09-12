@@ -21,7 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *randomPlayAllButton;
 @property (weak, nonatomic) IBOutlet UIButton *playCurrentListButton;
 
-@property (strong, nonatomic) NSMutableArray <RadioPlaySong *> *radioPlaylist;// 保存电台播放列表信息
+@property (strong, nonatomic) NSMutableArray <MoefmSong *> *radioPlaylist;// 保存电台播放列表信息
 @property (strong, nonatomic) NSArray *songIDs;// 保存songID的数组，用于请求播放列表信息
 @property (assign, nonatomic) NSUInteger songCount;// 目前只有请求favsongid的接口有返回歌曲总数这个功能
 @property (assign, nonatomic) NSUInteger currentPage;
@@ -172,7 +172,7 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
     [PTWebUtils requestFavRandomPlaylistWithCompletionHandler:^(id object) {
         NSDictionary *dict = object;
         NSArray *playlist = dict[MoeCallbackDictSongKey];
-        NSMutableArray <RadioPlaySong *> *array = [NSMutableArray arrayWithArray:playlist];
+        NSMutableArray <MoefmSong *> *array = [NSMutableArray arrayWithArray:playlist];
         [[PTPlayerManager sharedPlayerManager] changeToPlayList:array andPlayType:MoeFavRandomPlay andSongIDs:nil];
     } errorHandler:^(id error) {
         NSLog(@"%@", error);
@@ -186,7 +186,7 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
         return;
     }
     NSMutableArray *array = [NSMutableArray array];
-    for (RadioPlaySong *song in self.radioPlaylist) {
+    for (MoefmSong *song in self.radioPlaylist) {
         [array addObject:song.sub_id];
     }
     [[PTPlayerManager sharedPlayerManager] changeToPlayList:self.radioPlaylist andPlayType:nil andSongIDs:array];
@@ -211,7 +211,7 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     CollectionSongsCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
     
-    RadioPlaySong *radioPlaySong = self.radioPlaylist[indexPath.row];
+    MoefmSong *radioPlaySong = self.radioPlaylist[indexPath.row];
 
     cell.radioPlaySong = radioPlaySong;
     

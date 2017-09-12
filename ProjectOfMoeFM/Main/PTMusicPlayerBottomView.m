@@ -9,7 +9,7 @@
 #import "PTMusicPlayerBottomView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <SVProgressHUD.h>
-#import "RadioPlaySong.h"
+#import "MoefmSong.h"
 #import "MoefmAPIConst.h"
 #import "PlayerData.h"
 #import "PTPlayerManager.h"
@@ -28,7 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIProgressView *playProgressView;
 
 @property (strong, nonatomic) PlayerData *playerData;
-@property (strong, nonatomic) RadioPlaySong *playingSong;
+@property (strong, nonatomic) MoefmSong *playingSong;
 
 @end
 
@@ -106,7 +106,7 @@
     });
 }
 // 接收当前播放歌曲信息(播放开始时会收到信息)，注意与播放过程中的播放/暂停状态要分开处理
-- (void)sendCurrentSongInfo:(RadioPlaySong *)song {
+- (void)sendCurrentSongInfo:(MoefmSong *)song {
     self.playingSong = song;// 不重写setter方法更新数据
     
     dispatch_async(dispatch_get_main_queue(), ^{

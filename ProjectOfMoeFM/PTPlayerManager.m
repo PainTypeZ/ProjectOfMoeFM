@@ -25,7 +25,7 @@
 
 @property (copy, nonatomic) NSString *playType;
 @property (assign, nonatomic) NSUInteger playIndex;
-@property (strong, nonatomic) NSMutableArray <RadioPlaySong *>* playList;
+@property (strong, nonatomic) NSMutableArray <MoefmSong *>* playList;
 
 @property (strong, nonatomic) NSURL *url;
 @property (strong, nonatomic) AVPlayer *player;
@@ -91,7 +91,7 @@
 }
 #pragma mark - 重写setter方法发送播放状态和歌曲信息代理消息
 
-- (void)setCurrentSong:(RadioPlaySong *)currentSong {
+- (void)setCurrentSong:(MoefmSong *)currentSong {
     _currentSong = currentSong;
     [self.delegate sendCurrentSongInfo:_currentSong];
 }
@@ -210,13 +210,13 @@
         }
     }else{
         self.playIndex++;// 播放序号+1
-        RadioPlaySong *song = self.playList[self.playIndex];
+        MoefmSong *song = self.playList[self.playIndex];
         [self readyToPlayNewSong:song];
     }
 }
 
 // 处理换歌,包括对resourceLoader的设置
-- (void)readyToPlayNewSong:(RadioPlaySong *)radioPlaySong {
+- (void)readyToPlayNewSong:(MoefmSong *)radioPlaySong {
     // 添加resourceLoader
     [self addResourceLoaderMethodWhenPlayNewSong:radioPlaySong];
     
@@ -243,7 +243,7 @@
 }
 
 // 添加resourceloader
-- (void)addResourceLoaderMethodWhenPlayNewSong:(RadioPlaySong *)radioPlaySong {
+- (void)addResourceLoaderMethodWhenPlayNewSong:(MoefmSong *)radioPlaySong {
     self.currentSong = radioPlaySong;
     
     self.url = [NSURL URLWithString:self.currentSong.url];
@@ -384,7 +384,7 @@
     if (self.player.currentItem) {
 //        [self pause];
         NSMutableArray <NSString *> *songIDs = [NSMutableArray array];
-        for (RadioPlaySong *song in self.playList) {
+        for (MoefmSong *song in self.playList) {
             [songIDs addObject:song.sub_id];
         }
         [PTWebUtils requestPlaylistWithSongIDs:songIDs completionHandler:^(id object) {
@@ -399,7 +399,7 @@
 }
 
 // 改变播放列表
-- (void)changeToPlayList:(NSArray<RadioPlaySong *> *)playList andPlayType:(NSString *)playType andSongIDs:(NSArray *)songIDs {
+- (void)changeToPlayList:(NSArray<MoefmSong *> *)playList andPlayType:(NSString *)playType andSongIDs:(NSArray *)songIDs {
     
     if ([playType isEqualToString:MoeSingleSongPlay]) {
         self.playType = MoeSingleSongPlay;

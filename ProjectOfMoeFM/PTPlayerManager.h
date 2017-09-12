@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
-#import "RadioPlaySong.h"
+#import "MoefmSong.h"
 #import "PlayerData.h"
 
 // 回调成功信息
@@ -20,7 +20,7 @@ typedef void(^callbackBOOL)(BOOL isSuccess);
 // 发送播放信息：播放时间，缓冲进度等
 - (void)sendPlayerDataInRealTime:(PlayerData *)playerData;
 // 自动开始播放和换歌时，发送歌曲信息
-- (void)sendCurrentSongInfo:(RadioPlaySong *)song;
+- (void)sendCurrentSongInfo:(MoefmSong *)song;
 // 发送非自动播放时的播放状态改变
 - (void)sendPlayOrPauseStateWhenIsPlayChanged:(BOOL)isPlay;
 // 发送用户交互状态
@@ -30,7 +30,7 @@ typedef void(^callbackBOOL)(BOOL isSuccess);
 
 @interface PTPlayerManager : UIResponder
 
-@property (strong, nonatomic) RadioPlaySong *currentSong;// 公开当前播放的歌曲信息
+@property (strong, nonatomic) MoefmSong *currentSong;// 公开当前播放的歌曲信息
 
 @property (weak, nonatomic) id<PTPlayerManagerDelegate> delegate;// 不是父子关系一般不使用weak修饰，父子关系才容易造成循环引用
 
@@ -48,7 +48,7 @@ typedef void(^callbackBOOL)(BOOL isSuccess);
 - (void)deleteFromFavourite;
 
 // 改变播放列表
-- (void)changeToPlayList:(NSArray<RadioPlaySong *> *)playList andPlayType:(NSString *_Nullable)playType andSongIDs:(NSArray *_Nullable)songIDs;
+- (void)changeToPlayList:(NSArray<MoefmSong *> *)playList andPlayType:(NSString *_Nullable)playType andSongIDs:(NSArray *_Nullable)songIDs;
 
 // 登录时调用，更新收藏状态信息，登出时不需要
 - (void)updateFavInfoWhileLoginOAuth;

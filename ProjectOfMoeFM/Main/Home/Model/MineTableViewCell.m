@@ -15,7 +15,7 @@
     // Initialization code
 }
 
-- (void)setFav:(Favourite *)fav {
+- (void)setFav:(MoefmFavourite *)fav {
     _fav = fav;
     _songTitleLabel.text = _fav.obj.sub_title;
     _albumLabel.text = _fav.obj.wiki.wiki_title;

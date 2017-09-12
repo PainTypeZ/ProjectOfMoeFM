@@ -9,7 +9,7 @@
 #import "MineViewController.h"
 #import "PTWebUtils.h"
 #import "MoefmAPIConst.h"
-#import "RadioUser.h"
+#import "MoefmUser.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "MineTableViewCell.h"
 
@@ -26,7 +26,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *mineTableView;
 @property (strong, nonatomic) NSMutableArray *recentFavList;
-@property (strong, nonatomic) RadioUser *userInfo;
+@property (strong, nonatomic) MoefmUser *userInfo;
 
 @end
 

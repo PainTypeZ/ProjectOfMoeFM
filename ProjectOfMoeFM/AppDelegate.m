@@ -72,9 +72,9 @@ NSString * const kUMMobClickKey = @"59acc8c975ca352eb80009ec";
     UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
     BOOL isDoneWithWelcomeView = [[NSUserDefaults standardUserDefaults] boolForKey:@"isDoneWithWelcomeView"];
     if (isDoneWithWelcomeView) {
-        UITabBarController *mainTabBarController = [mainStoryBoard instantiateViewControllerWithIdentifier:@"MainTabBarController"];
+        UINavigationController *homeNavigationController = [mainStoryBoard instantiateViewControllerWithIdentifier:@"HomeNavigation"];
 //        [mainStoryBoard instantiateInitialViewController];
-        self.window.rootViewController = mainTabBarController;
+        self.window.rootViewController = homeNavigationController;
     } else {
         UIViewController *welcomeViewController = [welcomeStoryBoard instantiateViewControllerWithIdentifier:@"Welcome"];
 //        [welcomeStoryBoard instantiateInitialViewController];

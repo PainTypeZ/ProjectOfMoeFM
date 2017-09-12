@@ -11,7 +11,7 @@
 #import "MoefmAPIConst.h"
 #import "PTOAuthTool.h"
 #import "NSString+PTCollection.h"
-#import "RadioResponse.h"
+#import "MoefmResponse.h"
 
 @implementation PTWebUtils
 
@@ -20,13 +20,13 @@
 #pragma mark - public methods
 // 请求电台列表信息
 + (void)requestRadioListInfoWithPage:(NSUInteger)currentPage perpage:(NSUInteger)perpageNumber completionHandler:(callback)callback errorHandler:(error)errorHandler {
-    NSString *pageStr = [NSString stringWithFormat:@"%lu", currentPage];
+    NSString *pageStr = [NSString stringWithFormat:@"%lu", (unsigned long)currentPage];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:MoeWikiTypeRaioValue forKey:MoeWikiTypeKey];
     [params setObject:pageStr forKey:MoePageKey];
     if (perpageNumber != 0) {
-        NSString *perpageStr = [NSString stringWithFormat:@"%lu", perpageNumber];
+        NSString *perpageStr = [NSString stringWithFormat:@"%lu", (unsigned long)perpageNumber];
         [params setObject:perpageStr forKey:MoePerPageKey];
     }
     
@@ -46,7 +46,7 @@
                 
                 NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
-                RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
+                MoefmResponse *radioResponse = [[MoefmResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
                 if (jsonModelError) {
                     NSLog(@"%@", jsonModelError);
                 }
@@ -91,7 +91,7 @@
                 
                 NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
-                RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
+                MoefmResponse *radioResponse = [[MoefmResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
                 if (jsonModelError) {
                     NSLog(@"%@", jsonModelError);
                 }
@@ -134,7 +134,7 @@
                 
                 NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
-                RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
+                MoefmResponse *radioResponse = [[MoefmResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
                 if (jsonModelError) {
                     NSLog(@"%@", jsonModelError);
                 }
@@ -167,12 +167,12 @@
     [params setObject:RadioId forKey:MoeRadioPlayListKey];
     
     if (page != 0) {
-        NSString *pageStr = [NSString stringWithFormat:@"%lu", page];
+        NSString *pageStr = [NSString stringWithFormat:@"%lu", (unsigned long)page];
         [params setObject:pageStr forKey:MoePageKey];
     }
     
     if (perpage != 0) {
-        NSString *perpageStr = [NSString stringWithFormat:@"%lu", perpage];
+        NSString *perpageStr = [NSString stringWithFormat:@"%lu", (unsigned long)perpage];
         [params setObject:perpageStr forKey:MoePerPageKey];
     }
     
@@ -211,7 +211,7 @@
                 
                 NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
-                RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
+                MoefmResponse *radioResponse = [[MoefmResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
                 if (jsonModelError) {
                     NSLog(@"%@", jsonModelError);
                 }
@@ -235,7 +235,7 @@
 }
 
 // 请求最新专辑
-+ (void)requestNewAlbumWithCompletionHandler:(callback)callback errorHandler:(error)errorHandler {
++ (void)requestLatestAlbumWithCompletionHandler:(callback)callback errorHandler:(error)errorHandler {
     
 }
 
@@ -331,7 +331,7 @@
                 
                 NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
-                RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
+                MoefmResponse *radioResponse = [[MoefmResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
                 if (jsonModelError) {
                     NSLog(@"%@", jsonModelError);
                 }
@@ -339,7 +339,7 @@
                 
                 NSMutableArray <NSString *> *songIDs = [NSMutableArray array];
                 
-                for (Favourite * fav in favsArray) {
+                for (MoefmFavourite * fav in favsArray) {
                     [songIDs addObject:fav.obj.sub_id];
                 }
                 
@@ -397,7 +397,7 @@
                 
                 NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
-                RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
+                MoefmResponse *radioResponse = [[MoefmResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
                 if (jsonModelError) {
                     NSLog(@"%@", jsonModelError);
                 }
@@ -442,7 +442,7 @@
                 NSError *jsonModelError;
                 
                 NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
+                MoefmResponse *radioResponse = [[MoefmResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
                 if (jsonModelError) {
                     NSLog(@"%@", jsonModelError);
                 }
@@ -507,7 +507,7 @@
                 
                 NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
-                RadioResponse *radioResponse = [[RadioResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
+                MoefmResponse *radioResponse = [[MoefmResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
                 if (jsonModelError) {
                     NSLog(@"%@", jsonModelError);
                 }

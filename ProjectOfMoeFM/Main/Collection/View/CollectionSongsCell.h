@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RadioPlaySong.h"
+#import "MoefmSong.h"
 
 @interface CollectionSongsCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *radioSongCoverImageView;
@@ -18,6 +18,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *radioSongAlbumLabel;
 @property (weak, nonatomic) IBOutlet UIButton *playSongButton;
 
-@property (strong, nonatomic) RadioPlaySong *radioPlaySong;
+@property (strong, nonatomic) MoefmSong *radioPlaySong;
 
 @end

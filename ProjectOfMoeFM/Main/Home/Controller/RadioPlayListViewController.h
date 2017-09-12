@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RadioWiki.h"
+#import "MoefmWiki.h"
 @interface RadioPlayListViewController : UIViewController
 @property (strong, nonatomic) NSDictionary *relationshipsDict;
 

@@ -11,7 +11,7 @@
 #import "RadioCollectionViewCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "PTOAuthTool.h"
-#import "RadioResponse.h"
+#import "MoefmResponse.h"
 
 #import "MoefmAPIConst.h"
 
@@ -23,7 +23,7 @@
     
 }
 
-- (void)setRadioWiki:(RadioWiki *)radioWiki {
+- (void)setRadioWiki:(MoefmWiki *)radioWiki {
     _radioWiki = radioWiki;
     _radioTitleLabel.text = _radioWiki.wiki_title;
     

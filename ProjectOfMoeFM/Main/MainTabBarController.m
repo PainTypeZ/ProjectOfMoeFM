@@ -24,7 +24,7 @@
     self.tabBar.tintColor = [UIColor whiteColor];
     self.tabBar.barTintColor = [UIColor colorWithRed:72.0/255 green:170.0/255 blue:245.0/255 alpha:1.0];
     // 暂时隐藏
-    self.tabBar.hidden = YES;   
+    self.tabBar.hidden = YES;
     // 创建底部播放条,换到window下了
 //    [self initPlayerBottomView];
     

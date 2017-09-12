@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Favourite.h"
+#import "MoefmFavourite.h"
 @interface MineTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *songTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *albumLabel;
 
-@property (strong, nonatomic) Favourite *fav;
+@property (strong, nonatomic) MoefmFavourite *fav;
 
 @end
