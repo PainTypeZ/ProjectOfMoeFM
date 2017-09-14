@@ -10,4 +10,6 @@
 
 @interface HomeViewController : UIViewController
 
+@property (assign, nonatomic) NSInteger wikiType;
+
 @end

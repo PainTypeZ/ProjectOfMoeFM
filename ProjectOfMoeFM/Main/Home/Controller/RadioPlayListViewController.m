@@ -22,6 +22,13 @@
 #import "PTPlayerManager.h"
 
 #import "MoefmAPIConst.h"
+#import "AppDelegate.h"
+
+typedef enum : NSUInteger {
+    WikiTypeRadio,
+    WikiTypeAlbum,
+    WikiTypeFavourite,
+} WikiType;
 
 @interface RadioPlayListViewController ()<UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching>
 
@@ -37,7 +44,7 @@
 @property (strong, nonatomic) NSMutableArray *songIDs;
 @property (strong, nonatomic) MoefmWiki *radioWiki;
 
-//@property (strong, nonatomic) NSDictionary *requestedList; //用来标记是否需要重新请求列表信息, 暂时不做缓存
+
 
 @end
 
@@ -68,8 +75,9 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:72.0/255 green:170.0/255 blue:245.0/255 alpha:1.0];
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.0/255 green:161.0/255 blue:209.0/255 alpha:1.0];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.hidden = NO;
     
     [self addTableViewRefresh];
 }
@@ -78,20 +86,33 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
     __weak RadioPlayListViewController *weakSelf = self;
     // 下拉刷新
     self.radioPlayListTableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        weakSelf.currentPage = 1; // 重置请求页数参数
         // 加载数据
-        weakSelf.currentPage = 1;
-        // 请求电台播放列表信息
-        [PTWebUtils requestPlaylistWithRadioId:weakSelf.radioWiki.wiki_id page:weakSelf.currentPage perpage:0 completionHandler:^(id object) {
-            NSDictionary *dict = object;
-            weakSelf.radioPlaylist = dict[MoeCallbackDictSongKey];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf.radioPlayListTableView reloadData];
+        if (self.wikiType == WikiTypeRadio) {
+            // 请求电台播放列表信息
+            [PTWebUtils requestPlaylistWithRadioId:weakSelf.radioWiki.wiki_id page:weakSelf.currentPage perpage:0 completionHandler:^(id object) {
+                NSDictionary *dict = object;
+                weakSelf.radioPlaylist = dict[MoeCallbackDictSongKey];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf.radioPlayListTableView reloadData];
+                    [weakSelf.radioPlayListTableView.mj_header endRefreshing];
+                });
+            } errorHandler:^(id error) {
                 [weakSelf.radioPlayListTableView.mj_header endRefreshing];
-            });
-        } errorHandler:^(id error) {
-            [weakSelf.radioPlayListTableView.mj_header endRefreshing];
-            NSLog(@"%@", error);
-        }];
+                NSLog(@"%@", error);
+            }];
+        } else {
+//            [PTWebUtils requestPlaylistWithAlbumID:weakSelf.radioWiki.wiki_id page:weakSelf.currentPage perpage:0 completionHandler:^(id object) {
+//                NSDictionary *dict = object;
+//                weakSelf.radioPlaylist = dict[MoeCallbackDictSongKey];
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [weakSelf.radioPlayListTableView reloadData];
+//                    [weakSelf.radioPlayListTableView.mj_header endRefreshing];
+//                });
+//            } errorHandler:^(id error) {
+//                NSLog(@"%@", error);
+//            }];
+        }
     }];
     
     // 设置自动切换透明度(在导航栏下面自动隐藏)
@@ -99,7 +120,7 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
     
     // 上拉刷新
     self.radioPlayListTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-       if (weakSelf.radioPlaylist.count >= weakSelf.songCount) {
+        if (weakSelf.radioPlaylist.count >= weakSelf.songCount) {
             [SVProgressHUD showInfoWithStatus:@"已经是最后一页了"];
             [SVProgressHUD dismissWithDelay:1.5];
             // 结束刷新
@@ -108,21 +129,39 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
         }
         // 加载数据
         weakSelf.currentPage++;
-        // 请求电台播放列表信息
-        [PTWebUtils requestPlaylistWithRadioId:weakSelf.radioWiki.wiki_id page:weakSelf.currentPage perpage:0 completionHandler:^(id object) {
-            NSDictionary *dict = object;
-            NSArray *moreSongsArray = dict[MoeCallbackDictSongKey];
-            [weakSelf.radioPlaylist addObjectsFromArray:moreSongsArray];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf.radioPlayListTableView reloadData];
+        if (self.wikiType == WikiTypeRadio) {
+            // 请求电台播放列表信息
+            [PTWebUtils requestPlaylistWithRadioId:weakSelf.radioWiki.wiki_id page:weakSelf.currentPage perpage:0 completionHandler:^(id object) {
+                NSDictionary *dict = object;
+                NSArray *moreSongsArray = dict[MoeCallbackDictSongKey];
+                [weakSelf.radioPlaylist addObjectsFromArray:moreSongsArray];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf.radioPlayListTableView reloadData];
+                    // 结束刷新
+                    [weakSelf.radioPlayListTableView.mj_footer endRefreshing];
+                });
+            } errorHandler:^(id error) {
                 // 结束刷新
                 [weakSelf.radioPlayListTableView.mj_footer endRefreshing];
-            });
-        } errorHandler:^(id error) {
-            // 结束刷新
-            [weakSelf.radioPlayListTableView.mj_footer endRefreshing];
-            NSLog(@"%@", error);
-        }];
+                NSLog(@"%@", error);
+            }];
+            
+        } else {
+//            [PTWebUtils requestPlaylistWithAlbumID:weakSelf.radioWiki.wiki_id page:weakSelf.currentPage perpage:0 completionHandler:^(id object) {
+//                NSDictionary *dict = object;
+//                NSArray *moreSongsArray = dict[MoeCallbackDictSongKey];
+//                [weakSelf.radioPlaylist addObjectsFromArray:moreSongsArray];
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [weakSelf.radioPlayListTableView reloadData];
+//                    // 结束刷新
+//                    [weakSelf.radioPlayListTableView.mj_footer endRefreshing];
+//                });
+//            } errorHandler:^(id error) {
+//                // 结束刷新
+//                [weakSelf.radioPlayListTableView.mj_footer endRefreshing];
+//                NSLog(@"%@", error);
+//            }];
+        }
     }];
 }
 
@@ -133,26 +172,45 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
     self.songCount = count.integerValue;
     NSArray *relationships = self.relationshipsDict[MoeCallbackDictRelationshipsKey];
     self.songIDs = [NSMutableArray array];
-    for (MoefmRelationships *relationship in relationships) {
-        [self.songIDs addObject:relationship.obj.sub_id];
+    if (self.wikiType == WikiTypeRadio) {
+        for (MoefmRelationships *relationship in relationships) {
+            [self.songIDs addObject:relationship.obj.sub_id];
+        }
+    } else {
+        for (MoefmObject *moefmObject in relationships) {
+            [self.songIDs addObject:moefmObject.sub_id];
+        }
     }
-    
     if (self.playAllSongsItem.enabled == NO) {
         self.titeLabel.text = [NSString stringWithFormat:@"%@\n(共%lu首)", self.radioWiki.wiki_title, self.songCount];
-        // 请求电台播放列表信息
         [SVProgressHUD showWithStatus:@"加载数据中，请稍后"];
-        [PTWebUtils requestPlaylistWithRadioId:self.radioWiki.wiki_id page:self.currentPage perpage:0 completionHandler:^(id object) {
-            NSDictionary *dict = object;
-            self.radioPlaylist = dict[MoeCallbackDictSongKey];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.radioPlayListTableView reloadData];
-                [SVProgressHUD dismiss];
-                self.playAllSongsItem.enabled = YES;
-            });
-        } errorHandler:^(id error) {
-            NSLog(@"%@", error);
-        }];
+        if (self.wikiType == WikiTypeRadio) {
+            // 请求电台播放列表信息
+            [PTWebUtils requestPlaylistWithRadioId:self.radioWiki.wiki_id page:self.currentPage perpage:0 completionHandler:^(id object) {
+                NSDictionary *dict = object;
+                self.radioPlaylist = dict[MoeCallbackDictSongKey];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.radioPlayListTableView reloadData];
+                    [SVProgressHUD dismiss];
+                    self.playAllSongsItem.enabled = YES;
+                });
+            } errorHandler:^(id error) {
+                NSLog(@"%@", error);
+            }];
+        } else  {
+            // 请求专辑播放列表信息
+//            [PTWebUtils requestPlaylistWithAlbumID:self.radioWiki.wiki_id page:self.currentPage perpage:0 completionHandler:^(id object) {
+//                NSDictionary *dict = object;
+//                self.radioPlaylist = dict[MoeCallbackDictSongKey];
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [self.radioPlayListTableView reloadData];
+//                    [SVProgressHUD dismiss];
+//                    self.playAllSongsItem.enabled = YES;
+//                });
+//            } errorHandler:^(id error) {
+//                NSLog(@"%@", error);
+//            }];
+        }
     }
 }
 - (IBAction)playSingleSongAction:(UIButton *)sender {
@@ -198,13 +256,13 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

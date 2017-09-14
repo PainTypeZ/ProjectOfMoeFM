@@ -24,9 +24,11 @@ NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_t
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.title = @"OAuth授权";
-    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    [app.window bringSubviewToFront:app.playerBottomView];
+    self.title = @"OAuth授权";
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.0/255 green:161.0/255 blue:209.0/255 alpha:1.0];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.hidden = NO;
+    
     [self oauthStepsBegin];
 }
 

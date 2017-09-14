@@ -12,6 +12,7 @@
 #import "PTOAuthTool.h"
 #import "NSString+PTCollection.h"
 #import "MoefmResponse.h"
+#import "MoefmSubUpload.h"
 
 @implementation PTWebUtils
 
@@ -183,7 +184,7 @@
     NSURLSessionTask *task = [PTWebUtils handlePlayListTaskWithRequest:request session:session callback:callback errorHandler:errorHandler];
     [task resume];
 }
-/* 以下4个方法可以跟电台对应的方法合并，牵涉的改动较多，赶时间，下一版本再改 */
+
 // 请求专辑列表
 + (void)requestAlbumListInfoWithPage:(NSUInteger)currentPage perpage:(NSUInteger)perpageNumber completionHandler:(callback)callback errorHandler:(error)errorHandler {
     NSString *pageStr = [NSString stringWithFormat:@"%lu", currentPage];
@@ -217,7 +218,7 @@
                 }
                 NSMutableDictionary *callbackDict = [NSMutableDictionary dictionary];
                 if (radioResponse.wikis) {
-                    [callbackDict setObject:[radioResponse.wikis mutableCopy] forKey:MoeCallbackDictRadioKey] ;
+                    [callbackDict setObject:[radioResponse.wikis mutableCopy] forKey:MoeCallbackDictAlbumKey] ;
                 }
                 if (radioResponse.information.count) {
                     [callbackDict setObject:radioResponse.information.count forKey:MoeCallbackDictCountKey];
@@ -235,18 +236,128 @@
 }
 
 // 请求最新专辑
-+ (void)requestLatestAlbumWithCompletionHandler:(callback)callback errorHandler:(error)errorHandler {
++ (void)requestHotAlbumWithCompletionHandler:(callback)callback errorHandler:(error)errorHandler {
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:@"json" forKey:@"api"];
+    [params setObject:@"1" forKey:@"hot_musics"];
     
+    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoeExploreURL params:params];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            NSString *errorString = [NSString stringWithFormat:@"%@", error];
+            NSLog(@"%@", errorString);
+            errorHandler(errorString);
+        }else{
+            if (data) {
+                NSError *jsonModelError;
+                
+                NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                
+                MoefmResponse *radioResponse = [[MoefmResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
+                if (jsonModelError) {
+                    NSLog(@"%@", jsonModelError);
+                }
+                NSMutableDictionary *callbackDict = [NSMutableDictionary dictionary];
+                if (radioResponse.hot_musics) {
+                    [callbackDict setObject:radioResponse.hot_musics forKey:MoeCallbackDictAlbumKey];
+                }
+                if (radioResponse.information.count) {
+                    [callbackDict setObject:radioResponse.information.count forKey:MoeCallbackDictCountKey];
+                }
+                
+                callback(callbackDict);
+            }else{
+                NSString *errorString = @"request data is nil";
+                //                NSLog(@"%@", errorString);
+                errorHandler(errorString);
+            }
+        }
+    }];
+    [task resume];
+
 }
 
-// 请求专辑条目信息（歌曲总数，是否有资源）
+// 请求专辑条目信息（歌曲总数，是否有资源），同时也能拿到歌曲播放地址url
 + (void)requestAlbumSongCountWithAlbumID:(NSString *)albumID completionHandler:(callback)callback errorHandler:(error)errorHandler {
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:albumID forKey:MoeWikiIdKey];
+    [params setObject:MoeObjTypeValue forKey:MoeObjTypeKey];
+    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoeAlbumSongCountURL params:params];
     
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            NSString *errorString = [NSString stringWithFormat:@"%@", error];
+            NSLog(@"%@", errorString);
+            errorHandler(errorString);
+        }else{
+            if (data) {
+                NSError *jsonModelError;
+                
+                NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                
+                MoefmResponse *radioResponse = [[MoefmResponse alloc] initWithDictionary:jsonDictionary[MoeResponseKey] error:&jsonModelError];
+                if (jsonModelError) {
+                    NSLog(@"%@", jsonModelError);
+                }
+                NSMutableDictionary *callbackDict = [NSMutableDictionary dictionary];
+                if (radioResponse.information.count) {
+                    [callbackDict setObject:radioResponse.information.count forKey:MoeCallbackDictCountKey];
+                } else {
+                    [callbackDict setObject:@"0" forKey:MoeCallbackDictCountKey];
+                }
+                
+                if (radioResponse.relationships) {
+                    [callbackDict setObject:radioResponse.relationships forKey:MoeCallbackDictRelationshipsKey];
+                }
+                
+                // 添加对是否有资源的判断
+                MoefmObject *sub = radioResponse.subs.firstObject;
+                MoefmSubUpload *subUpload = sub.sub_upload.firstObject;
+                if (subUpload.up_url) {
+                    [callbackDict setObject:@"1" forKey:@"isUpload"];
+                } else {
+                    [callbackDict setObject:@"0" forKey:@"isUpload"];
+                }
+                
+                callback(callbackDict);
+            }else{
+                NSString *errorString = @"request data is nil";
+                //                NSLog(@"%@", errorString);
+                errorHandler(errorString);
+            }
+        }
+    }];
+    [task resume];
 }
 
 // 请求专辑播放列表
 + (void)requestPlaylistWithAlbumID:(NSString *)albumID page:(NSUInteger)page perpage:(NSUInteger)perpage completionHandler:(callback)callback errorHandler:(error)errorHandler {
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:MoeAPIValue forKey:MoeAPIKey];
     
+    [params setObject:albumID forKey:MoeAlbumPlayListKey];
+    
+    if (page != 0) {
+        NSString *pageStr = [NSString stringWithFormat:@"%lu", (unsigned long)page];
+        [params setObject:pageStr forKey:MoePageKey];
+    }
+    
+    if (perpage != 0) {
+        NSString *perpageStr = [NSString stringWithFormat:@"%lu", (unsigned long)perpage];
+        [params setObject:perpageStr forKey:MoePerPageKey];
+    }
+    
+    NSURL *url = [PTWebUtils getCompletedRequestURLWithURLString:MoePlayListURL params:params];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionTask *task = [PTWebUtils handlePlayListTaskWithRequest:request session:session callback:callback errorHandler:errorHandler];
+    [task resume];
 }
 
 // 以SongIDs请求播放列表，收藏曲目的顺序播放列表和单曲必须使用的方法

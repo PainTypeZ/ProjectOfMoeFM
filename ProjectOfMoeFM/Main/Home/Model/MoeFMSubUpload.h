@@ -8,6 +8,8 @@
 
 #import <JSONModel/JSONModel.h>
 
+@protocol MoefmSubUpload;
+
 @interface MoefmSubUpload : JSONModel
 
 @property (copy, nonatomic) NSString *up_id;

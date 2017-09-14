@@ -10,10 +10,14 @@
 #import "AppDelegate.h"
 #import "UserHeadPictureView.h"
 #import "HotRadioView.h"
-#import "LatestAlbumView.h"
+#import "HotAlbumView.h"
 #import "HomeFooterView.h"
 #import "HomeHeaderView.h"
 #import "SliderSettingView.h"
+#import "MoefmWikiCollectionViewCell.h"
+#import "MoefmHotAlbumCollectionViewCell.h"
+
+#import "HomeViewController.h"
 
 #import "MoefmAPIConst.h"
 #import "PTWebUtils.h"
@@ -21,17 +25,33 @@
 #define kBottomPlayerViewHeight 60
 #define kDistanceHeight 15*4
 
-@interface MoeHomeViewController ()<UIScrollViewDelegate>
+#define kNumberOfItemsPerRow 3
+#define kSectionSpacing 10.0
+#define kItemSpacing 15.0
+
+// tag和类型标记都用同一个枚举表示
+typedef enum : NSUInteger {
+    WikiTypeRadio,
+    WikiTypeAlbum,
+    WikiTypeFavourite,
+} WikiType;
+
+@interface MoeHomeViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (weak, nonatomic) IBOutlet UserHeadPictureView *userHeadPictureView;
 @property (weak, nonatomic) IBOutlet HotRadioView *hotRadioView;
-@property (weak, nonatomic) IBOutlet LatestAlbumView *latestAlbumView;
+@property (weak, nonatomic) IBOutlet HotAlbumView *hotAlbumView;
 @property (weak, nonatomic) IBOutlet HomeHeaderView *homeHeaderView;
+@property (weak, nonatomic) IBOutlet UICollectionView *hotRadioCollectionView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *hotRadioCollectionViewHeightConstraint;// 根据内容设置高度约束
+@property (weak, nonatomic) IBOutlet UICollectionView *hotAlbumCollectionView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *hotAlbumCollectionViewHeightConstarint;// 根据内容设置高度约束
+
 @property (strong, nonatomic) SliderSettingView *settingView;
 @property (strong, nonatomic) UIView *maskView;// 滑出settingView时将剩余main view的可视部分覆盖
 
 @property (strong, nonatomic) NSMutableArray *hotRadioList;
-@property (strong, nonatomic) NSMutableArray *latestAlbumList;
+@property (strong, nonatomic) NSMutableArray *hotAlbumList;
 
 @end
 
@@ -42,9 +62,9 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationController.navigationBar.hidden = YES;
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [app.window bringSubviewToFront:app.playerBottomView];
+    self.title = @"主页";
     
     // 设置全局变量值，初始化侧滑设置栏
     _settingViewWidth = self.view.bounds.size.width * 0.6;
@@ -52,6 +72,11 @@
     
     // 发送网络请求
     [self sendRequest];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:YES];
+    self.navigationController.navigationBar.hidden = YES;
 }
 
 #pragma mark - lazy loading
@@ -63,11 +88,11 @@
     return _hotRadioList;
 }
 
-- (NSMutableArray *)latestAlbumList {
-    if (!_latestAlbumList) {
-        _latestAlbumList = [NSMutableArray array];
+- (NSMutableArray *)hotAlbumList {
+    if (!_hotAlbumList) {
+        _hotAlbumList = [NSMutableArray array];
     }
-    return _latestAlbumList;
+    return _hotAlbumList;
 }
 
 - (SliderSettingView *)settingView {
@@ -97,7 +122,7 @@
 
 - (void)sendRequest {
     [self sendHotRadioListRequest];
-    [self sendLatestRadioListRequest];
+//    [self sendHotAlbumListRequest];
     // 判断登录状态决定是否请求用户信息
 
 }
@@ -109,11 +134,12 @@
             self.hotRadioList = dict[MoeCallbackDictRadioKey];
             dispatch_async(dispatch_get_main_queue(), ^{
                 // 传值给HotRadioView，并刷新
+                [self.hotRadioCollectionView reloadData];
             });
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 // 传值给HotRadioView，并刷新
-//                [self.radioCollectionView reloadData];
+                [self.hotRadioCollectionView reloadData];
             });
             NSLog(@"热门电台获取失败");
         }
@@ -122,13 +148,26 @@
     }];
 }
 
-- (void)sendLatestRadioListRequest {
-    [PTWebUtils requestLatestAlbumWithCompletionHandler:^(id object) {
-        
-    } errorHandler:^(id error) {
-        
-    }];
-}
+//- (void)sendHotAlbumListRequest {
+//    [PTWebUtils requestHotAlbumWithCompletionHandler:^(id object) {
+//        NSDictionary *dict = object;
+//        if (dict[MoeCallbackDictAlbumKey]) {
+//            self.hotAlbumList = dict[MoeCallbackDictAlbumKey];
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                // 传值给HotRadioView，并刷新
+//                [self.hotAlbumCollectionView reloadData];
+//            });
+//        } else {
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                // 传值给HotRadioView，并刷新
+//                [self.hotAlbumCollectionView reloadData];
+//            });
+//            NSLog(@"热门专辑获取失败");
+//        }
+//    } errorHandler:^(id error) {
+//        NSLog(@"%@", error);
+//    }];
+//}
 
 - (void)tapMaskView {
     self.maskView.alpha = 0;
@@ -146,7 +185,7 @@
         self.settingView.frame = CGRectMake(0, 20, _settingViewWidth, _settingViewHeight);
     }];
     [UIView animateWithDuration:1 animations:^{
-        self.maskView.alpha = 0.7;
+        self.maskView.alpha = 0.8;
     }];
 }
 
@@ -168,26 +207,95 @@
 }
 
 - (IBAction)randomPlayButtonAciton:(UIButton *)sender {
+    
 }
 
 - (IBAction)favouriteButtonAction:(UIButton *)sender {
+    
+}
+
+- (IBAction)refreshButtonAction:(UIButton *)sender {
+    if (sender.tag == WikiTypeRadio) {
+        [self sendHotRadioListRequest];
+    }
+//    [self sendHotAlbumListRequest];
+}
+
+- (IBAction)viewMoreButtonAction:(UIButton *)sender {    
+    [self performSegueWithIdentifier:@"WikiList" sender:sender];
 }
 
 
+#pragma mark - UICollectionViewDataSource
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    if (collectionView.tag == WikiTypeRadio) {
+        return self.hotRadioList.count;
+    }
+    return self.hotAlbumList.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (collectionView.tag == WikiTypeRadio) {
+        MoefmWikiCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"HotRadioItem" forIndexPath:indexPath];
+        cell.wiki = self.hotRadioList[indexPath.item];
+        return cell;
+    }
+    MoefmHotAlbumCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"HotAlbumItem" forIndexPath:indexPath];
+    cell.wiki = self.hotAlbumList[indexPath.item];
+    return cell;
+}
+#pragma mark - UICollectionViewDelegate
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    // 传值并推出详情页
+}
+
+#pragma mark - UICollectionViewDelegateFlowLayout
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    CGFloat itemWidth = (collectionView.bounds.size.width - 4 * kItemSpacing) / kNumberOfItemsPerRow;
+    CGFloat itemHeight = itemWidth + 24;
+    
+    if (collectionView.tag == WikiTypeRadio) {
+        self.hotRadioCollectionViewHeightConstraint.constant = (self.hotRadioList.count / kNumberOfItemsPerRow + 1) * (itemHeight + kSectionSpacing);
+    } else {
+        self.hotAlbumCollectionViewHeightConstarint.constant = (self.hotAlbumList.count / kNumberOfItemsPerRow + 1) * (itemHeight + kSectionSpacing);
+    }
+    
+    return CGSizeMake(itemWidth, itemHeight);
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+    return kItemSpacing;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+    return kSectionSpacing;
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    return UIEdgeInsetsMake(kSectionSpacing, kItemSpacing, kSectionSpacing, kItemSpacing);
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    if ([segue.identifier isEqualToString:@"WikiList"]) {
+        HomeViewController *oldHomeVC = [segue destinationViewController];
+        UIButton *button = sender;
+        oldHomeVC.wikiType = button.tag;
+    }
 }
-*/
 
 @end

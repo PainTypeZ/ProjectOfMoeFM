@@ -1,14 +1,14 @@
 //
-//  LatestAlbumView.m
+//  HotAlbumView.m
 //  ProjectOfMoeFM
 //
 //  Created by 彭平军 on 2017/9/10.
 //  Copyright © 2017年 彭平军. All rights reserved.
 //
 
-#import "LatestAlbumView.h"
+#import "HotAlbumView.h"
 
-@implementation LatestAlbumView
+@implementation HotAlbumView
 
 /*
 // Only override drawRect: if you perform custom drawing.

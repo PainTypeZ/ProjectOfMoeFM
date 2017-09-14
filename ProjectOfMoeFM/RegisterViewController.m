@@ -21,6 +21,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.title = @"注册";
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.0/255 green:161.0/255 blue:209.0/255 alpha:1.0];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.hidden = NO;
+    
     NSURL *url = [NSURL URLWithString:kRegisterURL];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [self.registerWebView loadRequest:request];

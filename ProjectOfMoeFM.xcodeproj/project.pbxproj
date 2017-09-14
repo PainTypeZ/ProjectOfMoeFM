@@ -30,13 +30,15 @@
 		071E3BBE1F656B920024B4FA /* MoefmFavObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 071E3BBD1F656B920024B4FA /* MoefmFavObject.m */; };
 		071E3BC11F6574CE0024B4FA /* MoeHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 071E3BC01F6574CE0024B4FA /* MoeHomeViewController.m */; };
 		071E3BC41F658CB10024B4FA /* HotRadioView.m in Sources */ = {isa = PBXBuildFile; fileRef = 071E3BC31F658CB10024B4FA /* HotRadioView.m */; };
-		071E3BC71F658D220024B4FA /* LatestAlbumView.m in Sources */ = {isa = PBXBuildFile; fileRef = 071E3BC61F658D220024B4FA /* LatestAlbumView.m */; };
+		071E3BC71F658D220024B4FA /* HotAlbumView.m in Sources */ = {isa = PBXBuildFile; fileRef = 071E3BC61F658D220024B4FA /* HotAlbumView.m */; };
 		071E3BCA1F658E010024B4FA /* UserHeadPictureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 071E3BC91F658E010024B4FA /* UserHeadPictureView.m */; };
 		071E3BCD1F658F280024B4FA /* HomeFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 071E3BCC1F658F280024B4FA /* HomeFooterView.m */; };
 		071E3BD01F658FBC0024B4FA /* HomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 071E3BCF1F658FBC0024B4FA /* HomeHeaderView.m */; };
 		071E3BD21F659B4D0024B4FA /* nver.png in Resources */ = {isa = PBXBuildFile; fileRef = 071E3BD11F659B4D0024B4FA /* nver.png */; };
 		071E3BD51F65A9140024B4FA /* SliderSettingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 071E3BD41F65A9140024B4FA /* SliderSettingView.m */; };
 		071E3BD71F65A9360024B4FA /* SliderSettingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 071E3BD61F65A9360024B4FA /* SliderSettingView.xib */; };
+		072CAFDA1F687E8F004C01F9 /* MoefmWikiCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 072CAFD81F687E8F004C01F9 /* MoefmWikiCollectionViewCell.m */; };
+		072CAFE11F689011004C01F9 /* MoefmHotAlbumCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 072CAFE01F689011004C01F9 /* MoefmHotAlbumCollectionViewCell.m */; };
 		07419C701F5D45F5007779C0 /* welcomeBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 07419C6F1F5D45F5007779C0 /* welcomeBackground.png */; };
 		07419C731F5D4647007779C0 /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07419C721F5D4647007779C0 /* WelcomeViewController.m */; };
 		07419C751F5D59B4007779C0 /* Welcome.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07419C741F5D59B4007779C0 /* Welcome.storyboard */; };
@@ -138,8 +140,8 @@
 		071E3BC01F6574CE0024B4FA /* MoeHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoeHomeViewController.m; sourceTree = "<group>"; };
 		071E3BC21F658CB10024B4FA /* HotRadioView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotRadioView.h; sourceTree = "<group>"; };
 		071E3BC31F658CB10024B4FA /* HotRadioView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotRadioView.m; sourceTree = "<group>"; };
-		071E3BC51F658D220024B4FA /* LatestAlbumView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LatestAlbumView.h; sourceTree = "<group>"; };
-		071E3BC61F658D220024B4FA /* LatestAlbumView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LatestAlbumView.m; sourceTree = "<group>"; };
+		071E3BC51F658D220024B4FA /* HotAlbumView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotAlbumView.h; sourceTree = "<group>"; };
+		071E3BC61F658D220024B4FA /* HotAlbumView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotAlbumView.m; sourceTree = "<group>"; };
 		071E3BC81F658E010024B4FA /* UserHeadPictureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserHeadPictureView.h; sourceTree = "<group>"; };
 		071E3BC91F658E010024B4FA /* UserHeadPictureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserHeadPictureView.m; sourceTree = "<group>"; };
 		071E3BCB1F658F280024B4FA /* HomeFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeFooterView.h; sourceTree = "<group>"; };
@@ -150,6 +152,10 @@
 		071E3BD31F65A9140024B4FA /* SliderSettingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SliderSettingView.h; sourceTree = "<group>"; };
 		071E3BD41F65A9140024B4FA /* SliderSettingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SliderSettingView.m; sourceTree = "<group>"; };
 		071E3BD61F65A9360024B4FA /* SliderSettingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SliderSettingView.xib; sourceTree = "<group>"; };
+		072CAFD71F687E8F004C01F9 /* MoefmWikiCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoefmWikiCollectionViewCell.h; sourceTree = "<group>"; };
+		072CAFD81F687E8F004C01F9 /* MoefmWikiCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoefmWikiCollectionViewCell.m; sourceTree = "<group>"; };
+		072CAFDF1F689011004C01F9 /* MoefmHotAlbumCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoefmHotAlbumCollectionViewCell.h; sourceTree = "<group>"; };
+		072CAFE01F689011004C01F9 /* MoefmHotAlbumCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoefmHotAlbumCollectionViewCell.m; sourceTree = "<group>"; };
 		07419C6F1F5D45F5007779C0 /* welcomeBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = welcomeBackground.png; sourceTree = "<group>"; };
 		07419C711F5D4647007779C0 /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
 		07419C721F5D4647007779C0 /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewController.m; sourceTree = "<group>"; };
@@ -697,8 +703,12 @@
 				071E3BC91F658E010024B4FA /* UserHeadPictureView.m */,
 				071E3BC21F658CB10024B4FA /* HotRadioView.h */,
 				071E3BC31F658CB10024B4FA /* HotRadioView.m */,
-				071E3BC51F658D220024B4FA /* LatestAlbumView.h */,
-				071E3BC61F658D220024B4FA /* LatestAlbumView.m */,
+				072CAFD71F687E8F004C01F9 /* MoefmWikiCollectionViewCell.h */,
+				072CAFD81F687E8F004C01F9 /* MoefmWikiCollectionViewCell.m */,
+				071E3BC51F658D220024B4FA /* HotAlbumView.h */,
+				071E3BC61F658D220024B4FA /* HotAlbumView.m */,
+				072CAFDF1F689011004C01F9 /* MoefmHotAlbumCollectionViewCell.h */,
+				072CAFE01F689011004C01F9 /* MoefmHotAlbumCollectionViewCell.m */,
 				071E3BCB1F658F280024B4FA /* HomeFooterView.h */,
 				071E3BCC1F658F280024B4FA /* HomeFooterView.m */,
 				071E3BD31F65A9140024B4FA /* SliderSettingView.h */,
@@ -898,7 +908,9 @@
 				07670F111EA05A030027E3EA /* PTMusicPlayerBottomView.m in Sources */,
 				07DFD5681ED4BD3F003B6A93 /* RegisterViewController.m in Sources */,
 				07670EF11E9F7D3D0027E3EA /* RadioPlayListViewController.m in Sources */,
+				072CAFE11F689011004C01F9 /* MoefmHotAlbumCollectionViewCell.m in Sources */,
 				071E3B981F6567EA0024B4FA /* MoefmUser.m in Sources */,
+				072CAFDA1F687E8F004C01F9 /* MoefmWikiCollectionViewCell.m in Sources */,
 				07E7B61B1E9D0C27004C9CF1 /* PTOAuthModel.m in Sources */,
 				071E3BA71F6569620024B4FA /* MoefmObject.m in Sources */,
 				071E3B9B1F65685E0024B4FA /* MoefmInformation.m in Sources */,
@@ -943,7 +955,7 @@
 				07670EFF1E9F8ED40027E3EA /* MoefmAPIConst.m in Sources */,
 				071E3BC11F6574CE0024B4FA /* MoeHomeViewController.m in Sources */,
 				071E3BCA1F658E010024B4FA /* UserHeadPictureView.m in Sources */,
-				071E3BC71F658D220024B4FA /* LatestAlbumView.m in Sources */,
+				071E3BC71F658D220024B4FA /* HotAlbumView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

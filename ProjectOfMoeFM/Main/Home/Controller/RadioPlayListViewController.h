@@ -10,5 +10,6 @@
 #import "MoefmWiki.h"
 @interface RadioPlayListViewController : UIViewController
 @property (strong, nonatomic) NSDictionary *relationshipsDict;
+@property (assign, nonatomic) NSUInteger wikiType;
 
 @end

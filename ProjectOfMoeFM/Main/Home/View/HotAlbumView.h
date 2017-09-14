@@ -1,5 +1,5 @@
 //
-//  LatestAlbumView.h
+//  HotAlbumView.h
 //  ProjectOfMoeFM
 //
 //  Created by 彭平军 on 2017/9/10.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LatestAlbumView : UIView
+@interface HotAlbumView : UIView
 
 @end

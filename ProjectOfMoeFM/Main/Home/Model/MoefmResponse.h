@@ -21,8 +21,11 @@
 @property (strong, nonatomic) NSDictionary <Optional> *fav;
 @property (copy, nonatomic) NSString <Optional> *fav_id;
 @property (strong, nonatomic) NSArray <Optional, MoefmWiki> *wikis;
+@property (strong, nonatomic) NSArray <Optional, MoefmObject> *subs;// 专辑歌曲列表
 @property (strong, nonatomic) NSArray <Optional, MoefmRelationships> *relationships;
 @property (strong, nonatomic) NSArray <Optional, MoefmSong> *playlist;
 @property (strong, nonatomic) NSArray <Optional, MoefmWiki> *hot_radios;
+@property (strong, nonatomic) NSArray <Optional, MoefmWiki> *hot_musics;
+
 
 @end
