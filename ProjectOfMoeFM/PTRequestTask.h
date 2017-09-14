@@ -19,6 +19,7 @@
 - (void)requestTaskDidReceiveResponse;
 - (void)requestTaskDidFinishLoadingWithCache:(BOOL)cache;
 - (void)requestTaskDidFailWithError:(NSError *)error;
+- (void)requestTask404ByMoeFM;
 
 @end
 

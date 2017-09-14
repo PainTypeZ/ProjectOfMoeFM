@@ -24,10 +24,6 @@ NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_t
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"OAuth授权";
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.0/255 green:161.0/255 blue:209.0/255 alpha:1.0];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.navigationController.navigationBar.hidden = NO;
     
     [self oauthStepsBegin];
 }
@@ -43,10 +39,6 @@ NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_t
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
         [weakSelf.authorizeWebView loadRequest:request];
     }];
-}
-// 点击cancel跳转回home
-- (IBAction)cancelAction:(UIBarButtonItem *)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UIWebViewDelegate
@@ -73,7 +65,7 @@ NSString * const kRequestAccessTokenURL = @"http://api.moefou.org/oauth/access_t
                 [MobClick profileSignInWithPUID:@"我不会拿用户账号信息的" provider:@"萌否账号"];
                 [SVProgressHUD dismissWithDelay:2 completion:^{
                     weakSelf.view.userInteractionEnabled = YES;
-                    [weakSelf dismissViewControllerAnimated:YES completion:nil];
+                    [weakSelf.navigationController popViewControllerAnimated:YES];
                 }];
             });
         }];

@@ -34,9 +34,6 @@
 static NSString *reuseIdentifier = @"MineTableViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.0/255 green:161.0/255 blue:209.0/255 alpha:1.0];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.navigationController.navigationBar.hidden = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -95,10 +92,6 @@ static NSString *reuseIdentifier = @"MineTableViewCell";
     }];
 }
 
-- (IBAction)backToHomeAction:(UIBarButtonItem *)sender {
-    self.tabBarController.selectedIndex = 0;
-}
-
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -130,10 +123,10 @@ static NSString *reuseIdentifier = @"MineTableViewCell";
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)];
-    view.backgroundColor = [UIColor colorWithRed:72.0/255 green:170.0/255 blue:245.0/255 alpha:1.0];
+    view.backgroundColor = kMoeFMThemeColor;
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, view.bounds.size.width, view.bounds.size.height)];
-    label.text = [NSString stringWithFormat:@"最近收藏的歌曲 (%lu首)", self.recentFavList.count];
+    label.text = [NSString stringWithFormat:@"最近收藏的歌曲 (%lu首)", (unsigned long)self.recentFavList.count];
     label.textColor = [UIColor whiteColor];
     [view addSubview:label];
     return view;

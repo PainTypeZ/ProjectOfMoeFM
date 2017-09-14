@@ -59,15 +59,8 @@ static NSString * const reuseIdentifier = @"radioCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.0/255 green:161.0/255 blue:209.0/255 alpha:1.0];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.navigationController.navigationBar.hidden = NO;
-
     [self initSubObjects];
     [self addCollectionViewRefresh];
-    
-    // 只有在程序启动时执行一次
-    //    [self checkOAuthStateWhenAlreadyLogin];
     
 }
 
@@ -233,51 +226,6 @@ static NSString * const reuseIdentifier = @"radioCell";
     self.radiosInformations = [NSMutableDictionary dictionary];
     //    self.radiosRandomPlayList = [NSMutableArray array];
 }
-
-//- (void)sendAllRadioListRequest {
-//    if (self.allRadios.count == 0) {
-//        // 请求电台列表信息
-//        [SVProgressHUD showWithStatus:@"加载数据中，请稍后"];
-//        [PTWebUtils requestRadioListInfoWithPage:self.currentPage perpage:self.perpage completionHandler:^(id object) {
-//            NSDictionary *dict = object;
-//            NSNumber *count = dict[MoeCallbackDictCountKey];
-//            self.allRadios = dict[MoeCallbackDictRadioKey];
-//            self.radioCount = count.integerValue;
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [self.radioCollectionView reloadData];
-//                [SVProgressHUD dismiss];
-//            });
-//
-//        } errorHandler:^(id error) {
-//            NSLog(@"%@", error);
-//        }];
-//    }
-//}
-
-//- (void)sendHotRadiosRequest {
-//    if (self.hotRadios.count == 0) {
-//        [SVProgressHUD showWithStatus:@"加载数据中，请稍后"];
-//        [PTWebUtils requestHotRadiosWithCompletionHandler:^(id object) {
-//            NSDictionary *dict = object;
-//            if (dict[MoeCallbackDictRadioKey]) {
-//                self.hotRadios = dict[MoeCallbackDictRadioKey];
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    [self.radioCollectionView reloadData];
-//                    [SVProgressHUD dismiss];
-//                });
-//            } else {
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    [SVProgressHUD showInfoWithStatus:@"暂无热门电台信息"];
-//                    [SVProgressHUD dismissWithDelay:1.5];
-//                    [self.radioCollectionView reloadData];
-//                });
-//                NSLog(@"热门电台获取失败");
-//            }
-//        } errorHandler:^(id error) {
-//            NSLog(@"%@", error);
-//        }];
-//    }
-//}
 
 #pragma mark - UI action and others
 // 检查是否登录OAuth
@@ -450,26 +398,26 @@ static NSString * const reuseIdentifier = @"radioCell";
         }];
         
     } else {
-//        [PTWebUtils requestAlbumSongCountWithAlbumID:radioWiki.wiki_id completionHandler:^(id object) {
-//            NSMutableDictionary *dict = object;
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                self.view.userInteractionEnabled = YES;
-//                [SVProgressHUD dismiss];
-////                NSNumber *countNum = dict[MoeCallbackDictCountKey];
-////                NSUInteger count = countNum.integerValue;
-//                NSNumber *upload = dict[@"isUpload"];
-//                BOOL isUpload = upload.integerValue;
-//                if (isUpload) {
-//                    [dict setObject:radioWiki forKey:@"radioWiki"];
-//                    [self performSegueWithIdentifier:@"RadioDetail" sender:dict];
-//                } else {
-//                    [SVProgressHUD showInfoWithStatus:@"该专辑暂无资源"];
-//                    [SVProgressHUD dismissWithDelay:1.5];
-//                }
-//            });
-//        } errorHandler:^(id error) {
-//            NSLog(@"%@", error);
-//        }];
+        [PTWebUtils requestAlbumSongCountWithAlbumID:radioWiki.wiki_id completionHandler:^(id object) {
+            NSMutableDictionary *dict = object;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.view.userInteractionEnabled = YES;
+                [SVProgressHUD dismiss];
+//                NSNumber *countNum = dict[MoeCallbackDictCountKey];
+//                NSUInteger count = countNum.integerValue;
+                NSNumber *upload = dict[@"isUpload"];
+                BOOL isUpload = upload.integerValue;
+                if (isUpload) {
+                    [dict setObject:radioWiki forKey:@"radioWiki"];
+                    [self performSegueWithIdentifier:@"RadioDetail" sender:dict];
+                } else {
+                    [SVProgressHUD showInfoWithStatus:@"该专辑暂无资源"];
+                    [SVProgressHUD dismissWithDelay:1.5];
+                }
+            });
+        } errorHandler:^(id error) {
+            NSLog(@"%@", error);
+        }];
     }
 }
 

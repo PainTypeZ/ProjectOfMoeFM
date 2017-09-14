@@ -63,6 +63,10 @@
     NSLog(@"Reourceloader加载错误信息：%@", error);
 }
 
+- (void)requestTask404ByMoeFM {
+    [self stopLoading];
+}
+
 #pragma mark - privte method
 - (void)addLoadingRequest:(AVAssetResourceLoadingRequest *)loadingRequest {
     [self.requestList addObject:loadingRequest];

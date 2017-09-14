@@ -40,6 +40,8 @@
 @property (assign, nonatomic) BOOL isPlay;
 @property (assign, nonatomic) BOOL isUIEnable;
 
+@property (strong, nonatomic) id timeObserver;
+
 @end
 
 @implementation PTPlayerManager
@@ -61,6 +63,8 @@
         _playIndex = 0;
 //        _currentPage = 1;
 //        _perpage = 9;
+        
+        _player = [[AVPlayer alloc] init];
         
         _playerData = [[PlayerData alloc] init];// 不能省略，因为后面的playerData赋值是用的weakself，如果没有进行初始化，则weakself.playerData会被释放掉，传值结果全是nil
         _isPlay = NO;
@@ -119,7 +123,7 @@
         }else if(status == AVPlayerStatusUnknown){
             NSLog(@"AVPlayerStatusUnknown");
         }else if (status == AVPlayerStatusFailed){
-            NSLog(@"AVPlayerStatusFailed");
+            NSLog(@"AVPlayerStatusFailed, play end");
         }
     }else if([keyPath isEqualToString:kLoadedTimeRanges]){
         
@@ -140,6 +144,14 @@
     [item addObserver:self forKeyPath:kPlaybackBufferEmpty options:NSKeyValueObservingOptionNew context:nil];
     //缓存可以播放的时候调用
     [item addObserver:self forKeyPath:kPlaybackLikelyToKeepUp options:NSKeyValueObservingOptionNew context:nil];
+    
+    // 监听播放时间
+    __weak PTPlayerManager *weakSelf = self;
+    
+    self.timeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 5) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+        // 处理播放时间、播放进度、缓冲进度
+        [weakSelf handlePlayTimeAndPlayProgressAndBufferProgressWithWeakSelf:weakSelf andWeakAVPlayer:weakSelf.player];
+    }];
 }
 // 移除旧观察者
 - (void)removeOldOberserverFromPlayerItem:(AVPlayerItem *)item {
@@ -147,6 +159,8 @@
     [item removeObserver:self forKeyPath:kLoadedTimeRanges];
     [item removeObserver:self forKeyPath:kPlaybackBufferEmpty];
     [item removeObserver:self forKeyPath:kPlaybackLikelyToKeepUp];
+    [self.player removeTimeObserver:self.timeObserver];
+    self.timeObserver = nil;
 }
 
 // 歌曲结束时的处理
@@ -223,27 +237,17 @@
     // 判断是否正在播放item
     if (self.player.currentItem) {
         [self removeOldOberserverFromPlayerItem:self.player.currentItem];// 移除旧观察者
-        self.player = [AVPlayer playerWithPlayerItem:self.currentItem];
-//        [self.player replaceCurrentItemWithPlayerItem:self.currentItem];
-    }else{
-        // 初始化player的时候要更新时间观察者
-        self.player = [[AVPlayer alloc] initWithPlayerItem:self.currentItem];
-        
-        __weak PTPlayerManager *weakSelf = self;
-        
-        // queue传null是默认dispatch_get_mainQueeu, 不能传一个并发队列
-        // 获取一个全局串行队列
-        [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 5) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
-            // 处理播放时间、播放进度、缓冲进度
-            [weakSelf handlePlayTimeAndPlayProgressAndBufferProgressWithWeakSelf:weakSelf andWeakAVPlayer:weakSelf.player];
-        }];
     }
+    self.player = [AVPlayer playerWithPlayerItem:self.currentItem];
     // 添加新观察者
     [self addNewOberserverToPlayerItem:self.player.currentItem];
 }
 
 // 添加resourceloader
 - (void)addResourceLoaderMethodWhenPlayNewSong:(MoefmSong *)radioPlaySong {
+    if (self.resourceLoader.cacheFinished == NO) {
+        [self.resourceLoader stopLoading];
+    }
     self.currentSong = radioPlaySong;
     
     self.url = [NSURL URLWithString:self.currentSong.url];
@@ -254,6 +258,7 @@
         if (cacheFilePath) {
             NSURL *url = [NSURL fileURLWithPath:cacheFilePath];
             self.currentItem = [AVPlayerItem playerItemWithURL:url];
+            [self.delegate sendBufferData:1.0];
             NSLog(@"有缓存，播放本地缓存文件");
         } else {
             // 没有缓存，播放网络文件
@@ -262,6 +267,10 @@
             AVURLAsset *asset = [AVURLAsset URLAssetWithURL:[self.url customSchemeURL] options:nil];
             [asset.resourceLoader setDelegate:self.resourceLoader queue:dispatch_get_main_queue()];
             self.currentItem = [AVPlayerItem playerItemWithAsset:asset];
+            [self.delegate sendBufferData:0];
+            self.playerData.playTime = @"-00:00";
+            self.playerData.playProgress = 0.0;
+            [self.delegate sendPlayerDataInRealTime:self.playerData];
             NSLog(@"无缓存，播放网络文件");
         }
     } else {
@@ -288,24 +297,24 @@
     CGFloat currenPlayTimeProgress = currentTime / totalDuration; // 播放进度
     
     // 缓冲进度
-    NSArray *loadedTimeRanges = [weakAVPlayer.currentItem loadedTimeRanges];
-    CMTimeRange timeRange = [loadedTimeRanges.firstObject CMTimeRangeValue];// 获取缓冲区域
-    CGFloat startSeconds = CMTimeGetSeconds(timeRange.start);// 缓冲的起点时间数
-    CGFloat durationSeconds = CMTimeGetSeconds(timeRange.duration);// 已缓冲时间数
-    CGFloat totalBufferSeconds = startSeconds + durationSeconds;// 加起来就是缓冲总时间数
-    CGFloat totalBufferProgress = totalBufferSeconds / totalDuration;// 缓冲进度
+//    NSArray *loadedTimeRanges = [weakAVPlayer.currentItem loadedTimeRanges];
+//    CMTimeRange timeRange = [loadedTimeRanges.firstObject CMTimeRangeValue];// 获取缓冲区域
+//    CGFloat startSeconds = CMTimeGetSeconds(timeRange.start);// 缓冲的起点时间数
+//    CGFloat durationSeconds = CMTimeGetSeconds(timeRange.duration);// 已缓冲时间数
+//    CGFloat totalBufferSeconds = startSeconds + durationSeconds;// 加起来就是缓冲总时间数
+//    CGFloat totalBufferProgress = totalBufferSeconds / totalDuration;// 缓冲进度
     
     // 用此方法处理换歌时的错误显示
     if (weakAVPlayer.currentItem.status == AVPlayerItemStatusUnknown) {
 //        weakSelf.playerData.playTimeProgress = 0.0;
         weakSelf.playerData.playProgress = 0.0;
         weakSelf.playerData.playTime = @"-00:00";
-        weakSelf.playerData.bufferProgress = 0.0;
+//        weakSelf.playerData.bufferProgress = 0.0;
     }else{
 //        weakSelf.playerData.playTimeProgress = currentTime;
         weakSelf.playerData.playProgress = currenPlayTimeProgress;
         weakSelf.playerData.playTime = playTimeText;
-        weakSelf.playerData.bufferProgress = totalBufferProgress;
+//        weakSelf.playerData.bufferProgress = totalBufferProgress;
     }
     
     [weakSelf.delegate sendPlayerDataInRealTime:weakSelf.playerData];
@@ -472,7 +481,12 @@
 }
 #pragma mark - PTResourceLoaderDelegate
 - (void)loader:(PTResourceLoader *)loader cacheProgress:(CGFloat)progress {
+    [self.delegate sendBufferData:progress];
 //    NSLog(@"PTResourceLoaderDelegate:progress-%f", progress);
+}
+
+- (void)loader:(PTResourceLoader *)loader failLoadingWithError:(NSError *)error {
+    NSLog(@"%@", error);
 }
 
 @end

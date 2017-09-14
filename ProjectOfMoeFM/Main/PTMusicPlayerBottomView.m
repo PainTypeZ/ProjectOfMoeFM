@@ -21,8 +21,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *radioSongTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *radioSongPlayTimeLabel;
 
-
-
 @property (weak, nonatomic) IBOutlet UIProgressView *bufferProgressView;
 @property (weak, nonatomic) IBOutlet UISlider *playSliderView;
 @property (weak, nonatomic) IBOutlet UIProgressView *playProgressView;
@@ -94,14 +92,22 @@
         [[PTPlayerManager sharedPlayerManager] playNextSong];
     }
 }
+// 点击图片
+- (IBAction)songCoverImageViewTapAction:(UITapGestureRecognizer *)sender {    //弹出播放详情页
+}
+
 #pragma mark - PTAVPlayerManagerDelegate
+// 接收缓冲进度
+- (void)sendBufferData:(CGFloat)progress {
+    self.bufferProgressView.progress = progress;
+}
 // 接收实时播放数据
 - (void)sendPlayerDataInRealTime:(PlayerData *)playerData {
     self.playerData = playerData;// 不重写setter方法更新数据
     // 需要返回主线程改变UI显示
     dispatch_async(dispatch_get_main_queue(), ^{
         self.playSliderView.value = self.playerData.playProgress;
-        self.bufferProgressView.progress = self.playerData.bufferProgress;
+//        self.bufferProgressView.progress = self.playerData.bufferProgress;
         self.radioSongPlayTimeLabel.text = self.playerData.playTime;
     });
 }
@@ -127,7 +133,10 @@
             NSURL *url = self.playingSong.cover[MoePictureSizeSquareKey];
             [self.radioSongCoverImageView sd_setImageWithURL:url];
         }
-    });  
+        
+        // 初始化播放状态
+//        self.radioSongPlayTimeLabel.text = @"-00:00";
+    });
 }
 
 // 接收非初次播放时的播放状态信息

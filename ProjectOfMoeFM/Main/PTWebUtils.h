@@ -29,7 +29,6 @@ typedef void(^error)(id error);
 // 请求专辑列表信息
 + (void)requestAlbumListInfoWithPage:(NSUInteger)currentPage perpage:(NSUInteger)perpageNumber completionHandler:(callback)callback errorHandler:(error)errorHandler;
 
-/* *********************moefm的专辑API有问题，这个。。。下次再看吧
 // 请求热门专辑列表
 + (void)requestHotAlbumWithCompletionHandler:(callback)callback errorHandler:(error)errorHandler;
 
@@ -38,7 +37,6 @@ typedef void(^error)(id error);
 
 // 请求专辑播放列表，需要music = wiki_id参数，第几页page，每页多少歌曲数量perpage，注意最后一页返回的结果可能不够perpage数量;此请求也可以返回随机的收藏歌曲播放列表
 + (void)requestPlaylistWithAlbumID:(NSString *)albumID page:(NSUInteger)page perpage:(NSUInteger)perpage completionHandler:(callback)callback errorHandler:(error)errorHandler;
-************************************* */
 
 // 以SongIDs请求播放列表，收藏曲目的顺序播放列表和单曲必须使用的方法
 + (void)requestPlaylistWithSongIDs:(NSArray <NSString *> *)SongIDs completionHandler:(callback)callback errorHandler:(error)errorHandler;

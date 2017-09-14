@@ -33,7 +33,7 @@
 - (void)start {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[self.requestURL originalSchemeURL] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:kRequestTimeout];
     if (self.requestOffset > 0) {
-        [request addValue:[NSString stringWithFormat:@"bytes=%ld-%ld", self.requestOffset, self.fileLength -1] forHTTPHeaderField:@"Range"];
+        [request addValue:[NSString stringWithFormat:@"bytes=%ld-%ld", (unsigned long)self.requestOffset, self.fileLength -1] forHTTPHeaderField:@"Range"];
     }
     self.session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     self.task = [self.session dataTaskWithRequest:request];
@@ -53,6 +53,11 @@
         return;
     }
     NSLog(@"response: %@", response);
+    // 防止萌否资源地址返回404
+    if ([response.MIMEType isEqualToString:@"text/html"]) {
+        [self.delegate requestTask404ByMoeFM];
+        NSLog(@"MIMEType is text/html, perhaps 404 error");
+    }
     completionHandler(NSURLSessionResponseAllow);
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     NSString *contentRange = [[httpResponse allHeaderFields] objectForKey:@"Content-Range"];

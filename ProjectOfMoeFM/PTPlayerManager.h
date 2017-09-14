@@ -19,6 +19,8 @@ typedef void(^callbackBOOL)(BOOL isSuccess);
 @required
 // 发送播放信息：播放时间，缓冲进度等
 - (void)sendPlayerDataInRealTime:(PlayerData *)playerData;
+// 缓冲进度单独发送
+- (void)sendBufferData:(CGFloat)progress;
 // 自动开始播放和换歌时，发送歌曲信息
 - (void)sendCurrentSongInfo:(MoefmSong *)song;
 // 发送非自动播放时的播放状态改变

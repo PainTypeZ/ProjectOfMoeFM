@@ -7,20 +7,26 @@
 //
 
 #import "MoeHomeViewController.h"
+
 #import "AppDelegate.h"
 #import "UserHeadPictureView.h"
 #import "HotRadioView.h"
 #import "HotAlbumView.h"
 #import "HomeFooterView.h"
-#import "HomeHeaderView.h"
 #import "SliderSettingView.h"
 #import "MoefmWikiCollectionViewCell.h"
 #import "MoefmHotAlbumCollectionViewCell.h"
+#import "MoefmUser.h"
 
 #import "HomeViewController.h"
+#import "MineViewController.h"
+#import "PTPlayerManager.h"
 
 #import "MoefmAPIConst.h"
 #import "PTWebUtils.h"
+
+#import <SVProgressHUD.h>
+#import <SDWebImage/UIImageView+WebCache.h>
 
 #define kBottomPlayerViewHeight 60
 #define kDistanceHeight 15*4
@@ -41,11 +47,13 @@ typedef enum : NSUInteger {
 @property (weak, nonatomic) IBOutlet UserHeadPictureView *userHeadPictureView;
 @property (weak, nonatomic) IBOutlet HotRadioView *hotRadioView;
 @property (weak, nonatomic) IBOutlet HotAlbumView *hotAlbumView;
-@property (weak, nonatomic) IBOutlet HomeHeaderView *homeHeaderView;
 @property (weak, nonatomic) IBOutlet UICollectionView *hotRadioCollectionView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *hotRadioCollectionViewHeightConstraint;// 根据内容设置高度约束
 @property (weak, nonatomic) IBOutlet UICollectionView *hotAlbumCollectionView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *hotAlbumCollectionViewHeightConstarint;// 根据内容设置高度约束
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *loginBarButtonItem;
+@property (weak, nonatomic) IBOutlet UILabel *userNickNameLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *userAvatarImageView;
 
 @property (strong, nonatomic) SliderSettingView *settingView;
 @property (strong, nonatomic) UIView *maskView;// 滑出settingView时将剩余main view的可视部分覆盖
@@ -53,30 +61,38 @@ typedef enum : NSUInteger {
 @property (strong, nonatomic) NSMutableArray *hotRadioList;
 @property (strong, nonatomic) NSMutableArray *hotAlbumList;
 
+@property (strong, nonatomic) MoefmUser *userInfo;
+
 @end
 
 @implementation MoeHomeViewController
 {
     CGFloat _settingViewWidth;
     CGFloat _settingViewHeight;
+    CGFloat _settingViewPointY;
+    BOOL _settingViewIsShowing;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.navigationController.navigationBar.barTintColor = kMoeFMThemeColor;
+
+    self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+    
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [app.window bringSubviewToFront:app.playerBottomView];
-    self.title = @"主页";
-    
+
     // 设置全局变量值，初始化侧滑设置栏
-    _settingViewWidth = self.view.bounds.size.width * 0.6;
-    _settingViewHeight = self.view.bounds.size.height - 80;
-    
-    // 发送网络请求
-    [self sendRequest];
+    _settingViewWidth = self.view.bounds.size.width * 0.8;
+    _settingViewHeight = self.view.bounds.size.height - 120;
+    _settingViewPointY = 60;
+    _settingViewIsShowing = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
-    self.navigationController.navigationBar.hidden = YES;
+    [self checkOAuthState];
+    [self sendRequest];
 }
 
 #pragma mark - lazy loading
@@ -98,7 +114,7 @@ typedef enum : NSUInteger {
 - (SliderSettingView *)settingView {
     if (!_settingView) {
         _settingView = [[NSBundle mainBundle] loadNibNamed:@"SliderSettingView" owner:nil options:nil].firstObject;
-        _settingView.frame = CGRectMake(-_settingViewWidth, 20, _settingViewWidth, _settingViewHeight);
+        _settingView.frame = CGRectMake(-_settingViewWidth, _settingViewPointY, _settingViewWidth, _settingViewHeight);
         [self.view addSubview:_settingView];
     }
     return _settingView;
@@ -106,7 +122,7 @@ typedef enum : NSUInteger {
 
 - (UIView *)maskView {
     if (!_maskView) {
-        _maskView = [[UIView alloc] initWithFrame:CGRectMake(0, 20, self.view.bounds.size.width, _settingViewHeight)];
+        _maskView = [[UIView alloc] initWithFrame:CGRectMake(0, _settingViewPointY, self.view.bounds.size.width, _settingViewHeight)];
         _maskView.backgroundColor = [UIColor grayColor];
         _maskView.alpha = 0;
         [self.view addSubview:_maskView];
@@ -120,11 +136,68 @@ typedef enum : NSUInteger {
 
 #pragma mark - privte methods
 
+// 检查是否登录OAuth
+- (void)checkOAuthState {
+    BOOL isLogin = [[NSUserDefaults standardUserDefaults] boolForKey:@"isLogin"];
+    NSLog(@"loginState:%@", isLogin?@"YES":@"NO");
+    if (isLogin) {
+        [self.loginBarButtonItem setTitle:@"退出登录"];
+        AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        app.playerBottomView.favouriteButton.enabled = YES;
+
+    }else{
+        AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        app.playerBottomView.favouriteButton.enabled = NO;
+        [self.loginBarButtonItem setTitle:@"登录"];
+    }
+}
+
 - (void)sendRequest {
     [self sendHotRadioListRequest];
-//    [self sendHotAlbumListRequest];
+    [self sendHotAlbumListRequest];
     // 判断登录状态决定是否请求用户信息
+    BOOL isLogin = [[NSUserDefaults standardUserDefaults] boolForKey:@"isLogin"];
+    if (isLogin) {
+        [PTWebUtils requestUserInfoWithCompletionHandler:^(id object) {
+            NSDictionary *dict = object;
+            
+            if ([dict[@"isOAuth"] isEqualToString:@"NO"]) {
+                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isLogin"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                    app.playerBottomView.favouriteButton.enabled = NO;
+                    [self.loginBarButtonItem setTitle:@"登录"];
+                });
+                NSLog(@"OAuthToken已失效");
+            }else{
+                NSLog(@"%@,%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"oauth_token"], [[NSUserDefaults standardUserDefaults] objectForKey:@"oauth_token_secret"]);
+                
+                self.userInfo = dict[@"user"];
+                if (self.userInfo) {
+                    [self.userAvatarImageView sd_setImageWithURL:self.userInfo.user_avatar[MoePictureSizeLargeKey]];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        self.userNickNameLabel.text = self.userInfo.user_nickname;
+                        AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                        app.playerBottomView.favouriteButton.enabled = YES;
+                        [self.loginBarButtonItem setTitle:@"退出登录"];
+                    });
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                       [self showDefaultUserInfo];
+                        NSLog(@"获取用户头像/昵称信息出错");
+                    });
+                }
+            }
+        } errorHandler:^(id error) {
+            NSLog(@"%@", error);
+        }];
+    }
+}
 
+- (void)showDefaultUserInfo {
+    self.userNickNameLabel.text = @"获取失败";
+    self.userAvatarImageView.image = [UIImage imageNamed:@"cover_default_image.png"];
 }
 
 - (void)sendHotRadioListRequest {
@@ -148,77 +221,142 @@ typedef enum : NSUInteger {
     }];
 }
 
-//- (void)sendHotAlbumListRequest {
-//    [PTWebUtils requestHotAlbumWithCompletionHandler:^(id object) {
-//        NSDictionary *dict = object;
-//        if (dict[MoeCallbackDictAlbumKey]) {
-//            self.hotAlbumList = dict[MoeCallbackDictAlbumKey];
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                // 传值给HotRadioView，并刷新
-//                [self.hotAlbumCollectionView reloadData];
-//            });
-//        } else {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                // 传值给HotRadioView，并刷新
-//                [self.hotAlbumCollectionView reloadData];
-//            });
-//            NSLog(@"热门专辑获取失败");
-//        }
-//    } errorHandler:^(id error) {
-//        NSLog(@"%@", error);
-//    }];
-//}
+- (void)sendHotAlbumListRequest {
+    [PTWebUtils requestHotAlbumWithCompletionHandler:^(id object) {
+        NSDictionary *dict = object;
+        if (dict[MoeCallbackDictAlbumKey]) {
+            self.hotAlbumList = dict[MoeCallbackDictAlbumKey];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // 传值给HotRadioView，并刷新
+                [self.hotAlbumCollectionView reloadData];
+            });
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // 传值给HotRadioView，并刷新
+                [self.hotAlbumCollectionView reloadData];
+            });
+            NSLog(@"热门专辑获取失败");
+        }
+    } errorHandler:^(id error) {
+        NSLog(@"%@", error);
+    }];
+}
 
 - (void)tapMaskView {
+    _settingViewIsShowing = NO;
     self.maskView.alpha = 0;
     self.maskView.hidden = YES;
     [UIView animateWithDuration:0.2 animations:^{
-        self.settingView.frame = CGRectMake(-_settingViewWidth, 20, _settingViewWidth, _settingViewHeight);
+        self.settingView.frame = CGRectMake(-_settingViewWidth, _settingViewPointY, _settingViewWidth, _settingViewHeight);
     }];
 }
 
-#pragma mark - button action
+// 退出登录
+- (void)oauthLoginOut {
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
 
-- (IBAction)settingButtonAction:(UIButton *)sender {
-    self.maskView.hidden = NO;
-    [UIView animateWithDuration:0.2 animations:^{
-        self.settingView.frame = CGRectMake(0, 20, _settingViewWidth, _settingViewHeight);
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"退出登录" message:@"退出登录后将无法使用收藏功能，确定退出吗？" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *actionConfirm = [UIAlertAction actionWithTitle:@"确定退出" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [alertController dismissViewControllerAnimated:YES completion:nil];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults removeObjectForKey:@"oauth_token"];
+        [userDefaults removeObjectForKey:@"oauth_token_secret"];
+        [userDefaults setBool:NO forKey:@"isLogin"];
+        [userDefaults synchronize];
+        [self.loginBarButtonItem setTitle:@"登录"];
+        app.playerBottomView.favouriteButton.enabled = NO;
     }];
-    [UIView animateWithDuration:1 animations:^{
-        self.maskView.alpha = 0.8;
-    }];
-}
-
-- (IBAction)loginButtonAction:(UIButton *)sender {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"登录或注册" message:@"已有账号请选择登录，无账号请选择注册,取消则返回主页" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *actionLogin = [UIAlertAction actionWithTitle:@"登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-
-        [self performSegueWithIdentifier:@"OAuthLogin" sender:nil];
-    }];
-    UIAlertAction *actionRegister = [UIAlertAction actionWithTitle:@"注册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-
-        [self performSegueWithIdentifier:@"Register" sender:nil];
-    }];
-    UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-    [alertController addAction:actionLogin];
-    [alertController addAction:actionRegister];
+    UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil];
     [alertController addAction:actionCancel];
+    [alertController addAction:actionConfirm];
     [self presentViewController:alertController animated:YES completion:nil];
+
 }
 
+#pragma mark - interface action
+
+- (IBAction)settingBarButtonItemAction:(UIBarButtonItem *)sender {
+    _settingViewIsShowing = !_settingViewIsShowing;
+    if (_settingViewIsShowing == YES) {
+        self.maskView.hidden = NO;
+        [UIView animateWithDuration:0.2 animations:^{
+            self.settingView.frame = CGRectMake(0, _settingViewPointY, _settingViewWidth, _settingViewHeight);
+        }];
+        [UIView animateWithDuration:1 animations:^{
+            self.maskView.alpha = 0.8;
+        }];
+    } else {
+        self.maskView.alpha = 0;
+        self.maskView.hidden = YES;
+        [UIView animateWithDuration:0.2 animations:^{
+            self.settingView.frame = CGRectMake(-_settingViewWidth, _settingViewPointY, _settingViewWidth, _settingViewHeight);
+        }];
+    }
+}
+
+// 登录/推出登录按钮
+- (IBAction)loginBarButtonItemAction:(UIBarButtonItem *)sender {
+    if ([sender.title isEqualToString:@"退出登录"]) {
+        [self oauthLoginOut];
+    }else{
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"登录或注册" message:@"已有账号请选择登录，无账号请选择注册" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *actionLogin = [UIAlertAction actionWithTitle:@"登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            [self performSegueWithIdentifier:@"OAuthLogin" sender:nil];
+        }];
+        UIAlertAction *actionRegister = [UIAlertAction actionWithTitle:@"注册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            [self performSegueWithIdentifier:@"Register" sender:nil];
+        }];
+        UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+        [alertController addAction:actionLogin];
+        [alertController addAction:actionRegister];
+        [alertController addAction:actionCancel];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+}
+
+- (IBAction)userHeadPicTapAction:(UITapGestureRecognizer *)sender {
+    // 点击头像，推出个人信息界面
+    BOOL isLogin = [[NSUserDefaults standardUserDefaults] boolForKey:@"isLogin"];
+    if (isLogin) {
+        [self performSegueWithIdentifier:@"UserInfo" sender:nil];
+    }else{
+        [SVProgressHUD showErrorWithStatus:@"请先登录OAuth授权"];
+        [SVProgressHUD dismissWithDelay:2];
+    }
+}
+
+// 魔力播放按钮
 - (IBAction)randomPlayButtonAciton:(UIButton *)sender {
-    
+    sender.enabled = NO;
+    [PTWebUtils requestRandomPlaylistWithCompletionHandler:^(id object) {
+        NSDictionary *dict = object;
+        NSArray <MoefmSong *> *playlist = dict[MoeCallbackDictSongKey];
+        [[PTPlayerManager sharedPlayerManager] changeToPlayList:playlist andPlayType:MoeRandomPlay andSongIDs:nil];
+    } errorHandler:^(id error) {
+        NSLog(@"%@", error);
+    }];
+    sleep(3);
+    sender.enabled = YES;
 }
 
+// 我的收藏按钮
 - (IBAction)favouriteButtonAction:(UIButton *)sender {
-    
+    BOOL isLogin = [[NSUserDefaults standardUserDefaults] boolForKey:@"isLogin"];
+    if (isLogin) {
+        [self performSegueWithIdentifier:@"Favourite" sender:nil];
+    }else{
+        [SVProgressHUD showErrorWithStatus:@"请先登录OAuth授权"];
+        [SVProgressHUD dismissWithDelay:2];
+    }
 }
 
 - (IBAction)refreshButtonAction:(UIButton *)sender {
     if (sender.tag == WikiTypeRadio) {
         [self sendHotRadioListRequest];
     }
-//    [self sendHotAlbumListRequest];
+    [self sendHotAlbumListRequest];
 }
 
 - (IBAction)viewMoreButtonAction:(UIButton *)sender {    
@@ -295,6 +433,9 @@ typedef enum : NSUInteger {
         HomeViewController *oldHomeVC = [segue destinationViewController];
         UIButton *button = sender;
         oldHomeVC.wikiType = button.tag;
+    } else if ([segue.identifier isEqualToString:@"UserInfo"]) {
+//        MineViewController *mineVC = [segue destinationViewController];
+//        mineVC.userInfo = self.userInfo;
     }
 }
 

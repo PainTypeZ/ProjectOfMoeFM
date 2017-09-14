@@ -187,13 +187,13 @@
 
 // 请求专辑列表
 + (void)requestAlbumListInfoWithPage:(NSUInteger)currentPage perpage:(NSUInteger)perpageNumber completionHandler:(callback)callback errorHandler:(error)errorHandler {
-    NSString *pageStr = [NSString stringWithFormat:@"%lu", currentPage];
+    NSString *pageStr = [NSString stringWithFormat:@"%lu", (unsigned long)currentPage];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:MoeWikiTypeAlbumValue forKey:MoeWikiTypeKey];
     [params setObject:pageStr forKey:MoePageKey];
     if (perpageNumber != 0) {
-        NSString *perpageStr = [NSString stringWithFormat:@"%lu", perpageNumber];
+        NSString *perpageStr = [NSString stringWithFormat:@"%lu", (unsigned long)perpageNumber];
         [params setObject:perpageStr forKey:MoePerPageKey];
     }
     
@@ -418,12 +418,12 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:@"song" forKey:@"obj_type"];
     if (page != 0) {
-        NSString *pageStr = [NSString stringWithFormat:@"%lu", page];
+        NSString *pageStr = [NSString stringWithFormat:@"%lu", (unsigned long)page];
         [params setObject:pageStr forKey:MoePageKey];
     }
     
     if (perpage != 0) {
-        NSString *perpageStr = [NSString stringWithFormat:@"%lu", perpage];
+        NSString *perpageStr = [NSString stringWithFormat:@"%lu", (unsigned long)perpage];
         [params setObject:perpageStr forKey:MoePerPageKey];
     }
     

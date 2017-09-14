@@ -33,7 +33,6 @@
 		071E3BC71F658D220024B4FA /* HotAlbumView.m in Sources */ = {isa = PBXBuildFile; fileRef = 071E3BC61F658D220024B4FA /* HotAlbumView.m */; };
 		071E3BCA1F658E010024B4FA /* UserHeadPictureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 071E3BC91F658E010024B4FA /* UserHeadPictureView.m */; };
 		071E3BCD1F658F280024B4FA /* HomeFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 071E3BCC1F658F280024B4FA /* HomeFooterView.m */; };
-		071E3BD01F658FBC0024B4FA /* HomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 071E3BCF1F658FBC0024B4FA /* HomeHeaderView.m */; };
 		071E3BD21F659B4D0024B4FA /* nver.png in Resources */ = {isa = PBXBuildFile; fileRef = 071E3BD11F659B4D0024B4FA /* nver.png */; };
 		071E3BD51F65A9140024B4FA /* SliderSettingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 071E3BD41F65A9140024B4FA /* SliderSettingView.m */; };
 		071E3BD71F65A9360024B4FA /* SliderSettingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 071E3BD61F65A9360024B4FA /* SliderSettingView.xib */; };
@@ -94,7 +93,6 @@
 		07FEF35E1E99099600F6AC3B /* AlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FEF3451E99099600F6AC3B /* AlbumViewController.m */; };
 		07FEF3601E99099600F6AC3B /* CollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FEF34D1E99099600F6AC3B /* CollectionViewController.m */; };
 		07FEF3611E99099600F6AC3B /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FEF3531E99099600F6AC3B /* HomeViewController.m */; };
-		07FEF3621E99099600F6AC3B /* MainTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FEF3571E99099600F6AC3B /* MainTabBarController.m */; };
 		07FEF3651E9909FB00F6AC3B /* PodFile in Resources */ = {isa = PBXBuildFile; fileRef = 07FEF3641E9909FB00F6AC3B /* PodFile */; };
 		07FEF3681E990F8500F6AC3B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FEF3671E990F8500F6AC3B /* AppDelegate.m */; };
 		AD2C4EDC213B5E911500E7B1 /* libPods-ProjectOfMoeFM.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CE97BC1DFD5452A0EC3D77D /* libPods-ProjectOfMoeFM.a */; };
@@ -146,8 +144,6 @@
 		071E3BC91F658E010024B4FA /* UserHeadPictureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserHeadPictureView.m; sourceTree = "<group>"; };
 		071E3BCB1F658F280024B4FA /* HomeFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeFooterView.h; sourceTree = "<group>"; };
 		071E3BCC1F658F280024B4FA /* HomeFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeFooterView.m; sourceTree = "<group>"; };
-		071E3BCE1F658FBC0024B4FA /* HomeHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeHeaderView.h; sourceTree = "<group>"; };
-		071E3BCF1F658FBC0024B4FA /* HomeHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeHeaderView.m; sourceTree = "<group>"; };
 		071E3BD11F659B4D0024B4FA /* nver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nver.png; sourceTree = "<group>"; };
 		071E3BD31F65A9140024B4FA /* SliderSettingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SliderSettingView.h; sourceTree = "<group>"; };
 		071E3BD41F65A9140024B4FA /* SliderSettingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SliderSettingView.m; sourceTree = "<group>"; };
@@ -241,8 +237,6 @@
 		07FEF34D1E99099600F6AC3B /* CollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewController.m; sourceTree = "<group>"; };
 		07FEF3521E99099600F6AC3B /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		07FEF3531E99099600F6AC3B /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
-		07FEF3561E99099600F6AC3B /* MainTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTabBarController.h; sourceTree = "<group>"; };
-		07FEF3571E99099600F6AC3B /* MainTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTabBarController.m; sourceTree = "<group>"; };
 		07FEF3641E9909FB00F6AC3B /* PodFile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PodFile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		07FEF3661E990F8500F6AC3B /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		07FEF3671E990F8500F6AC3B /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -582,8 +576,6 @@
 		07FEF3411E99099600F6AC3B /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				07FEF3561E99099600F6AC3B /* MainTabBarController.h */,
-				07FEF3571E99099600F6AC3B /* MainTabBarController.m */,
 				07FEF3501E99099600F6AC3B /* Home */,
 				07FEF3421E99099600F6AC3B /* Album */,
 				07FEF34A1E99099600F6AC3B /* Collection */,
@@ -697,8 +689,6 @@
 				07670EA11E9E3DB50027E3EA /* RadioCollectionViewCell.m */,
 				07670EF21E9F83390027E3EA /* RadioPlayListCell.h */,
 				07670EF31E9F83390027E3EA /* RadioPlayListCell.m */,
-				071E3BCE1F658FBC0024B4FA /* HomeHeaderView.h */,
-				071E3BCF1F658FBC0024B4FA /* HomeHeaderView.m */,
 				071E3BC81F658E010024B4FA /* UserHeadPictureView.h */,
 				071E3BC91F658E010024B4FA /* UserHeadPictureView.m */,
 				071E3BC21F658CB10024B4FA /* HotRadioView.h */,
@@ -914,7 +904,6 @@
 				07E7B61B1E9D0C27004C9CF1 /* PTOAuthModel.m in Sources */,
 				071E3BA71F6569620024B4FA /* MoefmObject.m in Sources */,
 				071E3B9B1F65685E0024B4FA /* MoefmInformation.m in Sources */,
-				071E3BD01F658FBC0024B4FA /* HomeHeaderView.m in Sources */,
 				07E7B61A1E9D0C27004C9CF1 /* NSString+PTCollection.m in Sources */,
 				0768B4701EBA1A3A00C8105D /* UIControl+PTFixMultiClick.m in Sources */,
 				07FEF3601E99099600F6AC3B /* CollectionViewController.m in Sources */,
@@ -930,7 +919,6 @@
 				071E3BBE1F656B920024B4FA /* MoefmFavObject.m in Sources */,
 				074CCB0E1EAA42BB00BE2B83 /* PTPlayerManager.m in Sources */,
 				071E3BAA1F6569980024B4FA /* MoefmSubUpload.m in Sources */,
-				07FEF3621E99099600F6AC3B /* MainTabBarController.m in Sources */,
 				071E3BC41F658CB10024B4FA /* HotRadioView.m in Sources */,
 				071E3BA11F6568E50024B4FA /* MoefmWiki.m in Sources */,
 				071E3BCD1F658F280024B4FA /* HomeFooterView.m in Sources */,

@@ -55,7 +55,7 @@ NSString * const kUMMobClickKey = @"59acc8c975ca352eb80009ec";
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];// 手动初始化window
     
     // 创建bottomView，可以选择懒加载
-    self.playerBottomView = [[[NSBundle mainBundle] loadNibNamed:@"PTMusicPlayerBottomView" owner:self options:nil] lastObject];
+    self.playerBottomView = [[[NSBundle mainBundle] loadNibNamed:@"PTMusicPlayerBottomView" owner:self options:nil] firstObject];// 这里要注意添加手势后，xib中有两个对象，手势变成了lastobject
     self.playerBottomView.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height - kPTMusicPlayerBottomViewHeight, [UIScreen mainScreen].bounds.size.width, kPTMusicPlayerBottomViewHeight);
     [self.window addSubview:_playerBottomView];
     [self.window bringSubviewToFront:_playerBottomView];
@@ -96,10 +96,10 @@ NSString * const kUMMobClickKey = @"59acc8c975ca352eb80009ec";
         [center requestAuthorizationWithOptions:(UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert) completionHandler:^(BOOL granted, NSError * _Nullable error) {
             if (!error && granted) {
                 //用户点击允许
-                NSLog(@"注册成功");
+                NSLog(@"APNs注册成功");
             }else{
                 //用户点击不允许
-                NSLog(@"注册失败");
+                NSLog(@"APNs注册失败");
             }
         }];
         

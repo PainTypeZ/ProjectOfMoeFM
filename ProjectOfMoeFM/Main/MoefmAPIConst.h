@@ -6,6 +6,8 @@
 //  Copyright © 2017年 彭平军. All rights reserved.
 //
 
+#define kMoeFMThemeColor [UIColor colorWithRed:0.0/255 green:161.0/255 blue:209.0/255 alpha:1.0]
+
 #import <Foundation/Foundation.h>
 
 @interface MoefmAPIConst : NSObject

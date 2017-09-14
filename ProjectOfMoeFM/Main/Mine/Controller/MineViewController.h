@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MoefmUser.h"
 
 @interface MineViewController : UIViewController
 

@@ -75,9 +75,6 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.0/255 green:161.0/255 blue:209.0/255 alpha:1.0];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.navigationController.navigationBar.hidden = NO;
     
     [self addTableViewRefresh];
 }
@@ -102,16 +99,16 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
                 NSLog(@"%@", error);
             }];
         } else {
-//            [PTWebUtils requestPlaylistWithAlbumID:weakSelf.radioWiki.wiki_id page:weakSelf.currentPage perpage:0 completionHandler:^(id object) {
-//                NSDictionary *dict = object;
-//                weakSelf.radioPlaylist = dict[MoeCallbackDictSongKey];
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    [weakSelf.radioPlayListTableView reloadData];
-//                    [weakSelf.radioPlayListTableView.mj_header endRefreshing];
-//                });
-//            } errorHandler:^(id error) {
-//                NSLog(@"%@", error);
-//            }];
+            [PTWebUtils requestPlaylistWithAlbumID:weakSelf.radioWiki.wiki_id page:weakSelf.currentPage perpage:0 completionHandler:^(id object) {
+                NSDictionary *dict = object;
+                weakSelf.radioPlaylist = dict[MoeCallbackDictSongKey];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf.radioPlayListTableView reloadData];
+                    [weakSelf.radioPlayListTableView.mj_header endRefreshing];
+                });
+            } errorHandler:^(id error) {
+                NSLog(@"%@", error);
+            }];
         }
     }];
     
@@ -147,20 +144,20 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
             }];
             
         } else {
-//            [PTWebUtils requestPlaylistWithAlbumID:weakSelf.radioWiki.wiki_id page:weakSelf.currentPage perpage:0 completionHandler:^(id object) {
-//                NSDictionary *dict = object;
-//                NSArray *moreSongsArray = dict[MoeCallbackDictSongKey];
-//                [weakSelf.radioPlaylist addObjectsFromArray:moreSongsArray];
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    [weakSelf.radioPlayListTableView reloadData];
-//                    // 结束刷新
-//                    [weakSelf.radioPlayListTableView.mj_footer endRefreshing];
-//                });
-//            } errorHandler:^(id error) {
-//                // 结束刷新
-//                [weakSelf.radioPlayListTableView.mj_footer endRefreshing];
-//                NSLog(@"%@", error);
-//            }];
+            [PTWebUtils requestPlaylistWithAlbumID:weakSelf.radioWiki.wiki_id page:weakSelf.currentPage perpage:0 completionHandler:^(id object) {
+                NSDictionary *dict = object;
+                NSArray *moreSongsArray = dict[MoeCallbackDictSongKey];
+                [weakSelf.radioPlaylist addObjectsFromArray:moreSongsArray];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf.radioPlayListTableView reloadData];
+                    // 结束刷新
+                    [weakSelf.radioPlayListTableView.mj_footer endRefreshing];
+                });
+            } errorHandler:^(id error) {
+                // 结束刷新
+                [weakSelf.radioPlayListTableView.mj_footer endRefreshing];
+                NSLog(@"%@", error);
+            }];
         }
     }];
 }
@@ -182,7 +179,7 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
         }
     }
     if (self.playAllSongsItem.enabled == NO) {
-        self.titeLabel.text = [NSString stringWithFormat:@"%@\n(共%lu首)", self.radioWiki.wiki_title, self.songCount];
+        self.titeLabel.text = [NSString stringWithFormat:@"%@\n(共%lu首)", self.radioWiki.wiki_title, (unsigned long)self.songCount];
         [SVProgressHUD showWithStatus:@"加载数据中，请稍后"];
         if (self.wikiType == WikiTypeRadio) {
             // 请求电台播放列表信息
@@ -199,17 +196,17 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
             }];
         } else  {
             // 请求专辑播放列表信息
-//            [PTWebUtils requestPlaylistWithAlbumID:self.radioWiki.wiki_id page:self.currentPage perpage:0 completionHandler:^(id object) {
-//                NSDictionary *dict = object;
-//                self.radioPlaylist = dict[MoeCallbackDictSongKey];
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    [self.radioPlayListTableView reloadData];
-//                    [SVProgressHUD dismiss];
-//                    self.playAllSongsItem.enabled = YES;
-//                });
-//            } errorHandler:^(id error) {
-//                NSLog(@"%@", error);
-//            }];
+            [PTWebUtils requestPlaylistWithAlbumID:self.radioWiki.wiki_id page:self.currentPage perpage:0 completionHandler:^(id object) {
+                NSDictionary *dict = object;
+                self.radioPlaylist = dict[MoeCallbackDictSongKey];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.radioPlayListTableView reloadData];
+                    [SVProgressHUD dismiss];
+                    self.playAllSongsItem.enabled = YES;
+                });
+            } errorHandler:^(id error) {
+                NSLog(@"%@", error);
+            }];
         }
     }
 }
