@@ -1,12 +1,12 @@
 //
-//  PTMusicPlayerBottomView.m
+//  MusicPlayerDetailView.m
 //  ProjectOfMoeFM
 //
-//  Created by 彭平军 on 2017/4/14.
+//  Created by 彭平军 on 2017/9/15.
 //  Copyright © 2017年 彭平军. All rights reserved.
 //
 
-#import "PTMusicPlayerBottomView.h"
+#import "MusicPlayerDetailView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <SVProgressHUD.h>
 #import "MoefmSong.h"
@@ -16,33 +16,37 @@
 #import "UIControl+PTFixMultiClick.h"
 #import "AppDelegate.h"
 
-@interface PTMusicPlayerBottomView()<PTPlayerManagerDelegate>
+@interface MusicPlayerDetailView()<PTPlayerManagerDelegate>
 
-@property (weak, nonatomic) IBOutlet UIImageView *radioSongCoverImageView;
-@property (weak, nonatomic) IBOutlet UILabel *radioSongTitleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *radioSongPlayTimeLabel;
-
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *albumLabel;
+@property (weak, nonatomic) IBOutlet UILabel *artistLabel;
+@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *bottomImageView;
 @property (weak, nonatomic) IBOutlet UIProgressView *bufferProgressView;
 @property (weak, nonatomic) IBOutlet UISlider *playSliderView;
-
 
 @property (strong, nonatomic) PlayerData *playerData;
 @property (strong, nonatomic) MoefmSong *playingSong;
 
 @end
 
-@implementation PTMusicPlayerBottomView
+@implementation MusicPlayerDetailView
 
 - (void)awakeFromNib {
     [super awakeFromNib];
+    UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    UIVisualEffectView *effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
+    //必须给effcetView的frame赋值,因为UIVisualEffectView是一个加到UIIamgeView上的子视图.
+    effectView.frame = self.frame;
+    [self.bottomImageView addSubview:effectView];
     
     // 设置代理，接收播放数据
-    [PTPlayerManager sharedPlayerManager].delegate_first = self;
+    [PTPlayerManager sharedPlayerManager].delegate_second = self;
     
     [self initProperties];
-    
-    
-};
+}
 
 // 初始化属性和播放按钮状态
 - (void)initProperties {
@@ -55,7 +59,8 @@
     self.userInteractionEnabled = NO; // avplayer准备好之前关闭用户交互
     // 初始状态设置
     self.favouriteButton.enabled = NO;
-    self.playSliderView.userInteractionEnabled = NO;// 还未实现拖动播放进度条
+    
+    self.playSliderView.userInteractionEnabled = NO;// 不能拖动播放进度
 }
 
 #pragma mark - UI action methods
@@ -87,12 +92,11 @@
         [[PTPlayerManager sharedPlayerManager] playNextSong];
     }
 }
-// 点击图片
-- (IBAction)songCoverImageViewTapAction:(UITapGestureRecognizer *)sender {    //弹出播放详情页
-    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    [app.window bringSubviewToFront:app.playerDetailView];
+
+// 点击图片手势action
+- (IBAction)tapGestureAction:(UITapGestureRecognizer *)sender {
     [UIView animateWithDuration:0.5 animations:^{
-        app.playerDetailView.frame = CGRectMake(0, 20, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 20);
+        self.frame = CGRectMake(0, 2*[UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 20);
     }];
 }
 
@@ -108,9 +112,10 @@
     self.playerData = playerData;// 不重写setter方法更新数据
     // 需要返回主线程改变UI显示
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.playSliderView.value = self.playerData.playProgress;// 未实现拖动播放进度
-//        self.bufferProgressView.progress = self.playerData.bufferProgress;
-        self.radioSongPlayTimeLabel.text = self.playerData.playTime;
+        // 播放进度，未实现拖动播放进度
+        self.playSliderView.value = self.playerData.playProgress;
+        // 播放时间显示
+        self.timeLabel.text = self.playerData.playTime;
     });
 }
 // 接收当前播放歌曲信息(播放开始时会收到信息)，注意与播放过程中的播放/暂停状态要分开处理
@@ -119,8 +124,9 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         // 显示歌曲标题
-        self.radioSongTitleLabel.text = self.playingSong.sub_title;
-        
+        self.titleLabel.text = self.playingSong.sub_title;
+        self.albumLabel.text = self.playingSong.wiki_title;
+        self.artistLabel.text = self.playingSong.artist;
         // 显示歌曲收藏信息
         if ([self.playingSong.fav_sub.fav_type isEqualToString:@"1"]) {
             self.favouriteButton.selected = self.playingSong.fav_sub.fav_type.boolValue;
@@ -131,13 +137,11 @@
         self.playButton.selected = YES;
         
         // 显示歌曲图片，SDWebImage方法
-        if (self.playingSong.cover[MoePictureSizeSquareKey]) {
-            NSURL *url = self.playingSong.cover[MoePictureSizeSquareKey];
-            [self.radioSongCoverImageView sd_setImageWithURL:url];
+        if (self.playingSong.cover[MoePictureSizeLargeKey]) {
+            NSURL *url = self.playingSong.cover[MoePictureSizeLargeKey];
+            [self.coverImageView sd_setImageWithURL:url];
+            [self.bottomImageView sd_setImageWithURL:url];
         }
-        
-        // 初始化播放状态
-//        self.radioSongPlayTimeLabel.text = @"-00:00";
     });
 }
 
@@ -150,5 +154,14 @@
 - (void)sendUIEnableState:(BOOL)isUIEnable {
     self.userInteractionEnabled = isUIEnable;
 }
+
+
+/*
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect {
+    // Drawing code
+}
+*/
 
 @end

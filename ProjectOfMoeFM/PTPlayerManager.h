@@ -33,8 +33,8 @@ typedef void(^callbackBOOL)(BOOL isSuccess);
 @interface PTPlayerManager : UIResponder
 
 @property (strong, nonatomic) MoefmSong *currentSong;// 公开当前播放的歌曲信息
-
-@property (weak, nonatomic) id<PTPlayerManagerDelegate> delegate;// 不是父子关系一般不使用weak修饰，父子关系才容易造成循环引用
+@property (weak, nonatomic) id<PTPlayerManagerDelegate> delegate_first;// 不是父子关系一般不使用weak修饰，父子关系才容易造成循环引用
+@property (weak, nonatomic) id<PTPlayerManagerDelegate> delegate_second;
 
 // 播放
 - (void)play;

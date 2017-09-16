@@ -227,7 +227,7 @@ static NSString * const reuseIdentifier = @"collectionSongsCell";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return ([UIScreen mainScreen].bounds.size.height - 64 - 44) / 6;
+    return ([UIScreen mainScreen].bounds.size.height - 64 - 44) / 5;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {

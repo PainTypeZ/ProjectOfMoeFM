@@ -7,6 +7,8 @@
 //
 
 #import "MineTableViewCell.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+#import "MoefmAPIConst.h"
 
 @implementation MineTableViewCell
 
@@ -19,6 +21,14 @@
     _fav = fav;
     _songTitleLabel.text = _fav.obj.sub_title;
     _albumLabel.text = _fav.obj.wiki.wiki_title;
+    
+    _songCoverImageView.image = [UIImage imageNamed:@"cover_default_image.png"];
+    
+    NSString *coverURLString = _fav.obj.wiki.wiki_cover[MoePictureSizeSquareKey];
+    if (![coverURLString isEqualToString:MoeDefaultPictureURL]) {
+        NSURL *coverURL = [NSURL URLWithString:coverURLString];
+        [_songCoverImageView sd_setImageWithURL:coverURL];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

@@ -1,5 +1,5 @@
 //
-//  RadioCollectionViewCell.h
+//  WikiCollectionViewCell.h
 //  ProjectOfMoeFM
 //
 //  Created by 彭平军 on 2017/4/12.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "MoefmWiki.h"
 
-@interface RadioCollectionViewCell : UICollectionViewCell
+@interface WikiCollectionViewCell : UICollectionViewCell
 @property (strong, nonatomic) MoefmWiki *radioWiki;
 //@property (strong, nonatomic) RadioInformation *radioInformation;
 @property (weak, nonatomic) IBOutlet UIImageView *radioCoverImageView;

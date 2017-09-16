@@ -1,5 +1,5 @@
 //
-//  HomeViewController.h
+//  WikiListViewController.h
 //  ProjectOfMoeFM
 //
 //  Created by 彭平军 on 2017/4/8.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HomeViewController : UIViewController
+@interface WikiListViewController : UIViewController
 
 @property (assign, nonatomic) NSInteger wikiType;
 

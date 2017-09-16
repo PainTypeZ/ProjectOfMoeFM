@@ -1,5 +1,5 @@
 //
-//  RadioCollectionViewCell.m
+//  WikiCollectionViewCell.m
 //  ProjectOfMoeFM
 //
 //  Created by 彭平军 on 2017/4/12.
@@ -8,14 +8,14 @@
 
 //#define kCornerRadius 10.0
 
-#import "RadioCollectionViewCell.h"
+#import "WikiCollectionViewCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "PTOAuthTool.h"
 #import "MoefmResponse.h"
 
 #import "MoefmAPIConst.h"
 
-@implementation RadioCollectionViewCell
+@implementation WikiCollectionViewCell
 - (void)awakeFromNib {
     [super awakeFromNib];
 //    self.radioCoverImageView.layer.cornerRadius = kCornerRadius;用IB的运行时属性实现

@@ -1,5 +1,5 @@
 //
-//  HomeViewController.m
+//  WikiListViewController.m
 //  ProjectOfMoeFM
 //
 //  Created by 彭平军 on 2017/4/8.
@@ -15,12 +15,12 @@
 #define kCellViewHeight 30.0 // 记得与storyboard包含3个label的View高度保持一致
 //#define kHeaderViewHeight 35.0 // 记得与storyboard的collectionheaderView保持一致
 
-#import "HomeViewController.h"
-#import "RadioPlayListViewController.h"
+#import "WikiListViewController.h"
+#import "WikiPlayListViewController.h"
 #import <SVProgressHUD.h>
 #import <MJRefresh.h>
 
-#import "RadioCollectionViewCell.h"
+#import "WikiCollectionViewCell.h"
 #import "MoefmWiki.h"
 #import "MoefmResponse.h"
 #import "MoefmRelationships.h"
@@ -39,7 +39,7 @@ typedef enum : NSUInteger {
     WikiTypeFavourite,
 } WikiType;
 
-@interface HomeViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching, UICollectionViewDelegateFlowLayout>
+@interface WikiListViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching, UICollectionViewDelegateFlowLayout>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *radioCollectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *radioCollectionViewFlowLayout;
@@ -52,7 +52,7 @@ typedef enum : NSUInteger {
 @property (assign, nonatomic) NSUInteger perpage;
 @end
 
-@implementation HomeViewController
+@implementation WikiListViewController
 
 static NSString * const reuseIdentifier = @"radioCell";
 
@@ -64,55 +64,9 @@ static NSString * const reuseIdentifier = @"radioCell";
     
 }
 
-//- (void)checkOAuthStateWhenAlreadyLogin {
-//    BOOL isLogin = [[NSUserDefaults standardUserDefaults] boolForKey:@"isLogin"];
-//    if (isLogin) {
-//        [SVProgressHUD showWithStatus:@"正在检查OAuth授权状态，请稍后"];
-//        // 检查OAuth授权是否任然有效
-//        [PTWebUtils requestUserInfoWithCompletionHandler:^(id object) {
-//            NSDictionary *userDict = [NSDictionary dictionaryWithDictionary:object];
-//
-//            if ([userDict[@"isOAuth"] isEqualToString:@"NO"]) {
-//                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isLogin"];
-//                [[NSUserDefaults standardUserDefaults] synchronize];
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-//                    app.playerBottomView.favouriteButton.enabled = NO;
-//                    [self.loginButton setTitle:@"登录"];
-//                    [self sendHotRadiosRequest];
-////                    [self sendPlayListRequest];// 测试用
-//                    // 请求电台数据
-//                        if (self.allRadios.count == 0) {
-//                            [self sendAllRadioListRequest];
-//                        }
-//                });
-//                NSLog(@"OAuthToken已失效");
-//            }else{
-//                NSLog(@"%@,%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"oauth_token"], [[NSUserDefaults standardUserDefaults] objectForKey:@"oauth_token_secret"]);
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-//                    app.playerBottomView.favouriteButton.enabled = YES;
-//                    // app.playerBottomView.dislikeButton.enabled = YES;// 未实现
-//                    [self.loginButton setTitle:@"退出登录"];
-//                    [self sendHotRadiosRequest];
-////                    [self sendPlayListRequest];// 测试用
-//                    // 请求电台数据
-//
-//                        if (self.allRadios.count == 0) {
-//                            [self sendAllRadioListRequest];
-//                        }
-//                });
-//            }
-//            [SVProgressHUD dismiss];
-//        } errorHandler:^(id error) {
-//            NSLog(@"%@", error);
-//        }];
-//    }
-//}
-
 // MJRefresh
 - (void)addCollectionViewRefresh {
-    __weak HomeViewController *weakSelf = self;
+    __weak WikiListViewController *weakSelf = self;
     
     // 下拉刷新
     self.radioCollectionView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
@@ -228,61 +182,6 @@ static NSString * const reuseIdentifier = @"radioCell";
 }
 
 #pragma mark - UI action and others
-// 检查是否登录OAuth
-//- (void)checkOAuthState {
-//    BOOL isLogin = [[NSUserDefaults standardUserDefaults] boolForKey:@"isLogin"];
-//    NSLog(@"loginState:%@", isLogin?@"YES":@"NO");
-//    if (isLogin) {
-//        [self.loginButton setTitle:@"退出登录"];
-//        AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-//        app.playerBottomView.favouriteButton.enabled = YES;
-//
-//    }else{
-//        AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-//        app.playerBottomView.favouriteButton.enabled = NO;
-//        [self.loginButton setTitle:@"登录"];
-//    }
-//}
-
-// 退出登录
-//- (void)oauthLoginOut {
-//    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-//
-//    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"退出登录" message:@"退出登录后将无法使用收藏功能，确定退出吗？" preferredStyle:UIAlertControllerStyleAlert];
-//    UIAlertAction *actionConfirm = [UIAlertAction actionWithTitle:@"确定退出" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-//        [alertController dismissViewControllerAnimated:YES completion:nil];
-//        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//        [userDefaults removeObjectForKey:@"oauth_token"];
-//        [userDefaults removeObjectForKey:@"oauth_token_secret"];
-//        [userDefaults setBool:NO forKey:@"isLogin"];
-//        [userDefaults synchronize];
-//        [self.loginButton setTitle:@"登录"];
-////        [[PTPlayerManager sharedPlayerManager] updateFavInfo];
-//        app.playerBottomView.favouriteButton.enabled = NO;
-//    }];
-//    UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil];
-//    [alertController addAction:actionCancel];
-//    [alertController addAction:actionConfirm];
-//    [self presentViewController:alertController animated:YES completion:nil];
-//
-//}
-
-//- (IBAction)radiosSegmentedAction:(UISegmentedControl *)sender {
-//    if (sender.selectedSegmentIndex == 0) {
-//        if (!self.hotRadios || self.hotRadios.count == 0) {
-//            [self sendHotRadiosRequest];
-//        }else{
-//            [self.radioCollectionView reloadData];
-//        }
-//    }else{
-//        if (self.allRadios.count == 0) {
-//            [self sendAllRadioListRequest];
-//        }else{
-//            [self.radioCollectionView reloadData];
-//        }
-//
-//    }
-//}
 
 - (IBAction)randomPlayAction:(UIButton *)sender {
     sender.enabled = NO;
@@ -317,29 +216,6 @@ static NSString * const reuseIdentifier = @"radioCell";
     }
 }
 
-// 点击OAuth登录按钮事件
-//- (IBAction)oauthLogin:(UIBarButtonItem *)sender {
-//
-//    if ([sender.title isEqualToString:@"退出登录"]) {
-//        [self oauthLoginOut];
-//    }else{
-//        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"登录或注册" message:@"已有账号请选择登录，无账号请选择注册,取消则返回主页" preferredStyle:UIAlertControllerStyleAlert];
-//        UIAlertAction *actionLogin = [UIAlertAction actionWithTitle:@"登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-////            [alertController dismissViewControllerAnimated:YES completion:nil];
-//            [self.tabBarController performSegueWithIdentifier:@"OAuth" sender:nil];
-//        }];
-//        UIAlertAction *actionRegister = [UIAlertAction actionWithTitle:@"注册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-////            [alertController dismissViewControllerAnimated:YES completion:nil];
-//            [self.tabBarController performSegueWithIdentifier:@"Register" sender:nil];
-//        }];
-//        UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-//        [alertController addAction:actionLogin];
-//        [alertController addAction:actionRegister];
-//        [alertController addAction:actionCancel];
-//        [self presentViewController:alertController animated:YES completion:nil];
-//    }
-//}
-
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -352,7 +228,7 @@ static NSString * const reuseIdentifier = @"radioCell";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    RadioCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    WikiCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     MoefmWiki *radioWiki = [[MoefmWiki alloc] init];
     radioWiki = self.allRadios[indexPath.item];
     
@@ -385,8 +261,8 @@ static NSString * const reuseIdentifier = @"radioCell";
                 NSUInteger count = countNum.integerValue;
                 if (count != 0) {
                     [dict setObject:radioWiki forKey:@"radioWiki"];
-                    [self performSegueWithIdentifier:@"RadioDetail" sender:dict];
-                    [dict setObject:@(self.wikiType) forKey:@"WikiType"];// 将wikiType也放到字典中，传给播放列表界面
+                    [self performSegueWithIdentifier:@"WikiDetail" sender:dict];
+//                    [dict setObject:@(self.wikiType) forKey:@"WikiType"];// 将wikiType也放到字典中，传给播放列表界面
                 } else {
                     [SVProgressHUD showInfoWithStatus:@"该电台暂无歌曲"];
                     [SVProgressHUD dismissWithDelay:1.5];
@@ -409,7 +285,7 @@ static NSString * const reuseIdentifier = @"radioCell";
                 BOOL isUpload = upload.integerValue;
                 if (isUpload) {
                     [dict setObject:radioWiki forKey:@"radioWiki"];
-                    [self performSegueWithIdentifier:@"RadioDetail" sender:dict];
+                    [self performSegueWithIdentifier:@"WikiDetail" sender:dict];
                 } else {
                     [SVProgressHUD showInfoWithStatus:@"该专辑暂无资源"];
                     [SVProgressHUD dismissWithDelay:1.5];
@@ -441,10 +317,10 @@ static NSString * const reuseIdentifier = @"radioCell";
 
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"RadioDetail"]) {
-        RadioPlayListViewController *radioPlayListViewContoller = segue.destinationViewController;
-        radioPlayListViewContoller.relationshipsDict = sender;
-        radioPlayListViewContoller.wikiType = self.wikiType;
+    if ([segue.identifier isEqualToString:@"WikiDetail"]) {
+        WikiPlayListViewController *wikiPlayListViewContoller = segue.destinationViewController;
+        wikiPlayListViewContoller.relationshipsDict = sender;
+        wikiPlayListViewContoller.wikiType = self.wikiType;
     }
 }
 

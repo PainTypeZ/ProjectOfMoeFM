@@ -1,5 +1,5 @@
 //
-//  RadioPlayListViewController.m
+//  WikiPlayListViewController.m
 //  ProjectOfMoeFM
 //
 //  Created by 彭平军 on 2017/4/13.
@@ -8,8 +8,8 @@
 
 #define kFavouriteKey @"fav"
 
-#import "RadioPlayListViewController.h"
-#import "RadioPlayListCell.h"
+#import "WikiPlayListViewController.h"
+#import "WikiPlayListCell.h"
 #import <MJRefresh.h>
 #import <SVProgressHUD.h>
 
@@ -30,7 +30,7 @@ typedef enum : NSUInteger {
     WikiTypeFavourite,
 } WikiType;
 
-@interface RadioPlayListViewController ()<UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching>
+@interface WikiPlayListViewController ()<UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching>
 
 @property (weak, nonatomic) IBOutlet UITableView *radioPlayListTableView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *playAllSongsItem;
@@ -48,7 +48,7 @@ typedef enum : NSUInteger {
 
 @end
 
-@implementation RadioPlayListViewController
+@implementation WikiPlayListViewController
 
 static NSString * const reuseIdentifier = @"radioPlayListCell";
 
@@ -80,7 +80,7 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
 }
 
 - (void)addTableViewRefresh {
-    __weak RadioPlayListViewController *weakSelf = self;
+    __weak WikiPlayListViewController *weakSelf = self;
     // 下拉刷新
     self.radioPlayListTableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         weakSelf.currentPage = 1; // 重置请求页数参数
@@ -211,7 +211,7 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
     }
 }
 - (IBAction)playSingleSongAction:(UIButton *)sender {
-    RadioPlayListCell *cell = (RadioPlayListCell *)sender.superview.superview;
+    WikiPlayListCell *cell = (WikiPlayListCell *)sender.superview.superview;
     [[PTPlayerManager sharedPlayerManager] changeToPlayList:@[cell.radioPlaySong] andPlayType:MoeSingleSongPlay andSongIDs:@[]];
 }
 - (IBAction)playAllSongsAction:(UIBarButtonItem *)sender {
@@ -232,7 +232,7 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    RadioPlayListCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
+    WikiPlayListCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
     
     MoefmSong *radioPlaySong = self.radioPlaylist[indexPath.row];
     cell.radioPlaySong = radioPlaySong;
@@ -245,7 +245,7 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
 }
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return ([UIScreen mainScreen].bounds.size.height - 64 - 44) / 6;
+    return ([UIScreen mainScreen].bounds.size.height - 64 - 44) / 5;
 }
 
 - (void)dealloc {

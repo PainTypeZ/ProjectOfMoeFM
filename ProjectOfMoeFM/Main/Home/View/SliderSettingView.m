@@ -11,6 +11,8 @@
 #import <SVProgressHUD.h>
 #import "AppDelegate.h"
 #import "SliderSettingHeaderView.h"
+#import "MoeHomeViewController.h"
+
 @interface SliderSettingView()<UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *settingTableView;
@@ -48,6 +50,10 @@ static NSString *cellIdentifier = @"settingTableView";
     if (indexPath.row == 4) {
         cell.textLabel.text = @"清理缓存";
     }
+    
+    if (indexPath.row == 6) {
+        cell.textLabel.text = @"关于我们";
+    }
     return cell;
 }
 
@@ -67,6 +73,13 @@ static NSString *cellIdentifier = @"settingTableView";
         [alertController addAction:cancelAction];
         AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         [app.window.rootViewController presentViewController:alertController animated:YES completion:nil];
+    }
+    if (indexPath.row == 6) {
+        AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        UINavigationController *naviVC = (UINavigationController *)app.window.rootViewController;
+        MoeHomeViewController *homeVC = naviVC.viewControllers.firstObject;
+        [homeVC performSegueWithIdentifier:@"KotenbuStudio" sender:nil];
+        
     }
 }
 

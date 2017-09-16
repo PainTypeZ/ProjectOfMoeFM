@@ -30,7 +30,7 @@ typedef void(^error)(id error);
 + (void)requestAlbumListInfoWithPage:(NSUInteger)currentPage perpage:(NSUInteger)perpageNumber completionHandler:(callback)callback errorHandler:(error)errorHandler;
 
 // 请求热门专辑列表
-+ (void)requestHotAlbumWithCompletionHandler:(callback)callback errorHandler:(error)errorHandler;
++ (void)requestHotAlbumsWithCompletionHandler:(callback)callback errorHandler:(error)errorHandler;
 
 // 请求专辑条目信息,可以拿到专辑songcount。。。
 + (void)requestAlbumSongCountWithAlbumID:(NSString *)albumID completionHandler:(callback)callback errorHandler:(error)errorHandler;

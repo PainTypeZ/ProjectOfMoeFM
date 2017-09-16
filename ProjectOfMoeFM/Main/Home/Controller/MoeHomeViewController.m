@@ -18,12 +18,14 @@
 #import "MoefmHotAlbumCollectionViewCell.h"
 #import "MoefmUser.h"
 
-#import "HomeViewController.h"
+#import "WikiListViewController.h"
 #import "MineViewController.h"
 #import "PTPlayerManager.h"
+#import "WikiPlayListViewController.h"
 
 #import "MoefmAPIConst.h"
 #import "PTWebUtils.h"
+#import "UIControl+PTFixMultiClick.h"
 
 #import <SVProgressHUD.h>
 #import <SDWebImage/UIImageView+WebCache.h>
@@ -54,6 +56,10 @@ typedef enum : NSUInteger {
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *loginBarButtonItem;
 @property (weak, nonatomic) IBOutlet UILabel *userNickNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *userAvatarImageView;
+@property (weak, nonatomic) IBOutlet UIButton *randomPlayButton;
+@property (weak, nonatomic) IBOutlet UIButton *myFavouriteButton;
+@property (weak, nonatomic) IBOutlet UIButton *hotRadioRefreshButton;
+@property (weak, nonatomic) IBOutlet UIButton *hotAlbumRefreshButton;
 
 @property (strong, nonatomic) SliderSettingView *settingView;
 @property (strong, nonatomic) UIView *maskView;// 滑出settingView时将剩余main view的可视部分覆盖
@@ -62,6 +68,7 @@ typedef enum : NSUInteger {
 @property (strong, nonatomic) NSMutableArray *hotAlbumList;
 
 @property (strong, nonatomic) MoefmUser *userInfo;
+@property (assign, nonatomic) BOOL isRefreshAction;
 
 @end
 
@@ -71,6 +78,7 @@ typedef enum : NSUInteger {
     CGFloat _settingViewHeight;
     CGFloat _settingViewPointY;
     BOOL _settingViewIsShowing;
+    NSUInteger _wikiType;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -87,10 +95,16 @@ typedef enum : NSUInteger {
     _settingViewHeight = self.view.bounds.size.height - 120;
     _settingViewPointY = 60;
     _settingViewIsShowing = NO;
+    
+    // 利用runtime修改button响应事件
+    self.randomPlayButton.pt_acceptEventInterval = 3;
+    self.hotRadioRefreshButton.pt_acceptEventInterval = 3;
+    self.hotAlbumRefreshButton.pt_acceptEventInterval = 3;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
+    self.isRefreshAction = NO;
     [self checkOAuthState];
     [self sendRequest];
 }
@@ -144,10 +158,12 @@ typedef enum : NSUInteger {
         [self.loginBarButtonItem setTitle:@"退出登录"];
         AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         app.playerBottomView.favouriteButton.enabled = YES;
+        app.playerDetailView.favouriteButton.enabled = YES;
 
     }else{
         AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         app.playerBottomView.favouriteButton.enabled = NO;
+        app.playerDetailView.favouriteButton.enabled = NO;
         [self.loginBarButtonItem setTitle:@"登录"];
     }
 }
@@ -167,8 +183,11 @@ typedef enum : NSUInteger {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
                     app.playerBottomView.favouriteButton.enabled = NO;
+                    app.playerDetailView.favouriteButton.enabled = NO;
                     [self.loginBarButtonItem setTitle:@"登录"];
                 });
+                [self sendHotRadioListRequest];
+                [self sendHotAlbumListRequest];
                 NSLog(@"OAuthToken已失效");
             }else{
                 NSLog(@"%@,%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"oauth_token"], [[NSUserDefaults standardUserDefaults] objectForKey:@"oauth_token_secret"]);
@@ -180,6 +199,7 @@ typedef enum : NSUInteger {
                         self.userNickNameLabel.text = self.userInfo.user_nickname;
                         AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
                         app.playerBottomView.favouriteButton.enabled = YES;
+                        app.playerDetailView.favouriteButton.enabled = YES;
                         [self.loginBarButtonItem setTitle:@"退出登录"];
                     });
                 } else {
@@ -208,11 +228,20 @@ typedef enum : NSUInteger {
             dispatch_async(dispatch_get_main_queue(), ^{
                 // 传值给HotRadioView，并刷新
                 [self.hotRadioCollectionView reloadData];
+                if (self.isRefreshAction == YES) {
+                    [SVProgressHUD showSuccessWithStatus:@"热门电台刷新成功"];
+                    [SVProgressHUD dismissWithDelay:1];
+                }
             });
+            NSLog(@"热门电台获取成功");
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 // 传值给HotRadioView，并刷新
                 [self.hotRadioCollectionView reloadData];
+                if (self.isRefreshAction == YES) {
+                    [SVProgressHUD showErrorWithStatus:@"热门电台刷新失败"];
+                    [SVProgressHUD dismissWithDelay:1];
+                }
             });
             NSLog(@"热门电台获取失败");
         }
@@ -222,18 +251,27 @@ typedef enum : NSUInteger {
 }
 
 - (void)sendHotAlbumListRequest {
-    [PTWebUtils requestHotAlbumWithCompletionHandler:^(id object) {
+    [PTWebUtils requestHotAlbumsWithCompletionHandler:^(id object) {
         NSDictionary *dict = object;
         if (dict[MoeCallbackDictAlbumKey]) {
             self.hotAlbumList = dict[MoeCallbackDictAlbumKey];
             dispatch_async(dispatch_get_main_queue(), ^{
                 // 传值给HotRadioView，并刷新
                 [self.hotAlbumCollectionView reloadData];
+                if (self.isRefreshAction == YES) {
+                    [SVProgressHUD showSuccessWithStatus:@"热门专辑刷新成功"];
+                    [SVProgressHUD dismissWithDelay:0.5];
+                }
             });
+            NSLog(@"热门专辑获取成功");
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                // 传值给HotRadioView，并刷新
+                // 传值给HotAlbumView，并刷新
                 [self.hotAlbumCollectionView reloadData];
+                if (self.isRefreshAction == YES) {
+                    [SVProgressHUD showErrorWithStatus:@"热门专辑刷新失败"];
+                    [SVProgressHUD dismissWithDelay:0.5];
+                }
             });
             NSLog(@"热门专辑获取失败");
         }
@@ -265,6 +303,7 @@ typedef enum : NSUInteger {
         [userDefaults synchronize];
         [self.loginBarButtonItem setTitle:@"登录"];
         app.playerBottomView.favouriteButton.enabled = NO;
+        app.playerDetailView.favouriteButton.enabled = NO;
     }];
     UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil];
     [alertController addAction:actionCancel];
@@ -352,11 +391,14 @@ typedef enum : NSUInteger {
     }
 }
 
+// 刷新按钮
 - (IBAction)refreshButtonAction:(UIButton *)sender {
+    self.isRefreshAction = YES;
     if (sender.tag == WikiTypeRadio) {
         [self sendHotRadioListRequest];
+    } else {
+        [self sendHotAlbumListRequest];
     }
-    [self sendHotAlbumListRequest];
 }
 
 - (IBAction)viewMoreButtonAction:(UIButton *)sender {    
@@ -389,6 +431,54 @@ typedef enum : NSUInteger {
 #pragma mark - UICollectionViewDelegate
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     // 传值并推出详情页
+    [SVProgressHUD showWithStatus:@"查询中...请稍后..."];
+    _wikiType = collectionView.tag;// 设置wikiType
+    
+    self.view.userInteractionEnabled = NO;
+    MoefmWiki *radioWiki = [[MoefmWiki alloc] init];
+    if (collectionView.tag == WikiTypeRadio) {
+        radioWiki = self.hotRadioList[indexPath.item];
+        [PTWebUtils requestRadioSongCountWithRadioId:radioWiki.wiki_id completionHandler:^(id object) {
+            NSMutableDictionary *dict = object;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.view.userInteractionEnabled = YES;
+                [SVProgressHUD dismiss];
+                NSNumber *countNum = dict[MoeCallbackDictCountKey];
+                NSUInteger count = countNum.integerValue;
+                if (count != 0) {
+                    [dict setObject:radioWiki forKey:@"radioWiki"];
+                    [self performSegueWithIdentifier:@"HotRadioOrAlbumDetail" sender:dict];
+//                    [dict setObject:@(collectionView.tag) forKey:@"WikiType"];// 将wikiType也放到字典中，传给播放列表界面
+                } else {
+                    [SVProgressHUD showInfoWithStatus:@"该电台暂无歌曲"];
+                    [SVProgressHUD dismissWithDelay:1.5];
+                }
+                
+            });
+        } errorHandler:^(id error) {
+            NSLog(@"%@", error);
+        }];
+    } else {
+        radioWiki = self.hotAlbumList[indexPath.item];
+        [PTWebUtils requestAlbumSongCountWithAlbumID:radioWiki.wiki_id completionHandler:^(id object) {
+            NSMutableDictionary *dict = object;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.view.userInteractionEnabled = YES;
+                [SVProgressHUD dismiss];
+                NSNumber *upload = dict[@"isUpload"];
+                BOOL isUpload = upload.integerValue;
+                if (isUpload) {
+                    [dict setObject:radioWiki forKey:@"radioWiki"];
+                    [self performSegueWithIdentifier:@"HotRadioOrAlbumDetail" sender:dict];
+                } else {
+                    [SVProgressHUD showInfoWithStatus:@"该专辑暂无资源"];
+                    [SVProgressHUD dismissWithDelay:1.5];
+                }
+            });
+        } errorHandler:^(id error) {
+            NSLog(@"%@", error);
+        }];
+    }
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -430,12 +520,16 @@ typedef enum : NSUInteger {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     if ([segue.identifier isEqualToString:@"WikiList"]) {
-        HomeViewController *oldHomeVC = [segue destinationViewController];
+        WikiListViewController *oldHomeVC = [segue destinationViewController];
         UIButton *button = sender;
         oldHomeVC.wikiType = button.tag;
     } else if ([segue.identifier isEqualToString:@"UserInfo"]) {
 //        MineViewController *mineVC = [segue destinationViewController];
 //        mineVC.userInfo = self.userInfo;
+    } else if ([segue.identifier isEqualToString:@"HotRadioOrAlbumDetail"]) {
+        WikiPlayListViewController *wikiPlayListVC = [segue destinationViewController];
+        wikiPlayListVC.wikiType = _wikiType;
+        wikiPlayListVC.relationshipsDict = sender;
     }
 }
 

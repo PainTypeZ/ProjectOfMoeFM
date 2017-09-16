@@ -5,6 +5,7 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,18 +27,31 @@
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.2版本来了~" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XGd-Oi-uYk">
-                                <rect key="frame" x="16" y="8" width="343" height="36"/>
+                                <rect key="frame" x="16" y="28" width="343" height="36"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
                                 <color key="textColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fRM-Pj-ywS">
-                                <rect key="frame" x="126.5" y="599" width="122" height="48"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="moefou_fm.png" translatesAutoresizingMaskIntoConstraints="NO" id="faI-Cm-q1N">
+                                <rect key="frame" x="187" y="429" width="186" height="236"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="faI-Cm-q1N" secondAttribute="height" multiplier="186:236" id="X2g-UE-rz2"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="moefou_mf.png" translatesAutoresizingMaskIntoConstraints="NO" id="KH1-r6-rli">
+                                <rect key="frame" x="225" y="22" width="132" height="304"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="KH1-r6-rli" secondAttribute="height" multiplier="132:304" id="UEi-Cc-TdO"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fRM-Pj-ywS">
+                                <rect key="frame" x="57" y="429" width="122" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" weight="black" pointSize="30"/>
                                 <state key="normal" title="开始食用">
-                                    <color key="titleColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="jumpToHomeAction:" destination="Vdf-yA-nGI" eventType="touchUpInside" id="pFa-Mv-fHn"/>
@@ -47,17 +61,18 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="AYA-EJ-bCh" firstAttribute="leading" secondItem="l6K-g8-sdN" secondAttribute="leading" id="02M-tD-b3S"/>
-                            <constraint firstItem="fRM-Pj-ywS" firstAttribute="centerX" secondItem="l6K-g8-sdN" secondAttribute="centerX" id="7EZ-qm-TQh"/>
                             <constraint firstItem="AYA-EJ-bCh" firstAttribute="top" secondItem="l6K-g8-sdN" secondAttribute="top" id="7qq-Wh-8zm"/>
+                            <constraint firstItem="KH1-r6-rli" firstAttribute="top" secondItem="9l8-AP-ygT" secondAttribute="bottom" constant="2" id="GLQ-B8-bY7"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="KH1-r6-rli" secondAttribute="trailing" constant="2" id="OGG-Ty-p1S"/>
                             <constraint firstItem="XGd-Oi-uYk" firstAttribute="leading" secondItem="l6K-g8-sdN" secondAttribute="leadingMargin" id="fTd-c1-K0T"/>
                             <constraint firstAttribute="trailing" secondItem="AYA-EJ-bCh" secondAttribute="trailing" id="gPw-Mo-O4a"/>
                             <constraint firstItem="1Sf-t5-zHg" firstAttribute="top" secondItem="AYA-EJ-bCh" secondAttribute="bottom" id="oh6-tg-Md0"/>
                             <constraint firstItem="XGd-Oi-uYk" firstAttribute="trailing" secondItem="l6K-g8-sdN" secondAttribute="trailingMargin" id="rRW-1f-U9Y"/>
-                            <constraint firstItem="1Sf-t5-zHg" firstAttribute="top" secondItem="fRM-Pj-ywS" secondAttribute="bottom" constant="20" id="v3a-k2-eYN"/>
+                            <constraint firstItem="1Sf-t5-zHg" firstAttribute="top" secondItem="faI-Cm-q1N" secondAttribute="bottom" constant="2" id="rct-ob-kV3"/>
+                            <constraint firstAttribute="trailing" secondItem="faI-Cm-q1N" secondAttribute="trailing" constant="2" id="vvC-dp-3CB"/>
                             <constraint firstItem="XGd-Oi-uYk" firstAttribute="top" secondItem="9l8-AP-ygT" secondAttribute="bottom" constant="8" id="wUk-zK-0Dz"/>
                         </constraints>
                     </view>
-                    <nil key="simulatedStatusBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bdE-hL-g9u" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -65,6 +80,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="moefou_fm.png" width="186" height="236"/>
+        <image name="moefou_mf.png" width="132" height="304"/>
         <image name="welcomeBackground.png" width="561" height="970"/>
     </resources>
+    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

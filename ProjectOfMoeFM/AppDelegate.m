@@ -57,8 +57,13 @@ NSString * const kUMMobClickKey = @"59acc8c975ca352eb80009ec";
     // 创建bottomView，可以选择懒加载
     self.playerBottomView = [[[NSBundle mainBundle] loadNibNamed:@"PTMusicPlayerBottomView" owner:self options:nil] firstObject];// 这里要注意添加手势后，xib中有两个对象，手势变成了lastobject
     self.playerBottomView.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height - kPTMusicPlayerBottomViewHeight, [UIScreen mainScreen].bounds.size.width, kPTMusicPlayerBottomViewHeight);
-    [self.window addSubview:_playerBottomView];
-    [self.window bringSubviewToFront:_playerBottomView];
+    [self.window addSubview:self.playerBottomView];
+//    [self.window bringSubviewToFront:_playerBottomView];
+    
+    // 创建MusicPlayerDetailView
+    self.playerDetailView = [[[NSBundle mainBundle] loadNibNamed:@"MusicPlayerDetailView" owner:self options:nil] firstObject];
+    self.playerDetailView.frame = CGRectMake(0, 2*[UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 20);
+    [self.window addSubview:self.playerDetailView];
     
     // 友盟sdk配置
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];

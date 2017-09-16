@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "PTMusicPlayerBottomView.h"
-
+#import "MusicPlayerDetailView.h"
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) PTMusicPlayerBottomView *playerBottomView;
-
+@property (strong, nonatomic) MusicPlayerDetailView *playerDetailView;
 @property (strong, nonatomic) UIWindow *window;
 
 

@@ -11,6 +11,7 @@
 @interface MineTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *songTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *albumLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *songCoverImageView;
 
 @property (strong, nonatomic) MoefmFavourite *fav;
 

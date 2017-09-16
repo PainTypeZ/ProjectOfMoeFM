@@ -1,5 +1,5 @@
 //
-//  RadioPlayListCell.m
+//  WikiPlayListCell.m
 //  ProjectOfMoeFM
 //
 //  Created by 彭平军 on 2017/4/13.
@@ -8,13 +8,13 @@
 
 //#define kCornerRadius 5.0
 
-#import "RadioPlayListCell.h"
+#import "WikiPlayListCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIControl+PTFixMultiClick.h"
 
 #import "MoefmAPIConst.h"
 
-@implementation RadioPlayListCell
+@implementation WikiPlayListCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];

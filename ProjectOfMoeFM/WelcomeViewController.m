@@ -17,7 +17,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+    // 在plist文件里面设置statusbar：View controller-based status bar appearance = NO
+//    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
 }
 
 - (IBAction)jumpToHomeAction:(UIButton *)sender {
@@ -25,9 +26,7 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
     UINavigationController *homeNavigationController = [mainStoryboard instantiateViewControllerWithIdentifier:@"HomeNavigation"];
-//    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication];
-//    appDelegate.window.rootViewController = mainTabbarController;
-//    [self presentViewController:mainTabbarController animated:YES completion:nil];
+    
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     app.window.rootViewController = homeNavigationController;
 }

@@ -236,7 +236,7 @@
 }
 
 // 请求最新专辑
-+ (void)requestHotAlbumWithCompletionHandler:(callback)callback errorHandler:(error)errorHandler {
++ (void)requestHotAlbumsWithCompletionHandler:(callback)callback errorHandler:(error)errorHandler {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:@"json" forKey:@"api"];
     [params setObject:@"1" forKey:@"hot_musics"];

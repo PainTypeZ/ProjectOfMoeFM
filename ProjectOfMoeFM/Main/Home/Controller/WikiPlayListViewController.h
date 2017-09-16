@@ -1,5 +1,5 @@
 //
-//  RadioPlayListViewController.h
+//  WikiPlayListViewController.h
 //  ProjectOfMoeFM
 //
 //  Created by 彭平军 on 2017/4/13.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MoefmWiki.h"
-@interface RadioPlayListViewController : UIViewController
+@interface WikiPlayListViewController : UIViewController
 @property (strong, nonatomic) NSDictionary *relationshipsDict;
 @property (assign, nonatomic) NSUInteger wikiType;
 

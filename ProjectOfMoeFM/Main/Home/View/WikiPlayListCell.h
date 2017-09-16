@@ -1,5 +1,5 @@
 //
-//  RadioPlayListCell.h
+//  WikiPlayListCell.h
 //  ProjectOfMoeFM
 //
 //  Created by 彭平军 on 2017/4/13.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MoefmSong.h"
-@interface RadioPlayListCell : UITableViewCell
+@interface WikiPlayListCell : UITableViewCell
 
 @property (strong, nonatomic) MoefmSong *radioPlaySong;
 

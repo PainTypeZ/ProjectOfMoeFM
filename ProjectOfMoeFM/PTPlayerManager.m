@@ -97,17 +97,21 @@
 
 - (void)setCurrentSong:(MoefmSong *)currentSong {
     _currentSong = currentSong;
-    [self.delegate sendCurrentSongInfo:_currentSong];
+    [self.delegate_first sendCurrentSongInfo:_currentSong];
+    [self.delegate_second sendCurrentSongInfo:_currentSong];
 }
 
 - (void)setIsPlay:(BOOL)isPlay {
     _isPlay = isPlay;
-    [self.delegate sendPlayOrPauseStateWhenIsPlayChanged:_isPlay];
+    [self.delegate_first sendPlayOrPauseStateWhenIsPlayChanged:_isPlay];
+    [self.delegate_second sendPlayOrPauseStateWhenIsPlayChanged:_isPlay];
 }
 
 - (void)setIsUIEnable:(BOOL)isUIEnable {
     _isUIEnable = isUIEnable;
-    [self.delegate sendUIEnableState:_isUIEnable];
+    [self.delegate_first sendUIEnableState:_isUIEnable];
+    [self.delegate_second sendUIEnableState:_isUIEnable];
+    
 }
 #pragma mark - private methods
 // KVO方法，播放全是从这里控制开始
@@ -258,7 +262,8 @@
         if (cacheFilePath) {
             NSURL *url = [NSURL fileURLWithPath:cacheFilePath];
             self.currentItem = [AVPlayerItem playerItemWithURL:url];
-            [self.delegate sendBufferData:1.0];
+            [self.delegate_first sendBufferData:1.0];
+            [self.delegate_second sendBufferData:1.0];
             NSLog(@"有缓存，播放本地缓存文件");
         } else {
             // 没有缓存，播放网络文件
@@ -267,10 +272,12 @@
             AVURLAsset *asset = [AVURLAsset URLAssetWithURL:[self.url customSchemeURL] options:nil];
             [asset.resourceLoader setDelegate:self.resourceLoader queue:dispatch_get_main_queue()];
             self.currentItem = [AVPlayerItem playerItemWithAsset:asset];
-            [self.delegate sendBufferData:0];
+            [self.delegate_first sendBufferData:0.0];
+            [self.delegate_second sendBufferData:0.0];
             self.playerData.playTime = @"-00:00";
             self.playerData.playProgress = 0.0;
-            [self.delegate sendPlayerDataInRealTime:self.playerData];
+            [self.delegate_first sendPlayerDataInRealTime:self.playerData];
+            [self.delegate_second sendPlayerDataInRealTime:self.playerData];
             NSLog(@"无缓存，播放网络文件");
         }
     } else {
@@ -317,7 +324,8 @@
 //        weakSelf.playerData.bufferProgress = totalBufferProgress;
     }
     
-    [weakSelf.delegate sendPlayerDataInRealTime:weakSelf.playerData];
+    [weakSelf.delegate_first sendPlayerDataInRealTime:weakSelf.playerData];
+    [weakSelf.delegate_second sendPlayerDataInRealTime:weakSelf.playerData];
     [weakSelf setupNowPlayingInfoCenterWithPlayTime:currentTime];
 }
 
@@ -481,7 +489,8 @@
 }
 #pragma mark - PTResourceLoaderDelegate
 - (void)loader:(PTResourceLoader *)loader cacheProgress:(CGFloat)progress {
-    [self.delegate sendBufferData:progress];
+    [self.delegate_first sendBufferData:progress];
+    [self.delegate_second sendBufferData:progress];
 //    NSLog(@"PTResourceLoaderDelegate:progress-%f", progress);
 }
 
