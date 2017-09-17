@@ -31,7 +31,7 @@
 		071E3BD71F65A9360024B4FA /* SliderSettingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 071E3BD61F65A9360024B4FA /* SliderSettingView.xib */; };
 		07268F601F6D6F5C0024A280 /* cover_default_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 07268F3E1F6D6F5C0024A280 /* cover_default_image.png */; };
 		07268F621F6D6F5C0024A280 /* kotenbu_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 07268F401F6D6F5C0024A280 /* kotenbu_logo.png */; };
-		07268F631F6D6F5C0024A280 /* launch_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 07268F411F6D6F5C0024A280 /* launch_image.png */; };
+		07268F631F6D6F5C0024A280 /* for_launch_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 07268F411F6D6F5C0024A280 /* for_launch_image.png */; };
 		07268F641F6D6F5C0024A280 /* album@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07268F431F6D6F5C0024A280 /* album@2x.png */; };
 		07268F651F6D6F5C0024A280 /* body_background_img_first.png in Resources */ = {isa = PBXBuildFile; fileRef = 07268F441F6D6F5C0024A280 /* body_background_img_first.png */; };
 		07268F661F6D6F5C0024A280 /* body_background_img_second.png in Resources */ = {isa = PBXBuildFile; fileRef = 07268F451F6D6F5C0024A280 /* body_background_img_second.png */; };
@@ -61,7 +61,6 @@
 		07268F891F6D76F50024A280 /* next.png in Resources */ = {isa = PBXBuildFile; fileRef = 07268F841F6D76F50024A280 /* next.png */; };
 		07268F8A1F6D76F50024A280 /* pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 07268F851F6D76F50024A280 /* pause.png */; };
 		07268F8B1F6D76F50024A280 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 07268F861F6D76F50024A280 /* play.png */; };
-		07268F921F6DAE6D0024A280 /* moefou_mf.png in Resources */ = {isa = PBXBuildFile; fileRef = 07268F911F6DAE6D0024A280 /* moefou_mf.png */; };
 		07268F941F6DAE740024A280 /* moefou_fm.png in Resources */ = {isa = PBXBuildFile; fileRef = 07268F931F6DAE740024A280 /* moefou_fm.png */; };
 		072CAFDA1F687E8F004C01F9 /* MoefmWikiCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 072CAFD81F687E8F004C01F9 /* MoefmWikiCollectionViewCell.m */; };
 		072CAFE11F689011004C01F9 /* MoefmHotAlbumCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 072CAFE01F689011004C01F9 /* MoefmHotAlbumCollectionViewCell.m */; };
@@ -80,6 +79,8 @@
 		07670F131EA05A250027E3EA /* PTMusicPlayerBottomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07670F121EA05A250027E3EA /* PTMusicPlayerBottomView.xib */; };
 		0768B4701EBA1A3A00C8105D /* UIControl+PTFixMultiClick.m in Sources */ = {isa = PBXBuildFile; fileRef = 0768B46F1EBA1A3A00C8105D /* UIControl+PTFixMultiClick.m */; };
 		0769F0B61EAF769C005EE315 /* MineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0769F0B51EAF769C005EE315 /* MineViewController.m */; };
+		07A117781F6E60450096F124 /* random@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07A117771F6E60450096F124 /* random@3x.png */; };
+		07A1177C1F6E60550096F124 /* play_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 07A1177B1F6E60550096F124 /* play_button@2x.png */; };
 		07A54D131F6C0AF800567711 /* MusicPlayerDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07A54D121F6C0AF800567711 /* MusicPlayerDetailView.m */; };
 		07AF8A2F1EC0E6D2008BD1B6 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 07AF8A2E1EC0E6D2008BD1B6 /* GTMNSString+HTML.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		07AF8A321EC0EFB2008BD1B6 /* MineTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 07AF8A311EC0EFB2008BD1B6 /* MineTableViewCell.m */; };
@@ -148,7 +149,7 @@
 		071E3BD61F65A9360024B4FA /* SliderSettingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SliderSettingView.xib; sourceTree = "<group>"; };
 		07268F3E1F6D6F5C0024A280 /* cover_default_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cover_default_image.png; sourceTree = "<group>"; };
 		07268F401F6D6F5C0024A280 /* kotenbu_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kotenbu_logo.png; sourceTree = "<group>"; };
-		07268F411F6D6F5C0024A280 /* launch_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch_image.png; sourceTree = "<group>"; };
+		07268F411F6D6F5C0024A280 /* for_launch_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = for_launch_image.png; sourceTree = "<group>"; };
 		07268F431F6D6F5C0024A280 /* album@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "album@2x.png"; sourceTree = "<group>"; };
 		07268F441F6D6F5C0024A280 /* body_background_img_first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = body_background_img_first.png; sourceTree = "<group>"; };
 		07268F451F6D6F5C0024A280 /* body_background_img_second.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = body_background_img_second.png; sourceTree = "<group>"; };
@@ -178,7 +179,6 @@
 		07268F841F6D76F50024A280 /* next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = next.png; sourceTree = "<group>"; };
 		07268F851F6D76F50024A280 /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause.png; sourceTree = "<group>"; };
 		07268F861F6D76F50024A280 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
-		07268F911F6DAE6D0024A280 /* moefou_mf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = moefou_mf.png; sourceTree = "<group>"; };
 		07268F931F6DAE740024A280 /* moefou_fm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = moefou_fm.png; sourceTree = "<group>"; };
 		072CAFD71F687E8F004C01F9 /* MoefmWikiCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoefmWikiCollectionViewCell.h; sourceTree = "<group>"; };
 		072CAFD81F687E8F004C01F9 /* MoefmWikiCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoefmWikiCollectionViewCell.m; sourceTree = "<group>"; };
@@ -213,6 +213,8 @@
 		0768B46F1EBA1A3A00C8105D /* UIControl+PTFixMultiClick.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIControl+PTFixMultiClick.m"; sourceTree = "<group>"; };
 		0769F0B41EAF769C005EE315 /* MineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MineViewController.h; sourceTree = "<group>"; };
 		0769F0B51EAF769C005EE315 /* MineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MineViewController.m; sourceTree = "<group>"; };
+		07A117771F6E60450096F124 /* random@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "random@3x.png"; sourceTree = "<group>"; };
+		07A1177B1F6E60550096F124 /* play_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play_button@2x.png"; sourceTree = "<group>"; };
 		07A54D111F6C0AF800567711 /* MusicPlayerDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicPlayerDetailView.h; sourceTree = "<group>"; };
 		07A54D121F6C0AF800567711 /* MusicPlayerDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicPlayerDetailView.m; sourceTree = "<group>"; };
 		07AF8A2C1EC0E6BB008BD1B6 /* GTMDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GTMDefines.h; sourceTree = "<group>"; };
@@ -320,15 +322,16 @@
 			children = (
 				07268F3E1F6D6F5C0024A280 /* cover_default_image.png */,
 				07268F401F6D6F5C0024A280 /* kotenbu_logo.png */,
-				07268F411F6D6F5C0024A280 /* launch_image.png */,
+				07268F411F6D6F5C0024A280 /* for_launch_image.png */,
 				07268F821F6D76F50024A280 /* fav_no.png */,
 				07268F831F6D76F50024A280 /* fav_yes.png */,
 				07268F841F6D76F50024A280 /* next.png */,
 				07268F851F6D76F50024A280 /* pause.png */,
 				07268F861F6D76F50024A280 /* play.png */,
 				07268F5F1F6D6F5C0024A280 /* welcomeBackground.png */,
-				07268F911F6DAE6D0024A280 /* moefou_mf.png */,
 				07268F931F6DAE740024A280 /* moefou_fm.png */,
+				07A117771F6E60450096F124 /* random@3x.png */,
+				07A1177B1F6E60550096F124 /* play_button@2x.png */,
 				07268F421F6D6F5C0024A280 /* moefm_home */,
 				07268F551F6D6F5C0024A280 /* moefmicon */,
 			);
@@ -768,7 +771,7 @@
 								enabled = 1;
 							};
 							com.apple.Push = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -801,7 +804,7 @@
 				07268F6C1F6D6F5C0024A280 /* head_background_img.png in Resources */,
 				07051E591F6C11780069389A /* MusicPlayerDetailView.xib in Resources */,
 				07268F811F6D751F0024A280 /* head_default_picture.png in Resources */,
-				07268F631F6D6F5C0024A280 /* launch_image.png in Resources */,
+				07268F631F6D6F5C0024A280 /* for_launch_image.png in Resources */,
 				07B221F21F67CA4B0077585F /* SliderSettingHeaderView.xib in Resources */,
 				07268F781F6D6F5C0024A280 /* icon_40X40.png in Resources */,
 				07268F6E1F6D6F5C0024A280 /* magic_stick@2x.png in Resources */,
@@ -824,13 +827,13 @@
 				07268F871F6D76F50024A280 /* fav_no.png in Resources */,
 				07268F7F1F6D6F5C0024A280 /* welcomeBackground.png in Resources */,
 				07268F6B1F6D6F5C0024A280 /* foot_background_img.png in Resources */,
+				07A1177C1F6E60550096F124 /* play_button@2x.png in Resources */,
 				07FEF31E1E99018A00F6AC3B /* Assets.xcassets in Resources */,
 				07268F621F6D6F5C0024A280 /* kotenbu_logo.png in Resources */,
 				07268F8B1F6D76F50024A280 /* play.png in Resources */,
 				07FEF3651E9909FB00F6AC3B /* PodFile in Resources */,
 				07FEF31C1E99018A00F6AC3B /* Main.storyboard in Resources */,
 				07268F741F6D6F5C0024A280 /* refresh@3x.png in Resources */,
-				07268F921F6DAE6D0024A280 /* moefou_mf.png in Resources */,
 				07268F941F6DAE740024A280 /* moefou_fm.png in Resources */,
 				07268F751F6D6F5C0024A280 /* sliderHeader.png in Resources */,
 				07268F881F6D76F50024A280 /* fav_yes.png in Resources */,
@@ -839,6 +842,7 @@
 				07670F131EA05A250027E3EA /* PTMusicPlayerBottomView.xib in Resources */,
 				07268F7B1F6D6F5C0024A280 /* icon_80X80.png in Resources */,
 				07268F671F6D6F5C0024A280 /* body_background_img_third.png in Resources */,
+				07A117781F6E60450096F124 /* random@3x.png in Resources */,
 				071E3BD71F65A9360024B4FA /* SliderSettingView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1081,7 +1085,6 @@
 			baseConfigurationReference = 14B1279463BEC9D4A4938733 /* Pods-ProjectOfMoeFM.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = ProjectOfMoeFM/ProjectOfMoeFM.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Pingjun Peng (2B9WE6SENC)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Pingjun Peng (2B9WE6SENC)";
 				DEVELOPMENT_TEAM = ZH9AQ2F24G;
@@ -1092,7 +1095,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "1b12d054-308e-4d49-acdd-5a21a17dd058";
 				PROVISIONING_PROFILE_SPECIFIER = Development20170906;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1101,7 +1104,6 @@
 			baseConfigurationReference = 14F721D7A992BC45F496DDD3 /* Pods-ProjectOfMoeFM.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = ProjectOfMoeFM/ProjectOfMoeFM.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Pingjun Peng (ZH9AQ2F24G)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Pingjun Peng (ZH9AQ2F24G)";
 				DEVELOPMENT_TEAM = ZH9AQ2F24G;
@@ -1112,7 +1114,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "efc12ae6-b5fa-41b4-a0bf-e302fbe0b5a3";
 				PROVISIONING_PROFILE_SPECIFIER = Distribution20170906;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

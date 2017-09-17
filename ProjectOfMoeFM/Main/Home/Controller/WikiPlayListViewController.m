@@ -164,6 +164,13 @@ static NSString * const reuseIdentifier = @"radioPlayListCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
+    
+    if (self.wikiType == WikiTypeRadio) {
+        self.title = @"电台播放列表";
+    } else {
+        self.title = @"专辑播放列表";
+    }
+    
     self.radioWiki = self.relationshipsDict[@"radioWiki"];
     NSNumber *count = self.relationshipsDict[MoeCallbackDictCountKey];
     self.songCount = count.integerValue;
