@@ -37,15 +37,15 @@
         [_wikiImageView sd_setImageWithURL:coverURL];
     }
     
-    NSString *timestamp = _wiki.wiki_date;
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateStyle:NSDateFormatterMediumStyle];
-    [formatter setTimeStyle:NSDateFormatterShortStyle];
-    [formatter setDateFormat:@"yyyy-MM-dd"]; // （@"yyyy-MM-dd hh:mm:ss"）----------设置你想要的格式,hh与HH的区别:分别表示12小时制,24小时制
-    NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
-    [formatter setTimeZone:timeZone];
-    NSDate *resultDate = [NSDate dateWithTimeIntervalSince1970:timestamp.integerValue];
-    NSString *resultDateString = [formatter stringFromDate:resultDate];
+//    NSString *timestamp = _wiki.wiki_date;
+//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//    [formatter setDateStyle:NSDateFormatterMediumStyle];
+//    [formatter setTimeStyle:NSDateFormatterShortStyle];
+//    [formatter setDateFormat:@"yyyy-MM-dd"]; // （@"yyyy-MM-dd hh:mm:ss"）----------设置你想要的格式,hh与HH的区别:分别表示12小时制,24小时制
+//    NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
+//    [formatter setTimeZone:timeZone];
+//    NSDate *resultDate = [NSDate dateWithTimeIntervalSince1970:timestamp.integerValue];
+//    NSString *resultDateString = [formatter stringFromDate:resultDate];
     
 //    _radioDateLabel.text = resultDateString;
     

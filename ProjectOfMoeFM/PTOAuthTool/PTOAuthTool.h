@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "PTOAuthModel.h"
 // 不返回值的block
-typedef void (^requestCompleted)();
+typedef void (^requestCompleted)(void);
 // 回调函数
 typedef void (^callback)(id object);
 

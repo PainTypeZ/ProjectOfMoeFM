@@ -13,7 +13,7 @@
 #import "PTOAuthTool.h"
 #import "MoefmAPIConst.h"
 #import "PTPlayerManager.h"
-#import <UMMobClick/MobClick.h>
+//#import <UMMobClick/MobClick.h>
 
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
 //#import <UserNotifications/UserNotifications.h>
@@ -66,12 +66,12 @@ NSString * const kUMMobClickKey = @"59acc8c975ca352eb80009ec";
     [self.window addSubview:self.playerDetailView];
     
     // 友盟sdk配置
-    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    [MobClick setAppVersion:version];
-    
-    UMConfigInstance.appKey = kUMMobClickKey;
-    UMConfigInstance.channelId = @"App Store";
-    [MobClick startWithConfigure:UMConfigInstance];//配置以上参数后调用此方法初始化SDK！
+//    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+//    [MobClick setAppVersion:version];
+//
+//    UMConfigInstance.appKey = kUMMobClickKey;
+//    UMConfigInstance.channelId = @"App Store";
+//    [MobClick startWithConfigure:UMConfigInstance];//配置以上参数后调用此方法初始化SDK！
     
     UIStoryboard *welcomeStoryBoard = [UIStoryboard storyboardWithName:@"Welcome" bundle:[NSBundle mainBundle]];
     UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];

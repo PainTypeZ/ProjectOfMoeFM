@@ -454,37 +454,69 @@
 - (void)setupNowPlayingInfoCenterWithPlayTime:(float)playTime {
     if (self.currentSong) {
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-        [[SDWebImageManager sharedManager] downloadImageWithURL:self.currentSong.cover[MoePictureSizeLargeKey] options:SDWebImageRetryFailed progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-            MPMediaItemArtwork *artwork = [[MPMediaItemArtwork alloc] initWithBoundsSize:CGSizeMake(200, 200) requestHandler:^UIImage * _Nonnull(CGSize size) {
-                return image;
-            }];
-            // 歌曲名称
-            if (self.currentSong.sub_title) {
-                [dict setObject:self.currentSong.sub_title forKey:MPMediaItemPropertyTitle];
-            }
-            // 演唱者
-            if (self.currentSong.artist) {
-                [dict setObject:self.currentSong.artist forKey:MPMediaItemPropertyArtist];
-            }
-            // 专辑名
-            if (self.currentSong.wiki_title) {
-                [dict setObject:self.currentSong.wiki_title forKey:MPMediaItemPropertyAlbumTitle];
-            }
-            // 图片
-            if (artwork) {
-                [dict setObject:artwork forKey:MPMediaItemPropertyArtwork];
-            }
-            
-            // 音乐总时长
-            CGFloat duration = CMTimeGetSeconds(self.player.currentItem.duration);
-            [dict setObject:@(duration) forKey:MPMediaItemPropertyPlaybackDuration];
-            // 设置已经播放时长（初始播放时传的是0.0）
-            CGFloat playTime = CMTimeGetSeconds(self.player.currentItem.currentTime);
-            
-            [dict setObject:@(playTime) forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
-            // 设置锁屏状态下屏幕显示播放音乐信息
-            [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:dict];
+        [[SDWebImageManager sharedManager] loadImageWithURL:self.currentSong.cover[MoePictureSizeLargeKey] options:SDWebImageRetryFailed progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
+                    MPMediaItemArtwork *artwork = [[MPMediaItemArtwork alloc] initWithBoundsSize:CGSizeMake(200, 200) requestHandler:^UIImage * _Nonnull(CGSize size) {
+                        return image;
+                    }];
+                    // 歌曲名称
+                    if (self.currentSong.sub_title) {
+                        [dict setObject:self.currentSong.sub_title forKey:MPMediaItemPropertyTitle];
+                    }
+                    // 演唱者
+                    if (self.currentSong.artist) {
+                        [dict setObject:self.currentSong.artist forKey:MPMediaItemPropertyArtist];
+                    }
+                    // 专辑名
+                    if (self.currentSong.wiki_title) {
+                        [dict setObject:self.currentSong.wiki_title forKey:MPMediaItemPropertyAlbumTitle];
+                    }
+                    // 图片
+                    if (artwork) {
+                        [dict setObject:artwork forKey:MPMediaItemPropertyArtwork];
+                    }
+                    
+                    // 音乐总时长
+                    CGFloat duration = CMTimeGetSeconds(self.player.currentItem.duration);
+                    [dict setObject:@(duration) forKey:MPMediaItemPropertyPlaybackDuration];
+                    // 设置已经播放时长（初始播放时传的是0.0）
+                    CGFloat playTime = CMTimeGetSeconds(self.player.currentItem.currentTime);
+                    
+                    [dict setObject:@(playTime) forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
+                    // 设置锁屏状态下屏幕显示播放音乐信息
+                    [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:dict];
         }];
+        
+//        [[SDWebImageManager sharedManager] downloadImageWithURL:self.currentSong.cover[MoePictureSizeLargeKey] options:SDWebImageRetryFailed progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+//            MPMediaItemArtwork *artwork = [[MPMediaItemArtwork alloc] initWithBoundsSize:CGSizeMake(200, 200) requestHandler:^UIImage * _Nonnull(CGSize size) {
+//                return image;
+//            }];
+//            // 歌曲名称
+//            if (self.currentSong.sub_title) {
+//                [dict setObject:self.currentSong.sub_title forKey:MPMediaItemPropertyTitle];
+//            }
+//            // 演唱者
+//            if (self.currentSong.artist) {
+//                [dict setObject:self.currentSong.artist forKey:MPMediaItemPropertyArtist];
+//            }
+//            // 专辑名
+//            if (self.currentSong.wiki_title) {
+//                [dict setObject:self.currentSong.wiki_title forKey:MPMediaItemPropertyAlbumTitle];
+//            }
+//            // 图片
+//            if (artwork) {
+//                [dict setObject:artwork forKey:MPMediaItemPropertyArtwork];
+//            }
+//
+//            // 音乐总时长
+//            CGFloat duration = CMTimeGetSeconds(self.player.currentItem.duration);
+//            [dict setObject:@(duration) forKey:MPMediaItemPropertyPlaybackDuration];
+//            // 设置已经播放时长（初始播放时传的是0.0）
+//            CGFloat playTime = CMTimeGetSeconds(self.player.currentItem.currentTime);
+//
+//            [dict setObject:@(playTime) forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
+//            // 设置锁屏状态下屏幕显示播放音乐信息
+//            [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:dict];
+//        }];
     }
 }
 #pragma mark - PTResourceLoaderDelegate

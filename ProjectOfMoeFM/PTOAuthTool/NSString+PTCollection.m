@@ -11,8 +11,8 @@
 @implementation NSString (PTCollection)
 // URL编码，iOS9.0之后有原生方法NSString *encodeString = [string stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLXXXXAllowedCharacterSet]]，但是还不知道正确的使用方法，需要学习
 + (NSString *)urlEncodeString:(NSString *)string {
-    NSString *encodeString = (__bridge NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (__bridge CFStringRef)string, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8);
-
+//    NSString *encodeString = (__bridge NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (__bridge CFStringRef)string, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8);
+    NSString *encodeString = [string stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
     return encodeString;
 }
 // Base64 + HMAC-SHA1加密

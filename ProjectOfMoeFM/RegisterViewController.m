@@ -10,9 +10,11 @@
 
 #import "RegisterViewController.h"
 #import <SVProgressHUD.h>
+#import <WebKit/WebKit.h>
 
-@interface RegisterViewController ()<UIWebViewDelegate>
-@property (weak, nonatomic) IBOutlet UIWebView *registerWebView;
+//@interface RegisterViewController ()<UIWebViewDelegate>
+@interface RegisterViewController ()<WKNavigationDelegate>
+@property (weak, nonatomic) IBOutlet WKWebView *registerWebView;
 
 @end
 
@@ -21,15 +23,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // 设置WKWebView代理
+    self.registerWebView.navigationDelegate = self;
+    
     NSURL *url = [NSURL URLWithString:kRegisterURL];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [self.registerWebView loadRequest:request];
 }
 
-#pragma mark - UIWebViewDelegate
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+#pragma makr - WKNavigationDelegate
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
     //    http://moe.fm/login
-    NSString *path = [request.URL description];
+    NSString *path = [webView.URL description];
     NSLog(@"%@", path);
     // 截取url字符串获取验证码
     if ([path isEqualToString:@"http://moe.fm/login"]) {
@@ -39,10 +44,29 @@
             self.view.userInteractionEnabled = YES;
             [self.navigationController popViewControllerAnimated:YES];
         }];
-        return NO;
+        decisionHandler(WKNavigationActionPolicyCancel);
+    } else {
+        decisionHandler(WKNavigationActionPolicyAllow);
     }
-    return YES;
 }
+
+//#pragma mark - UIWebViewDelegate
+//- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+//    //    http://moe.fm/login
+//    NSString *path = [request.URL description];
+//    NSLog(@"%@", path);
+//    // 截取url字符串获取验证码
+//    if ([path isEqualToString:@"http://moe.fm/login"]) {
+//        self.view.userInteractionEnabled = NO;
+//        [SVProgressHUD showSuccessWithStatus:@"注册成功,即将自动跳转回主页"];
+//        [SVProgressHUD dismissWithDelay:2 completion:^{
+//            self.view.userInteractionEnabled = YES;
+//            [self.navigationController popViewControllerAnimated:YES];
+//        }];
+//        return NO;
+//    }
+//    return YES;
+//}
 
 /*
 #pragma mark - Navigation

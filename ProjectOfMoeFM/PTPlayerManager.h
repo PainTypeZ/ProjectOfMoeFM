@@ -18,11 +18,11 @@ typedef void(^callbackBOOL)(BOOL isSuccess);
 @protocol PTPlayerManagerDelegate <NSObject>
 @required
 // 发送播放信息：播放时间，缓冲进度等
-- (void)sendPlayerDataInRealTime:(PlayerData *)playerData;
+- (void)sendPlayerDataInRealTime:(PlayerData *_Nullable)playerData;
 // 缓冲进度单独发送
 - (void)sendBufferData:(CGFloat)progress;
 // 自动开始播放和换歌时，发送歌曲信息
-- (void)sendCurrentSongInfo:(MoefmSong *)song;
+- (void)sendCurrentSongInfo:(MoefmSong *_Nullable)song;
 // 发送非自动播放时的播放状态改变
 - (void)sendPlayOrPauseStateWhenIsPlayChanged:(BOOL)isPlay;
 // 发送用户交互状态
@@ -32,9 +32,9 @@ typedef void(^callbackBOOL)(BOOL isSuccess);
 
 @interface PTPlayerManager : UIResponder
 
-@property (strong, nonatomic) MoefmSong *currentSong;// 公开当前播放的歌曲信息
-@property (weak, nonatomic) id<PTPlayerManagerDelegate> delegate_first;// 不是父子关系一般不使用weak修饰，父子关系才容易造成循环引用
-@property (weak, nonatomic) id<PTPlayerManagerDelegate> delegate_second;
+@property (strong, nonatomic) MoefmSong * _Nullable currentSong;// 公开当前播放的歌曲信息
+@property (weak, nonatomic) id<PTPlayerManagerDelegate> _Nullable delegate_first;// 不是父子关系一般不使用weak修饰，父子关系才容易造成循环引用
+@property (weak, nonatomic) id<PTPlayerManagerDelegate> _Nullable delegate_second;
 
 // 播放
 - (void)play;
@@ -50,7 +50,7 @@ typedef void(^callbackBOOL)(BOOL isSuccess);
 - (void)deleteFromFavourite;
 
 // 改变播放列表
-- (void)changeToPlayList:(NSArray<MoefmSong *> *)playList andPlayType:(NSString *_Nullable)playType andSongIDs:(NSArray *_Nullable)songIDs;
+- (void)changeToPlayList:(NSArray<MoefmSong *> *_Nullable)playList andPlayType:(NSString *_Nullable)playType andSongIDs:(NSArray *_Nullable)songIDs;
 
 // 登录时调用，更新收藏状态信息，登出时不需要
 - (void)updateFavInfoWhileLoginOAuth;
@@ -59,6 +59,6 @@ typedef void(^callbackBOOL)(BOOL isSuccess);
 - (BOOL)cleanCaches;
 
 // 单例构造方法
-+ (instancetype)sharedPlayerManager;
++ (instancetype _Nullable )sharedPlayerManager;
 
 @end

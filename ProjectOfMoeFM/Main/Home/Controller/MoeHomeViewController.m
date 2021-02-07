@@ -285,7 +285,7 @@ typedef enum : NSUInteger {
     self.maskView.alpha = 0;
     self.maskView.hidden = YES;
     [UIView animateWithDuration:0.2 animations:^{
-        self.settingView.frame = CGRectMake(-_settingViewWidth, _settingViewPointY, _settingViewWidth, _settingViewHeight);
+        self.settingView.frame = CGRectMake(-self->_settingViewWidth, self->_settingViewPointY, self->_settingViewWidth, self->_settingViewHeight);
     }];
 }
 
@@ -319,7 +319,7 @@ typedef enum : NSUInteger {
     if (_settingViewIsShowing == YES) {
         self.maskView.hidden = NO;
         [UIView animateWithDuration:0.2 animations:^{
-            self.settingView.frame = CGRectMake(0, _settingViewPointY, _settingViewWidth, _settingViewHeight);
+            self.settingView.frame = CGRectMake(0, self->_settingViewPointY, self->_settingViewWidth, self->_settingViewHeight);
         }];
         [UIView animateWithDuration:1 animations:^{
             self.maskView.alpha = 0.8;
@@ -328,7 +328,7 @@ typedef enum : NSUInteger {
         self.maskView.alpha = 0;
         self.maskView.hidden = YES;
         [UIView animateWithDuration:0.2 animations:^{
-            self.settingView.frame = CGRectMake(-_settingViewWidth, _settingViewPointY, _settingViewWidth, _settingViewHeight);
+            self.settingView.frame = CGRectMake(-self->_settingViewWidth, self->_settingViewPointY, self->_settingViewWidth, self->_settingViewHeight);
         }];
     }
 }
